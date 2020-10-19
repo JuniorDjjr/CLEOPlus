@@ -61,7 +61,7 @@ OpcodeResult WINAPI GET_PICKUP_POINTER(CScriptThread* thread)
 	bool result = false;
 	if (actualIndex != -1)
 	{
-		CPickup *pickup = (CPickup *)(startPickups + (actualIndex * sizeOfCPickup));
+		pickup = (CPickup *)(startPickups + (actualIndex * sizeOfCPickup));
 		result = true;
 	}
 	CLEO_SetIntOpcodeParam(thread, (DWORD)pickup);
