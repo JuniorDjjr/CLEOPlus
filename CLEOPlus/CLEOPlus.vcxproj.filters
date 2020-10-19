@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="CLEOPlus.cpp" />
+    <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="Misc.cpp" />
+    <ClCompile Include="NoSave.cpp" />
+    <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="ScriptEntities.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Types.cpp" />
+    <ClCompile Include="ExtendedEntityVars.cpp" />
+    <ClCompile Include="Drawing.cpp" />
+    <ClCompile Include="MathRelated.cpp" />
+    <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="Memory.cpp" />
+    <ClCompile Include="Patches.cpp" />
+    <ClCompile Include="Coop.cpp" />
+    <ClCompile Include="RadarBlip.cpp" />
+    <ClCompile Include="RenderObjectOnChar.cpp" />
+    <ClCompile Include="PedExtendedData.cpp" />
+    <ClCompile Include="Pickup.cpp" />
+    <ClCompile Include="Intelligence.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="PerlinNoise\SimplexNoise.cpp">
+      <Filter>PerlinNoise</Filter>
+    </ClCompile>
+    <ClCompile Include="Colpoint.cpp" />
+    <ClCompile Include="List.cpp" />
+    <ClCompile Include="TextDrawer\TextDrawer.cpp">
+      <Filter>TextDrawer</Filter>
+    </ClCompile>
+    <ClCompile Include="VehExtendedData.cpp" />
+    <ClCompile Include="Events.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="OpcodesCommon.h" />
+    <ClInclude Include="Screen.h" />
+    <ClInclude Include="Drawing.h" />
+    <ClInclude Include="Patches.h" />
+    <ClInclude Include="RadarBlip.h" />
+    <ClInclude Include="PedExtendedData.h" />
+    <ClInclude Include="RenderObjectOnChar.h" />
+    <ClInclude Include="PerlinNoise\SimplexNoise.h">
+      <Filter>PerlinNoise</Filter>
+    </ClInclude>
+    <ClInclude Include="TextDrawer\TextDrawer.h">
+      <Filter>TextDrawer</Filter>
+    </ClInclude>
+    <ClInclude Include="VehExtendedData.h" />
+    <ClInclude Include="Events.h" />
+    <ClInclude Include="CPedDamageResponseCalculator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="PerlinNoise">
+      <UniqueIdentifier>{a3cb4fb4-d7d9-47ef-861b-9e7e494aec0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TextDrawer">
+      <UniqueIdentifier>{d59a9ec1-0713-46fb-a32b-5732deb7935a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
