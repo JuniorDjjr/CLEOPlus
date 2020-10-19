@@ -31,6 +31,7 @@ bool inSAMP = false;
 bool newOpcodesInstalled = false;
 bool coopOpcodesInstalled = false;
 bool clipboardCommandsInstalled = false;
+bool sampfuncsInstalled = false;
 bool gtavhudInstalled = false;
 float *ARwidthFromWF;
 float *ARheightFromWF;
@@ -461,6 +462,11 @@ public:
 			}
 			else clipboardCommandsInstalled = false;
 
+			if (GetModuleHandleA("SAMPFUNCS.asi")) {
+				sampfuncsInstalled = true;
+			}
+			else sampfuncsInstalled = false;
+
 			if (GetModuleHandleA("V_HUD_by_DK22Pac.asi")) {
 				gtavhudInstalled = true;
 			}
@@ -487,7 +493,7 @@ public:
 			}
 
 			//Clipboard
-			if (!clipboardCommandsInstalled) {
+			if (!clipboardCommandsInstalled && !sampfuncsInstalled) {
 				CLEO_RegisterOpcode(0xB20, READ_CLIPBOARD_DATA_TO); // 0xB20=2,read_clipboard_data_to %1d% size %2d%
 				CLEO_RegisterOpcode(0xB21, WRITE_CLIPBOARD_DATA_FROM); // 0xB21=2,write_clipboard_data_from %1d% size %2d%
 			}
