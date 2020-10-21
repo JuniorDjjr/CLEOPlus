@@ -1181,13 +1181,13 @@ public:
 		};
 
 		// Bullet impact event
-		injector::MakeInline<0x73B57C, 0x73B57C + 7>([](injector::reg_pack& regs)
+		injector::MakeInline<0x73B5B0, 0x73B5B0 + 7>([](injector::reg_pack& regs)
 		{
-			regs.ebx = *(uint32_t*)(regs.esp + 0x90 + 0x4); //mov ebx, [esp+90h+owner]
+			regs.esi = *(uint32_t*)(regs.esp + 0x88 + 0x8); //mov     esi, [esp+88h+_victim]
 			CWeapon *weapon = (CWeapon *)regs.edi;
 			CPed *owner = (CPed *)regs.ebx;
-			CEntity *victim = *(CEntity**)(regs.esp + 0x90 + 0x8);
-			CColPoint *colPoint = *(CColPoint**)(regs.esp + 0x90 + 0x14);
+			CEntity *victim = (CEntity*)regs.esi;
+			CColPoint *colPoint = *(CColPoint**)(regs.esp + 0x88 + 0x14);
 
 			if (scriptEvents[ScriptEvent::List::BulletImpact].size() > 0) {
 				int ownerRef = -1;
