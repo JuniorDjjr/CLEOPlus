@@ -1098,20 +1098,20 @@ public:
 
 		restartEvent += []
 		{
-			if (currentSaveSlot > -2) { // This will avoid the very first load
+			if (currentSaveSlot > -2) { // Fixes a improved fastloader bug
 				timesGameRestarted++;
-				RadarBlip::Clear();
-				ClearScriptLists();
-				ScriptEvent::ClearAllScriptEvents();
-				for (auto id : specialCharacterModelsUsed) {
-					CStreaming::SetMissionDoesntRequireModel(id);
-					CStreaming::RemoveModel(id);
-				}
-				//specialCharacterModelsUsed.clear(); // don't clear it, we use this list to reuse IDs in GET_MODEL_DOESNT_EXIST_IN_RANGE
-				for (int i = 0; i < DrawEvent::TOTAL_DRAW_EVENT; ++i) {
-					ClearMySprites(sprites[i]);
-					textDrawer[i].ClearAll();
-				}
+			}
+			RadarBlip::Clear();
+			ClearScriptLists();
+			ScriptEvent::ClearAllScriptEvents();
+			for (auto id : specialCharacterModelsUsed) {
+				CStreaming::SetMissionDoesntRequireModel(id);
+				CStreaming::RemoveModel(id);
+			}
+			//specialCharacterModelsUsed.clear(); // don't clear it, we use this list to reuse IDs in GET_MODEL_DOESNT_EXIST_IN_RANGE
+			for (int i = 0; i < DrawEvent::TOTAL_DRAW_EVENT; ++i) {
+				ClearMySprites(sprites[i]);
+				textDrawer[i].ClearAll();
 			}
 			currentSaveSlot = -1; // new game (loadingEvent may change it now)
 		};
