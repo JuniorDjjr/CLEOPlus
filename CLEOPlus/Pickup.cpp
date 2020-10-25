@@ -14,7 +14,7 @@ OpcodeResult WINAPI GET_PICKUP_THIS_COORD(CScriptThread* thread)
 
 	CVector coord = {x, y, z};
 
-	for (int i = 0; i <= sizePickups; ++i)
+	for (unsigned int i = 0; i <= sizePickups; ++i)
 	{
 		CPickup *pickup = (CPickup *)(startPickups + (i * sizeOfCPickup));
 		CVector pickupCoord = pickup->GetPosn();

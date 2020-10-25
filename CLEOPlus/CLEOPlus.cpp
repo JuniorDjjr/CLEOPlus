@@ -79,6 +79,8 @@ ThiscallEvent <AddressList<0x6D6494, H_CALL>, PRIORITY_AFTER, ArgPickN<CVehicle*
 ThiscallEvent <AddressList<0x4F77DA, H_CALL>, PRIORITY_AFTER, ArgPickN<CVehicle*, 0>, void(CVehicle*)> vehicleAfterCtor;
 ThiscallEvent <AddressList<0x58D568, H_CALL>, PRIORITY_AFTER, ArgPickNone, void()> drawAfterFade;
 CdeclEvent <AddressList<0x57C2B0, H_CALL>, PRIORITY_AFTER, ArgPickNone, void()> onMenu;
+CdeclEvent <AddressList<0x53E4FA, H_CALL>, PRIORITY_AFTER, ArgPickNone, void()> beforeHud;
+CdeclEvent <AddressList<0x53E504, H_CALL>, PRIORITY_BEFORE, ArgPickNone, void()> afterHud;
 void CacheOnePedTask(CPed *ped, PedExtended &xdata, int &activeTaskIndex, CTask *task, bool isSecondary);
 void ClearScriptLists();
 
@@ -1261,13 +1263,13 @@ public:
 			textDrawer[DrawEvent::AfterDrawing].DrawPrints();
 		};
 
-		Events::drawHudEvent.before += [] {
+		beforeHud += [] {
 			DrawMySprites(sprites[DrawEvent::BeforeHud]);
 			ClearMySprites(sprites[DrawEvent::BeforeHud]);
 			textDrawer[DrawEvent::BeforeHud].DrawPrints();
 		};
 
-		Events::drawHudEvent.after += [] {
+		afterHud += [] {
 			DrawMySprites(sprites[DrawEvent::AfterHud]);
 			ClearMySprites(sprites[DrawEvent::AfterHud]);
 			textDrawer[DrawEvent::AfterHud].DrawPrints();
