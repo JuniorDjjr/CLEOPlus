@@ -1529,8 +1529,8 @@ OpcodeResult WINAPI DONT_DELETE_CHAR_UNTIL_TIME(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
 	unsigned int time = CLEO_GetIntOpcodeParam(thread) + CTimer::m_snTimeInMilliseconds;
-	if (ped->m_nTimeTillWeNeedThisPed < time) {
-		ped->m_nTimeTillWeNeedThisPed = time;
+	if (ped->field_54C < time) { // m_nTimeTillWeNeedThisPed
+		ped->field_54C = time;
 	}
 	return OR_CONTINUE;
 }

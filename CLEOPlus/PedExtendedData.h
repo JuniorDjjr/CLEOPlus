@@ -85,6 +85,7 @@ public:
 		lastDamageWeapon = 0;
 		lastDamagePart = 0;
 		lastDamageIntensity = 0.0f;
+		ignoreDamageAnims = false;
 		aiFlagsIntValue = 0; //reset all flags
 		renderObjects.clear();
 	}

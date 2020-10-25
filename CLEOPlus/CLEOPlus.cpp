@@ -14,6 +14,7 @@
 #include "TextDrawer/TextDrawer.h"
 #include "Events.h"
 #include "CStreaming.h"
+#include "rw/rpworld.h"
 #include <set>
 
 using namespace plugin;
@@ -1034,7 +1035,7 @@ public:
 
 							if (clump)
 							{
-								frame = RpClumpGetFrame(clump);
+								frame = (RwFrame*)clump->object.parent;
 							}
 
 							RpHAnimHierarchy *hAnimHier = GetAnimHierarchyFromSkinClump(ped->m_pRwClump);
@@ -1066,7 +1067,7 @@ public:
 							}
 							else
 							{
-								if (atomic) RpAtomicRender(atomic);
+								if (atomic) atomic->renderCallBack(atomic);
 							}
 						}
 					}
@@ -1173,11 +1174,12 @@ public:
 		};
 
 		// Called before menu draw, because drawMenuBackgroundEvent isn't compatible with RenderHook
-		onMenu.before += [] {
+		onMenu.after += [] {
 			for (auto scriptEvent : scriptEvents[ScriptEvent::List::OnMenu]) scriptEvent->RunScriptEvent(!pausedLastFrame);
 			if (!pausedLastFrame) {
 				pausedLastFrame = true;
 			}
+			UpdateKeyPresses();
 		};
 
 		// Bullet impact event
@@ -1269,48 +1271,6 @@ public:
 			DrawMySprites(sprites[DrawEvent::AfterHud]);
 			ClearMySprites(sprites[DrawEvent::AfterHud]);
 			textDrawer[DrawEvent::AfterHud].DrawPrints();
-
-			// It's better to update all keys and buttons after all game processing, to make it compatible with script events
-
-			// Update keys pressed
-			memset(keysPressedLastFrame, 0, sizeof(keysPressedLastFrame));
-			for (int vk = 0x01; vk < 0xFF; ++vk)
-			{
-				keysPressedLastFrame[vk] = ((GetKeyState(vk) & 0x8000) != 0);
-			}
-
-			// Update buttons pressed, and control disable
-			memset(buttonsPressedLastFrame, 0, sizeof(buttonsPressedLastFrame));
-			for (int pad = 0; pad < 2; ++pad)
-			{
-				for (int id = 0; id < 20; ++id)
-				{
-					// There is old state, but isn't array, and also this function may be changed by some crazy script
-					buttonsPressedLastFrame[pad][id] = reinterpret_cast<CRunningScript*>(0)->GetPadState(pad, id);
-				}
-				// Toggle movement only
-				if (disablePadControlMovement[pad])
-				{
-					CPad::GetPad(pad)->DisablePlayerControls |= 1 << 0;
-					disabledPadControlMovementLastFrame[pad] = true;
-				}
-				else if (disabledPadControlMovementLastFrame[pad])
-				{
-					CPad::GetPad(pad)->DisablePlayerControls &= ~(1 << 0);
-					disabledPadControlMovementLastFrame[pad] = false;
-				}
-				// Toggle controls only
-				if (disablePadControl[pad])
-				{
-					CPad::GetPad(pad)->DisablePlayerControls |= 1 << 1;
-					disabledPadControlLastFrame[pad] = true;
-				}
-				else if (disabledPadControlLastFrame[pad]) 
-				{
-					CPad::GetPad(pad)->DisablePlayerControls &= ~(1 << 1);
-					disabledPadControlLastFrame[pad] = false;
-				}
-			}
 		};
 
 		Events::drawRadarEvent.before += [] {
@@ -1353,9 +1313,55 @@ public:
 			DrawMySprites(sprites[DrawEvent::AfterFade]);
 			ClearMySprites(sprites[DrawEvent::AfterFade]);
 			textDrawer[DrawEvent::AfterFade].DrawPrints();
+
+			UpdateKeyPresses(); // It's better to update all keys and buttons after all game processing, to make it compatible with script events
 		};
 
 		CLEO_AddScriptDeleteDelegate(ScriptDeleteEvent);
     }
+
+	static void UpdateKeyPresses()
+	{
+
+		// Update keys pressed
+		memset(keysPressedLastFrame, 0, sizeof(keysPressedLastFrame));
+		for (int vk = 0x01; vk < 0xFF; ++vk)
+		{
+			keysPressedLastFrame[vk] = ((GetKeyState(vk) & 0x8000) != 0);
+		}
+
+		// Update buttons pressed, and control disable
+		memset(buttonsPressedLastFrame, 0, sizeof(buttonsPressedLastFrame));
+		for (int pad = 0; pad < 2; ++pad)
+		{
+			for (int id = 0; id < 20; ++id)
+			{
+				// There is old state, but isn't array, and also this function may be changed by some crazy script
+				buttonsPressedLastFrame[pad][id] = reinterpret_cast<CRunningScript*>(0)->GetPadState(pad, id);
+			}
+			// Toggle movement only
+			if (disablePadControlMovement[pad])
+			{
+				CPad::GetPad(pad)->DisablePlayerControls |= 1 << 0;
+				disabledPadControlMovementLastFrame[pad] = true;
+			}
+			else if (disabledPadControlMovementLastFrame[pad])
+			{
+				CPad::GetPad(pad)->DisablePlayerControls &= ~(1 << 0);
+				disabledPadControlMovementLastFrame[pad] = false;
+			}
+			// Toggle controls only
+			if (disablePadControl[pad])
+			{
+				CPad::GetPad(pad)->DisablePlayerControls |= 1 << 1;
+				disabledPadControlLastFrame[pad] = true;
+			}
+			else if (disabledPadControlLastFrame[pad])
+			{
+				CPad::GetPad(pad)->DisablePlayerControls &= ~(1 << 1);
+				disabledPadControlLastFrame[pad] = false;
+			}
+		}
+	}
 
 } cLEOPlus;
