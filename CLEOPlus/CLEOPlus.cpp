@@ -872,6 +872,56 @@ public:
 
 		// ----------------------------------------------------------------------------------------
 
+		Events::processScriptsEvent.before += [] // gameProcess isn't compatible with SAMP
+		{
+			// Reset ped data per frame
+			auto& pedsPool = CPools::ms_pPedPool;
+			for (int index = 0; index < pedsPool->m_nSize; ++index)
+			{
+				if (CPed* ped = pedsPool->GetAt(index))
+				{
+					PedExtended& xdata = extData.Get(ped);
+
+					// Call char process script event if invisible, because our ped render hook will not call it
+					if (ped->m_nPedState == 50) {
+						if (scriptEvents[ScriptEvent::List::CharProcess].size() > 0) {
+							int ref = CPools::GetPedRef(ped);
+							for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharProcess]) scriptEvent->RunScriptEvent(ref);
+						}
+					}
+
+					// Reset AI flags
+					xdata.aiFlagsIntValue = 0;
+
+					// Cache tasks
+					int activeTaskIndex = 0;
+					if (ped->m_pIntelligence)
+					{
+						CTaskManager* taskMgr = &ped->m_pIntelligence->m_TaskMgr;
+						for (int i = 0; i < 5; i++)
+						{
+							CTask* task = taskMgr->m_aPrimaryTasks[i];
+							while (task)
+							{
+								CacheOnePedTask(ped, xdata, activeTaskIndex, task, false);
+								task = task->GetSubTask();
+							}
+						}
+
+						for (int i = 0; i < 5; i++)
+						{
+							CTask* task = taskMgr->m_aSecondaryTasks[i];
+							while (task)
+							{
+								CacheOnePedTask(ped, xdata, activeTaskIndex, task, true);
+								task = task->GetSubTask();
+							}
+						}
+					}
+					if (activeTaskIndex < 31) xdata.activeTasks[activeTaskIndex] = -1; // set terminator
+				}
+			}
+		};
 
 		Events::processScriptsEvent.after +=[] // gameProcess isn't compatible with SAMP
 		{
@@ -905,52 +955,11 @@ public:
 				{
 					PedExtended &xdata = extData.Get(ped);
 
-					// Call char process script event if invisible, because our ped render hook will not call it
-					if (ped->m_nPedState == 50) {
-						if (scriptEvents[ScriptEvent::List::CharProcess].size() > 0) {
-							int ref = CPools::GetPedRef(ped);
-							for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharProcess]) scriptEvent->RunScriptEvent(ref);
-						}
-					}
-
 					// Reset last damage;
 					xdata.lastDamageEntity = nullptr;
 					xdata.lastDamageWeapon = 0;
 					xdata.lastDamagePart = 0;
 					xdata.lastDamageIntensity = 0.0f;
-
-					// Reset AI flags
-					xdata.aiFlagsIntValue = 0;
-
-					// Cache tasks
-					CTask *task = ped->m_pIntelligence->m_TaskMgr.GetSimplestActiveTask();
-					xdata.simplestActiveTask = task;
-
-					int activeTaskIndex = 0;
-					if (ped->m_pIntelligence)
-					{
-						CTaskManager *taskMgr = &ped->m_pIntelligence->m_TaskMgr;
-						for (int i = 0; i < 5; i++)
-						{
-							CTask * task = taskMgr->m_aPrimaryTasks[i];
-							while (task)
-							{
-								CacheOnePedTask(ped, xdata, activeTaskIndex, task, false);
-								task = task->GetSubTask();
-							}
-						}
-
-						for (int i = 0; i < 5; i++)
-						{
-							CTask * task = taskMgr->m_aSecondaryTasks[i];
-							while (task)
-							{
-								CacheOnePedTask(ped, xdata, activeTaskIndex, task, true);
-								task = task->GetSubTask();
-							}
-						}
-					}
-					if (activeTaskIndex < 31) xdata.activeTasks[activeTaskIndex] = 0; // set terminator
 				}
 			}
 

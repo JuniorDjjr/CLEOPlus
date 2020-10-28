@@ -51,8 +51,7 @@ public:
 
 class PedExtended {
 public:
-	CTask *activeTasks[32];
-	CTask *simplestActiveTask;
+	int activeTasks[32];
 	CEntity *killTargetPed;
 	CEntity *lastDamageEntity;
 	int lastDamageWeapon;
@@ -79,7 +78,6 @@ public:
 
 	PedExtended(CPed *ped) {
 		memset(activeTasks, 0, sizeof(activeTasks));
-		simplestActiveTask = nullptr;
 		killTargetPed = nullptr;
 		lastDamageEntity = nullptr;
 		lastDamageWeapon = 0;

@@ -70,10 +70,10 @@ bool TaskIdIsntImportant(int taskId, CPed *ped) {
 
 void CacheOnePedTask(CPed *ped, PedExtended &xdata, int &activeTaskIndex, CTask *task, bool isSecondary)
 {
-	xdata.activeTasks[activeTaskIndex] = task;
+	int taskId = task->GetId();
+	xdata.activeTasks[activeTaskIndex] = taskId;
 	++activeTaskIndex;
 	if (activeTaskIndex > 31) activeTaskIndex = 31; // keep adding tasks in the last slot
-	int taskId = task->GetId();
 
 	int taskOffsetForKillTargetPed = 0;
 
@@ -152,11 +152,10 @@ OpcodeResult WINAPI IS_CHAR_DOING_TASK_ID(CScriptThread* thread)
 	PedExtended &data = extData.Get(ped);
 	int taskId = CLEO_GetIntOpcodeParam(thread);
 
-	CTask *task = nullptr;
 	for (int i = 0; i < 32; ++i) {
-		task = data.activeTasks[i];
-		if (task) {
-			if (task->GetId() == taskId) {
+		int activeTaskId = data.activeTasks[i];
+		if (activeTaskId != -1) {
+			if (activeTaskId == taskId) {
 				bResult = true;
 				break;
 			}
@@ -175,17 +174,41 @@ OpcodeResult WINAPI GET_CHAR_TASK_POINTER_BY_ID(CScriptThread* thread)
 	PedExtended &data = extData.Get(ped);
 	int taskId = CLEO_GetIntOpcodeParam(thread);
 
-	CTask *task = nullptr;
-	for (int i = 0; i < 32; ++i) {
-		task = data.activeTasks[i];
-		if (task) {
-			if (task->GetId() == taskId) {
-				bResult = true;
-				break;
+	int activeTaskIndex = 0;
+	CTask* task;
+	if (ped->m_pIntelligence)
+	{
+		CTaskManager* taskMgr = &ped->m_pIntelligence->m_TaskMgr;
+		for (int i = 0; i < 5; i++)
+		{
+			task = taskMgr->m_aPrimaryTasks[i];
+			while (task)
+			{
+				if (task->GetId() == taskId) {
+					bResult = true;
+					goto GET_CHAR_TASK_POINTER_BY_ID_jump_end;
+				}
+				task = task->GetSubTask();
 			}
 		}
-		else break;
+
+		for (int i = 0; i < 5; i++)
+		{
+			task = taskMgr->m_aSecondaryTasks[i];
+			while (task)
+			{
+				if (task->GetId() == taskId) {
+					bResult = true;
+					goto GET_CHAR_TASK_POINTER_BY_ID_jump_end;
+				}
+				task = task->GetSubTask();
+			}
+		}
 	}
+
+	task = nullptr;
+
+	GET_CHAR_TASK_POINTER_BY_ID_jump_end:
 	CLEO_SetIntOpcodeParam(thread, (DWORD)task);
 	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(bResult);
 	return OR_CONTINUE;
@@ -296,8 +319,7 @@ OpcodeResult WINAPI CLEAR_CHAR_SECONDARY_TASKS(CScriptThread* thread)
 OpcodeResult WINAPI GET_CHAR_SIMPLEST_ACTIVE_TASK(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
-	PedExtended &xdata = extData.Get(ped);
-	CTask *task = xdata.simplestActiveTask;
+	CTask *task = ped->m_pIntelligence->m_TaskMgr.GetSimplestActiveTask();
 	if (task) {
 		CLEO_SetIntOpcodeParam(thread, task->GetId());
 		CLEO_SetIntOpcodeParam(thread, (DWORD)task);
