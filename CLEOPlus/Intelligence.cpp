@@ -224,8 +224,12 @@ OpcodeResult WINAPI GET_CHAR_KILL_TARGET_CHAR(CScriptThread* thread)
 	if (reinterpret_cast<int>(entity) == -1 && ped->IsPlayer()) {
 		entity = reinterpret_cast<CPlayerPed*>(ped)->m_pPlayerTargettedPed;
 	}
-	CLEO_SetIntOpcodeParam(thread, (DWORD)entity);
-	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(entity != nullptr);
+	int targetRef = -1;
+	if (reinterpret_cast<int>(entity) > 0 && entity->m_nType == eEntityType::ENTITY_TYPE_PED) {
+		targetRef = CPools::GetPedRef(reinterpret_cast<CPed*>(entity));
+	}
+	CLEO_SetIntOpcodeParam(thread, targetRef);
+	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(targetRef > 0);
 	return OR_CONTINUE;
 }
 
