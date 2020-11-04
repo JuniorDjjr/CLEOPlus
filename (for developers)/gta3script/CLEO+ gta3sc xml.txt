@@ -1,0 +1,3086 @@
+
+PT: Você também pode usar o "cleo.xml" que veio no download.
+EN: You can also use the "cleo.xml" that came in the download.
+
+
+PT: Abra o "gtasa/cleo.xml" localizado na pasta do compilador GTA3script.
+EN: Open the "gtasa/cleo.xml" located in the GTA3script compiler folder.
+
+
+PT: Dentro de <Constants> (normalmente no fim) adicione:
+EN: Within <Constants> (usually at the end) add:
+
+
+
+
+    <!-- CLEO+ -->
+    <Enum Name="TASK">
+		<Constant Name="TASK_SIMPLE_PLAYER_ON_FOOT" Value="0"/>
+		<Constant Name="TASK_SIMPLE_PLAYER_IN_CAR" Value="1"/>
+		<Constant Name="TASK_COMPLEX_MEDIC_TREAT_INJURED_PED" Value="100"/>
+		<Constant Name="TASK_COMPLEX_TREAT_ACCIDENT" Value="101"/>
+		<Constant Name="TASK_SIMPLE_GIVE_CPR" Value="102"/>
+		<Constant Name="TASK_COMPLEX_COP_ARREST_PED" Value="103"/>
+		<Constant Name="TASK_COMPLEX_COP_HASSLE_PED" Value="104"/>
+		<Constant Name="TASK_COMPLEX_HASSLED_BY_COP" Value="105"/>
+		<Constant Name="TASK_COMPLEX_PRESENT_ID_TO_COP" Value="106"/>
+		<Constant Name="TASK_COMPLEX_DRIVE_FIRE_TRUCK" Value="107"/>
+		<Constant Name="TASK_COMPLEX_USE_SWAT_ROPE" Value="108"/>
+		<Constant Name="TASK_COMPLEX_USE_WATER_CANNON" Value="109"/>
+		<Constant Name="TASK_COMPLEX_EXTINGUISH_FIRE_ON_FOOT" Value="110"/>
+		<Constant Name="TASK_NONE" Value="200"/>
+		<Constant Name="TASK_SIMPLE_UNINTERRUPTABLE" Value="201"/>
+		<Constant Name="TASK_SIMPLE_PAUSE" Value="202"/>
+		<Constant Name="TASK_SIMPLE_STAND_STILL" Value="203"/>
+		<Constant Name="TASK_SIMPLE_SET_STAY_IN_SAME_PLACE" Value="204"/>
+		<Constant Name="TASK_SIMPLE_GET_UP" Value="205"/>
+		<Constant Name="TASK_COMPLEX_GET_UP_AND_STAND_STILL" Value="206"/>
+		<Constant Name="TASK_SIMPLE_FALL" Value="207"/>
+		<Constant Name="TASK_COMPLEX_FALL_AND_GET_UP" Value="208"/>
+		<Constant Name="TASK_COMPLEX_FALL_AND_STAY_DOWN" Value="209"/>
+		<Constant Name="TASK_SIMPLE_JUMP" Value="210"/>
+		<Constant Name="TASK_COMPLEX_JUMP" Value="211"/>
+		<Constant Name="TASK_SIMPLE_DIE" Value="212"/>
+		<Constant Name="TASK_SIMPLE_DROWN" Value="213"/>
+		<Constant Name="TASK_SIMPLE_DIE_IN_CAR" Value="214"/>
+		<Constant Name="TASK_COMPLEX_DIE_IN_CAR" Value="215"/>
+		<Constant Name="TASK_SIMPLE_DROWN_IN_CAR" Value="216"/>
+		<Constant Name="TASK_COMPLEX_DIE" Value="217"/>
+		<Constant Name="TASK_SIMPLE_DEAD" Value="218"/>
+		<Constant Name="TASK_SIMPLE_TIRED" Value="219"/>
+		<Constant Name="TASK_SIMPLE_SIT_DOWN" Value="220"/>
+		<Constant Name="TASK_SIMPLE_SIT_IDLE" Value="221"/>
+		<Constant Name="TASK_SIMPLE_STAND_UP" Value="222"/>
+		<Constant Name="TASK_COMPLEX_SIT_DOWN_THEN_IDLE_THEN_STAND_UP" Value="223"/>
+		<Constant Name="TASK_COMPLEX_OBSERVE_TRAFFIC_LIGHTS" Value="224"/>
+		<Constant Name="TASK_COMPLEX_OBSERVE_TRAFFIC_LIGHTS_AND_ACHIEVE_HEADING" Value="225"/>
+		<Constant Name="TASK_NOT_USED" Value="226"/>
+		<Constant Name="TASK_COMPLEX_CROSS_ROAD_LOOK_AND_ACHIEVE_HEADING" Value="227"/>
+		<Constant Name="TASK_SIMPLE_TURN_180" Value="228"/>
+		<Constant Name="TASK_SIMPLE_HAIL_TAXI" Value="229"/>
+		<Constant Name="TASK_COMPLEX_HIT_RESPONSE" Value="230"/>
+		<Constant Name="TASK_COMPLEX_HIT_BY_GUN_RESPONSE" Value="231"/>
+		<Constant Name="TASK_UNUSED_SLOT" Value="232"/>
+		<Constant Name="TASK_COMPLEX_USE_EFFECT" Value="233"/>
+		<Constant Name="TASK_COMPLEX_WAIT_AT_ATTRACTOR" Value="234"/>
+		<Constant Name="TASK_COMPLEX_USE_ATTRACTOR" Value="235"/>
+		<Constant Name="TASK_COMPLEX_WAIT_FOR_DRY_WEATHER" Value="236"/>
+		<Constant Name="TASK_COMPLEX_WAIT_FOR_BUS" Value="237"/>
+		<Constant Name="TASK_SIMPLE_WAIT_FOR_BUS" Value="238"/>
+		<Constant Name="TASK_SIMPLE_WAIT_FOR_PIZZA" Value="239"/>
+		<Constant Name="TASK_COMPLEX_IN_AIR_AND_LAND" Value="240"/>
+		<Constant Name="TASK_SIMPLE_IN_AIR" Value="241"/>
+		<Constant Name="TASK_SIMPLE_LAND" Value="242"/>
+		<Constant Name="TASK_COMPLEX_BE_IN_GROUP" Value="243"/>
+		<Constant Name="TASK_COMPLEX_SEQUENCE" Value="244"/>
+		<Constant Name="TASK_SIMPLE_CALL_FOR_BACKUP" Value="245"/>
+		<Constant Name="TASK_COMPLEX_USE_PAIRED_ATTRACTOR" Value="246"/>
+		<Constant Name="TASK_COMPLEX_USE_ATTRACTOR_PARTNER" Value="247"/>
+		<Constant Name="TASK_COMPLEX_ATTRACTOR_PARTNER_WAIT" Value="248"/>
+		<Constant Name="TASK_COMPLEX_USE_SCRIPTED_ATTRACTOR" Value="249"/>
+		<Constant Name="TASK_COMPLEX_ON_FIRE" Value="250"/>
+		<Constant Name="TASK_SIMPLE_BE_DAMAGED" Value="251"/>
+		<Constant Name="TASK_SIMPLE_TRIGGER_EVENT" Value="252"/>
+		<Constant Name="TASK_SIMPLE_RAGDOLL" Value="253"/>
+		<Constant Name="TASK_SIMPLE_CLIMB" Value="254"/>
+		<Constant Name="TASK_SIMPLE_PLAYER_ON_FIRE" Value="255"/>
+		<Constant Name="TASK_COMPLEX_PARTNER" Value="256"/>
+		<Constant Name="TASK_COMPLEX_STARE_AT_PED" Value="257"/>
+		<Constant Name="TASK_COMPLEX_USE_CLOSEST_FREE_SCRIPTED_ATTRACTOR" Value="258"/>
+		<Constant Name="TASK_COMPLEX_USE_EFFECT_RUNNING" Value="259"/>
+		<Constant Name="TASK_COMPLEX_USE_EFFECT_SPRINTING" Value="260"/>
+		<Constant Name="TASK_COMPLEX_USE_CLOSEST_FREE_SCRIPTED_ATTRACTOR_RUN" Value="261"/>
+		<Constant Name="TASK_COMPLEX_USE_CLOSEST_FREE_SCRIPTED_ATTRACTOR_SPRINT" Value="262"/>
+		<Constant Name="TASK_SIMPLE_CHOKING" Value="263"/>
+		<Constant Name="TASK_SIMPLE_IK_CHAIN" Value="264"/>
+		<Constant Name="TASK_SIMPLE_IK_MANAGER" Value="265"/>
+		<Constant Name="TASK_SIMPLE_IK_LOOK_AT" Value="266"/>
+		<Constant Name="TASK_COMPLEX_CLIMB" Value="267"/>
+		<Constant Name="TASK_COMPLEX_IN_WATER" Value="268"/>
+		<Constant Name="TASK_SIMPLE_TRIGGER_LOOK_AT" Value="269"/>
+		<Constant Name="TASK_SIMPLE_CLEAR_LOOK_AT" Value="270"/>
+		<Constant Name="TASK_SIMPLE_SET_CHAR_DECISION_MAKER" Value="271"/>
+		<Constant Name="TASK_SIMPLE_IK_POINT_R_ARM" Value="272"/>
+		<Constant Name="TASK_SIMPLE_IK_POINT_L_ARM" Value="273"/>
+		<Constant Name="TASK_COMPLEX_BE_STILL" Value="274"/>
+		<Constant Name="TASK_COMPLEX_USE_SEQUENCE" Value="275"/>
+		<Constant Name="TASK_SIMPLE_SET_KINDA_STAY_IN_SAME_PLACE" Value="276"/>
+		<Constant Name="TASK_COMPLEX_FALL_TO_DEATH" Value="277"/>
+		<Constant Name="TASK_WAIT_FOR_MATCHING_LEADER_AREA_CODES" Value="278"/>
+		<Constant Name="TASK_SIMPLE_LOOK_AT_ENTITY_OR_COORD" Value="300"/>
+		<Constant Name="TASK_SIMPLE_SAY" Value="301"/>
+		<Constant Name="TASK_SIMPLE_SHAKE_FIST" Value="302"/>
+		<Constant Name="TASK_SIMPLE_FACIAL" Value="303"/>
+		<Constant Name="TASK_COMPLEX_CHAINED_FACIAL" Value="304"/>
+		<Constant Name="TASK_COMPLEX_FACIAL" Value="305"/>
+		<Constant Name="TASK_SIMPLE_AFFECT_SECONDARY_BEHAVIOUR" Value="306"/>
+		<Constant Name="TASK_SIMPLE_HOLD_ENTITY" Value="307"/>
+		<Constant Name="TASK_SIMPLE_PICKUP_ENTITY" Value="308"/>
+		<Constant Name="TASK_SIMPLE_PUTDOWN_ENTITY" Value="309"/>
+		<Constant Name="TASK_COMPLEX_GO_PICKUP_ENTITY" Value="310"/>
+		<Constant Name="TASK_SIMPLE_DUCK_WHILE_SHOTS_WHIZZING" Value="311"/>
+		<Constant Name="TASK_SIMPLE_ANIM" Value="400"/>
+		<Constant Name="TASK_SIMPLE_NAMED_ANIM" Value="401"/>
+		<Constant Name="TASK_SIMPLE_TIMED_ANIM" Value="402"/>
+		<Constant Name="TASK_SIMPLE_HIT_BACK" Value="403"/>
+		<Constant Name="TASK_SIMPLE_HIT_FRONT" Value="404"/>
+		<Constant Name="TASK_SIMPLE_HIT_LEFT" Value="405"/>
+		<Constant Name="TASK_SIMPLE_HIT_RIGHT" Value="406"/>
+		<Constant Name="TASK_SIMPLE_HIT_BY_GUN_BACK" Value="407"/>
+		<Constant Name="TASK_SIMPLE_HIT_BY_GUN_FRONT" Value="408"/>
+		<Constant Name="TASK_SIMPLE_HIT_BY_GUN_LEFT" Value="409"/>
+		<Constant Name="TASK_SIMPLE_HIT_BY_GUN_RIGHT" Value="410"/>
+		<Constant Name="TASK_SIMPLE_HIT_WALL" Value="411"/>
+		<Constant Name="TASK_SIMPLE_COWER" Value="412"/>
+		<Constant Name="TASK_SIMPLE_HANDS_UP" Value="413"/>
+		<Constant Name="TASK_SIMPLE_HIT_BEHIND" Value="414"/>
+		<Constant Name="TASK_SIMPLE_DUCK" Value="415"/>
+		<Constant Name="TASK_SIMPLE_CHAT" Value="416"/>
+		<Constant Name="TASK_COMPLEX_SUNBATHE" Value="417"/>
+		<Constant Name="TASK_SIMPLE_SUNBATHE" Value="418"/>
+		<Constant Name="TASK_SIMPLE_DETONATE" Value="419"/>
+		<Constant Name="TASK_SIMPLE_USE_ATM" Value="420"/>
+		<Constant Name="TASK_SIMPLE_SCRATCH_HEAD" Value="421"/>
+		<Constant Name="TASK_SIMPLE_LOOK_ABOUT" Value="422"/>
+		<Constant Name="TASK_SIMPLE_ABSEIL" Value="423"/>
+		<Constant Name="TASK_SIMPLE_ANIM_LOOPED_MIDDLE" Value="424"/>
+		<Constant Name="TASK_SIMPLE_HANDSIGNAL_ANIM" Value="425"/>
+		<Constant Name="TASK_COMPLEX_HANDSIGNAL_ANIM" Value="426"/>
+		<Constant Name="TASK_SIMPLE_DUCK_FOREVER" Value="427"/>
+		<Constant Name="TASK_SIMPLE_START_SUNBATHING" Value="428"/>
+		<Constant Name="TASK_SIMPLE_IDLE_SUNBATHING" Value="429"/>
+		<Constant Name="TASK_SIMPLE_STOP_SUNBATHING" Value="430"/>
+		<Constant Name="TASK_SIMPLE_HIT_HEAD" Value="500"/>
+		<Constant Name="TASK_SIMPLE_EVASIVE_STEP" Value="501"/>
+		<Constant Name="TASK_COMPLEX_EVASIVE_STEP" Value="502"/>
+		<Constant Name="TASK_SIMPLE_EVASIVE_DIVE" Value="503"/>
+		<Constant Name="TASK_COMPLEX_EVASIVE_DIVE_AND_GET_UP" Value="504"/>
+		<Constant Name="TASK_COMPLEX_HIT_PED_WITH_CAR" Value="505"/>
+		<Constant Name="TASK_SIMPLE_KILL_PED_WITH_CAR" Value="506"/>
+		<Constant Name="TASK_SIMPLE_HURT_PED_WITH_CAR" Value="507"/>
+		<Constant Name="TASK_COMPLEX_WALK_ROUND_CAR" Value="508"/>
+		<Constant Name="TASK_COMPLEX_WALK_ROUND_BUILDING_ATTEMPT" Value="509"/>
+		<Constant Name="TASK_COMPLEX_WALK_ROUND_OBJECT" Value="510"/>
+		<Constant Name="TASK_COMPLEX_MOVE_BACK_AND_JUMP" Value="511"/>
+		<Constant Name="TASK_COMPLEX_EVASIVE_COWER" Value="512"/>
+		<Constant Name="TASK_COMPLEX_DIVE_FROM_ATTACHED_ENTITY_AND_GET_UP" Value="513"/>
+		<Constant Name="TASK_COMPLEX_WALK_ROUND_FIRE" Value="514"/>
+		<Constant Name="TASK_COMPLEX_STUCK_IN_AIR" Value="515"/>
+		<Constant Name="TASK_COMPLEX_INVESTIGATE_DEAD_PED" Value="600"/>
+		<Constant Name="TASK_COMPLEX_REACT_TO_GUN_AIMED_AT" Value="601"/>
+		<Constant Name="TASK_COMPLEX_WAIT_FOR_BACKUP" Value="602"/>
+		<Constant Name="TASK_COMPLEX_GET_OUT_OF_WAY_OF_CAR" Value="603"/>
+		<Constant Name="TASK_COMPLEX_EXTINGUISH_FIRES" Value="604"/>
+		<Constant Name="TASK_COMPLEX_ENTER_CAR_AS_PASSENGER" Value="700"/>
+		<Constant Name="TASK_COMPLEX_ENTER_CAR_AS_DRIVER" Value="701"/>
+		<Constant Name="TASK_COMPLEX_STEAL_CAR" Value="702"/>
+		<Constant Name="TASK_COMPLEX_DRAG_PED_FROM_CAR" Value="703"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_CAR" Value="704"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_CAR_AND_DIE" Value="705"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_CAR_AND_FLEE" Value="706"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_CAR_AND_WANDER" Value="707"/>
+		<Constant Name="TASK_COMPLEX_SCREAM_IN_CAR_THEN_LEAVE" Value="708"/>
+		<Constant Name="TASK_SIMPLE_CAR_DRIVE" Value="709"/>
+		<Constant Name="TASK_COMPLEX_CAR_DRIVE_TO_POINT" Value="710"/>
+		<Constant Name="TASK_COMPLEX_CAR_DRIVE_WANDER" Value="711"/>
+		<Constant Name="TASK_COMPLEX_ENTER_CAR_AS_PASSENGER_TIMED" Value="712"/>
+		<Constant Name="TASK_COMPLEX_ENTER_CAR_AS_DRIVER_TIMED" Value="713"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_ANY_CAR" Value="714"/>
+		<Constant Name="TASK_COMPLEX_ENTER_BOAT_AS_DRIVER" Value="715"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_BOAT" Value="716"/>
+		<Constant Name="TASK_COMPLEX_ENTER_ANY_CAR_AS_DRIVER" Value="717"/>
+		<Constant Name="TASK_COMPLEX_ENTER_CAR_AS_PASSENGER_WAIT" Value="718"/>
+		<Constant Name="TASK_SIMPLE_CAR_DRIVE_TIMED" Value="719"/>
+		<Constant Name="TASK_COMPLEX_SHUFFLE_SEATS" Value="720"/>
+		<Constant Name="TASK_COMPLEX_CAR_DRIVE_POINT_ROUTE" Value="721"/>
+		<Constant Name="TASK_COMPLEX_CAR_OPEN_DRIVER_DOOR" Value="722"/>
+		<Constant Name="TASK_SIMPLE_CAR_SET_TEMP_ACTION" Value="723"/>
+		<Constant Name="TASK_COMPLEX_CAR_DRIVE_MISSION" Value="724"/>
+		<Constant Name="TASK_COMPLEX_CAR_DRIVE" Value="725"/>
+		<Constant Name="TASK_COMPLEX_CAR_DRIVE_MISSION_FLEE_SCENE" Value="726"/>
+		<Constant Name="TASK_COMPLEX_ENTER_LEADER_CAR_AS_PASSENGER" Value="727"/>
+		<Constant Name="TASK_COMPLEX_CAR_OPEN_PASSENGER_DOOR" Value="728"/>
+		<Constant Name="TASK_COMPLEX_CAR_DRIVE_MISSION_KILL_PED" Value="729"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_CAR_AS_PASSENGER_WAIT" Value="730"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_CAR_DOOR_AND_STAND_STILL" Value="800"/>
+		<Constant Name="TASK_SIMPLE_CAR_ALIGN" Value="801"/>
+		<Constant Name="TASK_SIMPLE_CAR_OPEN_DOOR_FROM_OUTSIDE" Value="802"/>
+		<Constant Name="TASK_SIMPLE_CAR_OPEN_LOCKED_DOOR_FROM_OUTSIDE" Value="803"/>
+		<Constant Name="TASK_SIMPLE_BIKE_PICK_UP" Value="804"/>
+		<Constant Name="TASK_SIMPLE_CAR_CLOSE_DOOR_FROM_INSIDE" Value="805"/>
+		<Constant Name="TASK_SIMPLE_CAR_CLOSE_DOOR_FROM_OUTSIDE" Value="806"/>
+		<Constant Name="TASK_SIMPLE_CAR_GET_IN" Value="807"/>
+		<Constant Name="TASK_SIMPLE_CAR_SHUFFLE" Value="808"/>
+		<Constant Name="TASK_SIMPLE_CAR_WAIT_TO_SLOW_DOWN" Value="809"/>
+		<Constant Name="TASK_SIMPLE_CAR_WAIT_FOR_DOOR_NOT_TO_BE_IN_USE" Value="810"/>
+		<Constant Name="TASK_SIMPLE_CAR_SET_PED_IN_AS_PASSENGER" Value="811"/>
+		<Constant Name="TASK_SIMPLE_CAR_SET_PED_IN_AS_DRIVER" Value="812"/>
+		<Constant Name="TASK_SIMPLE_CAR_GET_OUT" Value="813"/>
+		<Constant Name="TASK_SIMPLE_CAR_JUMP_OUT" Value="814"/>
+		<Constant Name="TASK_SIMPLE_CAR_FORCE_PED_OUT" Value="815"/>
+		<Constant Name="TASK_SIMPLE_CAR_SET_PED_OUT" Value="816"/>
+		<Constant Name="TASK_SIMPLE_CAR_QUICK_DRAG_PED_OUT" Value="817"/>
+		<Constant Name="TASK_SIMPLE_CAR_QUICK_BE_DRAGGED_OUT" Value="818"/>
+		<Constant Name="TASK_SIMPLE_CAR_SET_PED_QUICK_DRAGGED_OUT" Value="819"/>
+		<Constant Name="TASK_SIMPLE_CAR_SLOW_DRAG_PED_OUT" Value="820"/>
+		<Constant Name="TASK_SIMPLE_CAR_SLOW_BE_DRAGGED_OUT" Value="821"/>
+		<Constant Name="TASK_SIMPLE_CAR_SET_PED_SLOW_DRAGGED_OUT" Value="822"/>
+		<Constant Name="TASK_COMPLEX_CAR_SLOW_BE_DRAGGED_OUT" Value="823"/>
+		<Constant Name="TASK_COMPLEX_CAR_SLOW_BE_DRAGGED_OUT_AND_STAND_UP" Value="824"/>
+		<Constant Name="TASK_COMPLEX_CAR_QUICK_BE_DRAGGED_OUT" Value="825"/>
+		<Constant Name="TASK_SIMPLE_BIKE_JACKED" Value="826"/>
+		<Constant Name="TASK_SIMPLE_SET_PED_AS_AUTO_DRIVER" Value="827"/>
+		<Constant Name="TASK_SIMPLE_GO_TO_POINT_NEAR_CAR_DOOR_UNTIL_DOOR_NOT_IN_USE" Value="828"/>
+		<Constant Name="TASK_SIMPLE_WAIT_UNTIL_PED_OUT_CAR" Value="829"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_BOAT_STEERING_WHEEL" Value="830"/>
+		<Constant Name="TASK_COMPLEX_GET_ON_BOAT_SEAT" Value="831"/>
+		<Constant Name="TASK_SIMPLE_CREATE_CAR_AND_GET_IN" Value="832"/>
+		<Constant Name="TASK_SIMPLE_WAIT_UNTIL_PED_IN_CAR" Value="833"/>
+		<Constant Name="TASK_SIMPLE_CAR_FALL_OUT" Value="834"/>
+		<Constant Name="TASK_SIMPLE_GO_TO_POINT" Value="900"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_POINT_SHOOTING" Value="901"/>
+		<Constant Name="TASK_SIMPLE_ACHIEVE_HEADING" Value="902"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_POINT_AND_STAND_STILL" Value="903"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_POINT_AND_STAND_STILL_AND_ACHIEVE_HEADING" Value="904"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_POINT_ROUTE" Value="905"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_NODE_ROUTE" Value="906"/>
+		<Constant Name="TASK_COMPLEX_SEEK_ENTITY" Value="907"/>
+		<Constant Name="TASK_COMPLEX_FLEE_POINT" Value="908"/>
+		<Constant Name="TASK_COMPLEX_FLEE_ENTITY" Value="909"/>
+		<Constant Name="TASK_COMPLEX_SMART_FLEE_POINT" Value="910"/>
+		<Constant Name="TASK_COMPLEX_SMART_FLEE_ENTITY" Value="911"/>
+		<Constant Name="TASK_COMPLEX_WANDER" Value="912"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_LEADER_IN_FORMATION" Value="913"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_SEXY_PED" Value="914"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_ATTRACTOR" Value="915"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_ATTRACTOR" Value="916"/>
+		<Constant Name="TASK_COMPLEX_AVOID_OTHER_PED_WHILE_WANDERING" Value="917"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_POINT_ANY_MEANS" Value="918"/>
+		<Constant Name="TASK_COMPLEX_WALK_ROUND_SHOP" Value="919"/>
+		<Constant Name="TASK_COMPLEX_TURN_TO_FACE_ENTITY" Value="920"/>
+		<Constant Name="TASK_COMPLEX_AVOID_BUILDING" Value="921"/>
+		<Constant Name="TASK_COMPLEX_SEEK_ENTITY_ANY_MEANS" Value="922"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_LEADER_ANY_MEANS" Value="923"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_POINT_AIMING" Value="924"/>
+		<Constant Name="TASK_COMPLEX_TRACK_ENTITY" Value="925"/>
+		<Constant Name="TASK_SIMPLE_GO_TO_POINT_FINE" Value="926"/>
+		<Constant Name="TASK_COMPLEX_FLEE_ANY_MEANS" Value="927"/>
+		<Constant Name="TASK_COMPLEX_FLEE_SHOOTING" Value="928"/>
+		<Constant Name="TASK_COMPLEX_SEEK_ENTITY_SHOOTING" Value="929"/>
+		<Constant Name="TASK_UNUSED1" Value="930"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_PATROL_ROUTE" Value="931"/>
+		<Constant Name="TASK_COMPLEX_GOTO_DOOR_AND_OPEN" Value="932"/>
+		<Constant Name="TASK_COMPLEX_SEEK_ENTITY_AIMING" Value="933"/>
+		<Constant Name="TASK_SIMPLE_SLIDE_TO_COORD" Value="934"/>
+		<Constant Name="TASK_COMPLEX_INVESTIGATE_DISTURBANCE" Value="935"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_PED_FOOTSTEPS" Value="936"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_NODE_ROUTE_SHOOTING" Value="937"/>
+		<Constant Name="TASK_COMPLEX_USE_ENTRYEXIT" Value="938"/>
+		<Constant Name="TASK_COMPLEX_AVOID_ENTITY" Value="939"/>
+		<Constant Name="TASK_SMART_FLEE_ENTITY_WALKING" Value="940"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_ON_FOOT" Value="1000"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_ON_FOOT_MELEE" Value="1001"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_ON_FOOT_ARMED" Value="1002"/>
+		<Constant Name="TASK_COMPLEX_DESTROY_CAR" Value="1003"/>
+		<Constant Name="TASK_COMPLEX_DESTROY_CAR_MELEE" Value="1004"/>
+		<Constant Name="TASK_COMPLEX_DESTROY_CAR_ARMED" Value="1005"/>
+		<Constant Name="TASK_COMPLEX_REACT_TO_ATTACK" Value="1006"/>
+		<Constant Name="TASK_SIMPLE_BE_KICKED_ON_GROUND" Value="1007"/>
+		<Constant Name="TASK_SIMPLE_BE_HIT" Value="1008"/>
+		<Constant Name="TASK_SIMPLE_BE_HIT_WHILE_MOVING" Value="1009"/>
+		<Constant Name="TASK_COMPLEX_SIDE_STEP_AND_SHOOT" Value="1010"/>
+		<Constant Name="TASK_SIMPLE_DRIVEBY_SHOOT" Value="1011"/>
+		<Constant Name="TASK_SIMPLE_DRIVEBY_WATCH_FOR_TARGET" Value="1012"/>
+		<Constant Name="TASK_COMPLEX_DO_DRIVEBY" Value="1013"/>
+		<Constant Name="TASK_KILL_ALL_THREATS" Value="1014"/>
+		<Constant Name="TASK_KILL_PED_GROUP_ON_FOOT" Value="1015"/>
+		<Constant Name="TASK_SIMPLE_FIGHT" Value="1016"/>
+		<Constant Name="TASK_SIMPLE_USE_GUN" Value="1017"/>
+		<Constant Name="TASK_SIMPLE_THROW" Value="1018"/>
+		<Constant Name="TASK_SIMPLE_FIGHT_CTRL" Value="1019"/>
+		<Constant Name="TASK_SIMPLE_GUN_CTRL" Value="1020"/>
+		<Constant Name="TASK_SIMPLE_THROW_CTRL" Value="1021"/>
+		<Constant Name="TASK_SIMPLE_GANG_DRIVEBY" Value="1022"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_ON_FOOT_TIMED" Value="1023"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_ON_FOOT_STAND_STILL" Value="1024"/>
+		<Constant Name="TASK_UNUSED2" Value="1025"/>
+		<Constant Name="TASK_KILL_PED_ON_FOOT_WHILE_DUCKING" Value="1026"/>
+		<Constant Name="TASK_SIMPLE_STEALTH_KILL" Value="1027"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_ON_FOOT_STEALTH" Value="1028"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_ON_FOOT_KINDA_STAND_STILL" Value="1029"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_AND_REENTER_CAR" Value="1030"/>
+		<Constant Name="TASK_COMPLEX_ROAD_RAGE" Value="1031"/>
+		<Constant Name="TASK_KILL_PED_FROM_BOAT" Value="1032"/>
+		<Constant Name="TASK_SIMPLE_SET_CHAR_IGNORE_WEAPON_RANGE_FLAG" Value="1033"/>
+		<Constant Name="TASK_SEEK_COVER_UNTIL_TARGET_DEAD" Value="1034"/>
+		<Constant Name="TASK_SIMPLE_ARREST_PED" Value="1100"/>
+		<Constant Name="TASK_COMPLEX_ARREST_PED" Value="1101"/>
+		<Constant Name="TASK_SIMPLE_BE_ARRESTED" Value="1102"/>
+		<Constant Name="TASK_COMPLEX_POLICE_PURSUIT" Value="1103"/>
+		<Constant Name="TASK_COMPLEX_BE_COP" Value="1104"/>
+		<Constant Name="TASK_COMPLEX_KILL_CRIMINAL" Value="1105"/>
+		<Constant Name="TASK_COMPLEX_COP_IN_CAR" Value="1106"/>
+		<Constant Name="TASK_SIMPLE_INFORM_GROUP" Value="1200"/>
+		<Constant Name="TASK_COMPLEX_GANG_LEADER" Value="1201"/>
+		<Constant Name="TASK_COMPLEX_PARTNER_DEAL" Value="1202"/>
+		<Constant Name="TASK_COMPLEX_PARTNER_GREET" Value="1203"/>
+		<Constant Name="TASK_COMPLEX_PARTNER_CHAT" Value="1204"/>
+		<Constant Name="TASK_COMPLEX_GANG_HASSLE_VEHICLE" Value="1205"/>
+		<Constant Name="TASK_COMPLEX_WALK_WITH_PED" Value="1206"/>
+		<Constant Name="TASK_COMPLEX_GANG_FOLLOWER" Value="1207"/>
+		<Constant Name="TASK_COMPLEX_WALK_ALONGSIDE_PED" Value="1208"/>
+		<Constant Name="TASK_COMPLEX_PARTNER_SHOVE" Value="1209"/>
+		<Constant Name="TASK_COMPLEX_SIGNAL_AT_PED" Value="1210"/>
+		<Constant Name="TASK_COMPLEX_PASS_OBJECT" Value="1211"/>
+		<Constant Name="TASK_COMPLEX_GANG_HASSLE_PED" Value="1212"/>
+		<Constant Name="TASK_COMPLEX_WAIT_FOR_PED" Value="1213"/>
+		<Constant Name="TASK_SIMPLE_DO_HAND_SIGNAL" Value="1214"/>
+		<Constant Name="TASK_COMPLEX_BE_IN_COUPLE" Value="1215"/>
+		<Constant Name="TASK_COMPLEX_GOTO_VEHICLE_AND_LEAN" Value="1216"/>
+		<Constant Name="TASK_COMPLEX_LEAN_ON_VEHICLE" Value="1217"/>
+		<Constant Name="TASK_COMPLEX_CHAT" Value="1218"/>
+		<Constant Name="TASK_COMPLEX_GANG_JOIN_RESPOND" Value="1219"/>
+		<Constant Name="TASK_ZONE_RESPONSE" Value="1300"/>
+		<Constant Name="TASK_SIMPLE_TOGGLE_PED_THREAT_SCANNER" Value="1301"/>
+		<Constant Name="TASK_FINISHED" Value="1302"/>
+		<Constant Name="TASK_SIMPLE_JETPACK" Value="1303"/>
+		<Constant Name="TASK_SIMPLE_SWIM" Value="1304"/>
+		<Constant Name="TASK_COMPLEX_SWIM_AND_CLIMB_OUT" Value="1305"/>
+		<Constant Name="TASK_SIMPLE_DUCK_TOGGLE" Value="1306"/>
+		<Constant Name="TASK_WAIT_FOR_MATCHING_AREA_CODES" Value="1307"/>
+		<Constant Name="TASK_SIMPLE_ON_ESCALATOR" Value="1308"/>
+		<Constant Name="TASK_COMPLEX_PROSTITUTE_SOLICIT" Value="1309"/>
+		<Constant Name="TASK_INTERIOR_USE_INFO" Value="1400"/>
+		<Constant Name="TASK_INTERIOR_GOTO_INFO" Value="1401"/>
+		<Constant Name="TASK_INTERIOR_BE_IN_HOUSE" Value="1402"/>
+		<Constant Name="TASK_INTERIOR_BE_IN_OFFICE" Value="1403"/>
+		<Constant Name="TASK_INTERIOR_BE_IN_SHOP" Value="1404"/>
+		<Constant Name="TASK_INTERIOR_SHOPKEEPER" Value="1405"/>
+		<Constant Name="TASK_INTERIOR_LIE_IN_BED" Value="1406"/>
+		<Constant Name="TASK_INTERIOR_SIT_ON_CHAIR" Value="1407"/>
+		<Constant Name="TASK_INTERIOR_SIT_AT_DESK" Value="1408"/>
+		<Constant Name="TASK_INTERIOR_LEAVE" Value="1409"/>
+		<Constant Name="TASK_INTERIOR_SIT_IN_RESTAURANT" Value="1410"/>
+		<Constant Name="TASK_INTERIOR_RESERVED2" Value="1411"/>
+		<Constant Name="TASK_INTERIOR_RESERVED3" Value="1412"/>
+		<Constant Name="TASK_INTERIOR_RESERVED4" Value="1413"/>
+		<Constant Name="TASK_INTERIOR_RESERVED5" Value="1414"/>
+		<Constant Name="TASK_INTERIOR_RESERVED6" Value="1415"/>
+		<Constant Name="TASK_INTERIOR_RESERVED7" Value="1416"/>
+		<Constant Name="TASK_INTERIOR_RESERVED8" Value="1417"/>
+		<Constant Name="TASK_GROUP_FOLLOW_LEADER_ANY_MEANS" Value="1500"/>
+		<Constant Name="TASK_GROUP_FOLLOW_LEADER_WITH_LIMITS" Value="1501"/>
+		<Constant Name="TASK_GROUP_KILL_THREATS_BASIC" Value="1502"/>
+		<Constant Name="TASK_GROUP_KILL_PLAYER_BASIC" Value="1503"/>
+		<Constant Name="TASK_GROUP_STARE_AT_PED" Value="1504"/>
+		<Constant Name="TASK_GROUP_FLEE_THREAT" Value="1505"/>
+		<Constant Name="TASK_GROUP_PARTNER_DEAL" Value="1506"/>
+		<Constant Name="TASK_GROUP_PARTNER_GREET" Value="1507"/>
+		<Constant Name="TASK_GROUP_HASSLE_SEXY_PED" Value="1508"/>
+		<Constant Name="TASK_GROUP_HASSLE_THREAT" Value="1509"/>
+		<Constant Name="TASK_GROUP_USE_MEMBER_DECISION" Value="1510"/>
+		<Constant Name="TASK_GROUP_EXIT_CAR" Value="1511"/>
+		<Constant Name="TASK_GROUP_ENTER_CAR" Value="1512"/>
+		<Constant Name="TASK_GROUP_ENTER_CAR_AND_PERFORM_SEQUENCE" Value="1513"/>
+		<Constant Name="TASK_GROUP_RESPOND_TO_LEADER_COMMAND" Value="1514"/>
+		<Constant Name="TASK_GROUP_HAND_SIGNAL" Value="1515"/>
+		<Constant Name="TASK_GROUP_DRIVEBY" Value="1516"/>
+		<Constant Name="TASK_GROUP_HASSLE_THREAT_PASSIVE" Value="1517"/>
+		<Constant Name="TASK_COMPLEX_USE_MOBILE_PHONE" Value="1600"/>
+		<Constant Name="TASK_SIMPLE_PHONE_TALK" Value="1601"/>
+		<Constant Name="TASK_SIMPLE_PHONE_IN" Value="1602"/>
+		<Constant Name="TASK_SIMPLE_PHONE_OUT" Value="1603"/>
+		<Constant Name="TASK_COMPLEX_USE_GOGGLES" Value="1604"/>
+		<Constant Name="TASK_SIMPLE_GOGGLES_ON" Value="1605"/>
+		<Constant Name="TASK_SIMPLE_GOGGLES_OFF" Value="1606"/>
+		<Constant Name="TASK_SIMPLE_INFORM_RESPECTED_FRIENDS" Value="1700"/>
+		<Constant Name="TASK_COMPLEX_USE_SCRIPTED_BRAIN" Value="1800"/>
+		<Constant Name="TASK_SIMPLE_FINISH_BRAIN" Value="1801"/>
+		<Constant Name="TASK_SIMPLE_PLAYER_IN_CAR" Value="1802"/>
+    </Enum>
+    <Enum Name="DRAW_EVENT">
+      <Constant Name="DRAW_EVENT_BEFORE_DRAWING"/>
+      <Constant Name="DRAW_EVENT_AFTER_DRAWING"/>
+      <Constant Name="DRAW_EVENT_BEFORE_HUD"/>
+      <Constant Name="DRAW_EVENT_AFTER_HUD"/>
+      <Constant Name="DRAW_EVENT_BEFORE_RADAR"/>
+      <Constant Name="DRAW_EVENT_AFTER_RADAR"/>
+      <Constant Name="DRAW_EVENT_BEFORE_RADAR_OVERLAY"/>
+      <Constant Name="DRAW_EVENT_AFTER_RADAR_OVERLAY"/>
+      <Constant Name="DRAW_EVENT_BEFORE_BLIPS"/>
+      <Constant Name="DRAW_EVENT_AFTER_BLIPS"/>
+      <Constant Name="DRAW_EVENT_AFTER_FADE"/>
+    </Enum>
+    <Enum Name="CHANGE_MONEY">
+      <Constant Name="CHANGE_MONEY_SET"/>
+      <Constant Name="CHANGE_MONEY_ADD"/>
+      <Constant Name="CHANGE_MONEY_REMOVE"/>
+    </Enum>
+    <Enum Name="MODEL_TYPE" Global="true">
+      <Constant Name="MODEL_TYPE_INVALID" Value="-1"/>
+      <Constant Name="MODEL_TYPE_ATOMIC" Value="1"/>
+      <Constant Name="MODEL_TYPE_TIMED" Value="3"/>
+      <Constant Name="MODEL_TYPE_WEAPON" Value="4"/>
+      <Constant Name="MODEL_TYPE_CLUMP" Value="5"/>
+      <Constant Name="MODEL_TYPE_VEHICLE" Value="6"/>
+      <Constant Name="MODEL_TYPE_PED" Value="7"/>
+      <Constant Name="MODEL_TYPE_LODATOMIC" Value="8"/>
+    </Enum>
+    <Enum Name="MODEL_TYPE" Global="true">
+      <Constant Name="MODEL_TYPE_INVALID" Value="-1"/>
+      <Constant Name="MODEL_TYPE_ATOMIC" Value="1"/>
+      <Constant Name="MODEL_TYPE_TIMED" Value="3"/>
+      <Constant Name="MODEL_TYPE_WEAPON" Value="4"/>
+      <Constant Name="MODEL_TYPE_CLUMP" Value="5"/>
+      <Constant Name="MODEL_TYPE_VEHICLE" Value="6"/>
+      <Constant Name="MODEL_TYPE_PED" Value="7"/>
+      <Constant Name="MODEL_TYPE_LODATOMIC" Value="8"/>
+    </Enum>
+    <Enum Name="CAR_ANIMGROUP" Global="true">
+		<Constant Name="CAR_ANIMGROUP_STANDARD_CAR"/>
+		<Constant Name="CAR_ANIMGROUP_LOW_CAR"/>
+		<Constant Name="CAR_ANIMGROUP_TRUCK"/>
+		<Constant Name="CAR_ANIMGROUP_STANDARD_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_SPORT_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_VESPA_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_HARLEY_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_DIRT_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_WAYFARER_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_BMX_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_MTB_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_CHOPPA_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_QUAD_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_VAN"/>
+		<Constant Name="CAR_ANIMGROUP_RUSTLER"/>
+		<Constant Name="CAR_ANIMGROUP_COACH"/>
+		<Constant Name="CAR_ANIMGROUP_BUS"/>
+		<Constant Name="CAR_ANIMGROUP_DOZER"/>
+		<Constant Name="CAR_ANIMGROUP_KART"/>
+		<Constant Name="CAR_ANIMGROUP_CONVERTIBLE"/>
+		<Constant Name="CAR_ANIMGROUP_MTRUCK"/>
+		<Constant Name="CAR_ANIMGROUP_TRAIN_CARRIAGE"/>
+		<Constant Name="CAR_ANIMGROUP_STANDARD_HIGH"/>
+		<Constant Name="CAR_ANIMGROUP_HOVER"/>
+		<Constant Name="CAR_ANIMGROUP_TANK"/>
+		<Constant Name="CAR_ANIMGROUP_BF_INJECTION"/>
+		<Constant Name="CAR_ANIMGROUP_SHAMAL"/>
+		<Constant Name="CAR_ANIMGROUP_HARRIER"/>
+		<Constant Name="CAR_ANIMGROUP_STANDARD_UPRIGHT"/>
+		<Constant Name="CAR_ANIMGROUP_NEVADA"/>
+    </Enum>
+    <Enum Name="VEHICLE_DUMMY" Global="true">
+      <Constant Name="VEHICLE_DUMMY_HEADLIGHT"/>
+      <Constant Name="VEHICLE_DUMMY_TAILLIGHT"/>
+      <Constant Name="VEHICLE_DUMMY_HEADLIGHTS2"/>
+      <Constant Name="VEHICLE_DUMMY_TAILLIGHTS2"/>
+      <Constant Name="VEHICLE_DUMMY_PED_FRONTSEAT"/>
+      <Constant Name="VEHICLE_DUMMY_PED_BACKSEAT"/>
+      <Constant Name="VEHICLE_DUMMY_EXHAUST"/>
+      <Constant Name="VEHICLE_DUMMY_ENGINE"/>
+      <Constant Name="VEHICLE_DUMMY_PETROLCAP"/>
+      <Constant Name="VEHICLE_DUMMY_AILERON_POS"/>
+      <Constant Name="VEHICLE_DUMMY_PED_ARM"/>
+      <Constant Name="VEHICLE_DUMMY_RUDDER_POS"/>
+      <Constant Name="VEHICLE_DUMMY_WINGTIP_POS"/>
+      <Constant Name="VEHICLE_DUMMY_MISCPOS_A"/>
+      <Constant Name="VEHICLE_DUMMY_MISCPOS_B"/>
+    </Enum>
+    <Enum Name="VEHICLE_SUBCLASS" Global="true">
+      <Constant Name="VEHICLE_SUBCLASS_AUTOMOBILE"/>
+      <Constant Name="VEHICLE_SUBCLASS_MTRUCK"/>
+      <Constant Name="VEHICLE_SUBCLASS_QUAD"/>
+      <Constant Name="VEHICLE_SUBCLASS_HELI"/>
+      <Constant Name="VEHICLE_SUBCLASS_PLANE"/>
+      <Constant Name="VEHICLE_SUBCLASS_BOAT"/>
+      <Constant Name="VEHICLE_SUBCLASS_TRAIN"/>
+      <Constant Name="VEHICLE_SUBCLASS_FHELI"/>
+      <Constant Name="VEHICLE_SUBCLASS_FPLANE"/>
+      <Constant Name="VEHICLE_SUBCLASS_BIKE"/>
+      <Constant Name="VEHICLE_SUBCLASS_BMX"/>
+      <Constant Name="VEHICLE_SUBCLASS_TRAILER"/>
+    </Enum>
+    <Enum Name="CAR_ALARM">
+      <Constant Name="CAR_ALARM_OFF"/>
+      <Constant Name="CAR_ALARM_ON"/>
+      <Constant Name="CAR_ALARM_PLAYING"/>
+    </Enum>
+    <Enum Name="ENTITY_TYPE" Global="true">
+      <Constant Name="ENTITY_TYPE_OTHER"/>
+      <Constant Name="ENTITY_TYPE_BUILDING"/>
+      <Constant Name="ENTITY_TYPE_OBJECT"/>
+      <Constant Name="ENTITY_TYPE_PED"/>
+      <Constant Name="ENTITY_TYPE_VEHICLE"/>
+    </Enum>
+    <Enum Name="RWCOMBINE" Global="true">
+      <Constant Name="RWCOMBINE_REPLACE"/>
+      <Constant Name="RWCOMBINE_PRECONCAT"/>
+      <Constant Name="RWCOMBINE_POSTCONCAT"/>
+    </Enum>
+    <Enum Name="FONT">
+      <Constant Name="FONT_GOTHIC"/>
+      <Constant Name="FONT_SUBTITLES"/>
+      <Constant Name="FONT_MENU"/>
+      <Constant Name="FONT_PRICEDOWN"/>
+    </Enum>
+    <Enum Name="ALIGN">
+      <Constant Name="ALIGN_CENTER"/>
+      <Constant Name="ALIGN_LEFT"/>
+      <Constant Name="ALIGN_RIGHT"/>
+    </Enum>
+    <Enum Name="INCLUDE_ANIMS">
+      <Constant Name="INCLUDE_ANIMS_NONE"/>
+      <Constant Name="INCLUDE_ANIMS_PRIMARY"/>
+      <Constant Name="INCLUDE_ANIMS_SECONDARY"/>
+      <Constant Name="INCLUDE_ANIMS_BOTH"/>
+    </Enum>
+    <Enum Name="DATATYPE">
+      <Constant Name="DATATYPE_INT"/>
+      <Constant Name="DATATYPE_FLOAT"/>
+      <Constant Name="DATATYPE_STRING"/>
+    </Enum>
+    <Enum Name="EASE_MODE">
+      <Constant Name="EASE_MODE_QUADRATIC"/>
+      <Constant Name="EASE_MODE_CUBIC"/>
+      <Constant Name="EASE_MODE_QUARTIC"/>
+      <Constant Name="EASE_MODE_QUINTIC"/>
+      <Constant Name="EASE_MODE_SINUSOIDAL"/>
+      <Constant Name="EASE_MODE_EXPONENTIAL"/>
+      <Constant Name="EASE_MODE_CIRCULAR"/>
+      <Constant Name="EASE_MODE_ELASTIC"/>
+      <Constant Name="EASE_MODE_BACK"/>
+      <Constant Name="EASE_MODE_BOUNCE"/>
+    </Enum>
+    <Enum Name="EASE_WAY">
+      <Constant Name="EASE_WAY_IN"/>
+      <Constant Name="EASE_WAY_OUT"/>
+      <Constant Name="EASE_WAY_INOUT"/>
+    </Enum>
+    <Enum Name="STRING_FIND">
+      <Constant Name="STRING_FIND_FIRST"/>
+      <Constant Name="STRING_FIND_LAST"/>
+    </Enum>
+    <Enum Name="MOVE_STATE" Global="true">
+      <Constant Name="MOVE_STATE_IDLE" Value="1"/>
+      <Constant Name="MOVE_STATE_WALK_START" Value="4"/>
+      <Constant Name="MOVE_STATE_WALK_RUN" Value="6"/>
+      <Constant Name="MOVE_STATE_SPRINTING" Value="7"/>
+    </Enum>
+    <Enum Name="WEAPONFIRE" Global="true">
+      <Constant Name="WEAPONFIRE_MELEE"/>
+      <Constant Name="WEAPONFIRE_INSTANT_HIT"/>
+      <Constant Name="WEAPONFIRE_PROJECTILE"/>
+      <Constant Name="WEAPONFIRE_AREA_EFFECT"/>
+      <Constant Name="WEAPONFIRE_CAMERA"/>
+      <Constant Name="WEAPONFIRE_USE"/>
+    </Enum>
+    <Enum Name="WEAPONSTATE" Global="true">
+      <Constant Name="WEAPONSTATE_IDLE"/>
+      <Constant Name="WEAPONSTATE_SHOOTING"/>
+      <Constant Name="WEAPONSTATE_RELOADING"/>
+    </Enum>
+    <Enum Name="WEAPONINFO" Global="true">
+      <Constant Name="WEAPONINFO_FLAGS_CANAIM"/>
+      <Constant Name="WEAPONINFO_FLAGS_AIMWITHARM"/>
+      <Constant Name="WEAPONINFO_FLAGS_1STPERSON"/>
+      <Constant Name="WEAPONINFO_FLAGS_ONLYFREEAIM"/>
+      <Constant Name="WEAPONINFO_FLAGS_MOVEAIM"/>
+      <Constant Name="WEAPONINFO_FLAGS_MOVEFIRE"/>
+      <Constant Name="WEAPONINFO_FLAGS_06"/>
+      <Constant Name="WEAPONINFO_FLAGS_07"/>
+      <Constant Name="WEAPONINFO_FLAGS_THROW"/>
+      <Constant Name="WEAPONINFO_FLAGS_HEAVY"/>
+      <Constant Name="WEAPONINFO_FLAGS_CONTINUOSFIRE"/>
+      <Constant Name="WEAPONINFO_FLAGS_TWINPISTOL"/>
+      <Constant Name="WEAPONINFO_FLAGS_RELOAD"/>
+      <Constant Name="WEAPONINFO_FLAGS_CROUCHFIRE"/>
+      <Constant Name="WEAPONINFO_FLAGS_RELOAD2START"/>
+      <Constant Name="WEAPONINFO_FLAGS_LONGRELOAD"/>
+      <Constant Name="WEAPONINFO_FLAGS_SLOWDOWN"/>
+      <Constant Name="WEAPONINFO_FLAGS_RANDSPEED"/>
+      <Constant Name="WEAPONINFO_FLAGS_EXPANDS"/>
+    </Enum>
+    <Enum Name="PEDSTATE" Global="true">
+      <Constant Name="PEDSTATE_NONE"/>
+      <Constant Name="PEDSTATE_IDLE"/>
+      <Constant Name="PEDSTATE_LOOK_ENTITY"/>
+      <Constant Name="PEDSTATE_LOOK_HEADING"/>
+      <Constant Name="PEDSTATE_WANDER_RANGE"/>
+      <Constant Name="PEDSTATE_WANDER_PATH"/>
+      <Constant Name="PEDSTATE_SEEK_POSITION"/>
+      <Constant Name="PEDSTATE_SEEK_ENTITY"/>
+      <Constant Name="PEDSTATE_FLEE_POSITION"/>
+      <Constant Name="PEDSTATE_FLEE_ENTITY"/>
+      <Constant Name="PEDSTATE_PURSUE"/>
+      <Constant Name="PEDSTATE_FOLLOW_PATH"/>
+      <Constant Name="PEDSTATE_SNIPER_MODE"/>
+      <Constant Name="PEDSTATE_ROCKETLAUNCHER_MODE"/>
+      <Constant Name="PEDSTATE_DUMMY"/>
+      <Constant Name="PEDSTATE_PAUSE"/>
+      <Constant Name="PEDSTATE_ATTACK"/>
+      <Constant Name="PEDSTATE_FIGHT"/>
+      <Constant Name="PEDSTATE_FACE_PHONE"/>
+      <Constant Name="PEDSTATE_MAKE_PHONECALL"/>
+      <Constant Name="PEDSTATE_CHAT"/>
+      <Constant Name="PEDSTATE_MUG"/>
+      <Constant Name="PEDSTATE_AIMGUN"/>
+      <Constant Name="PEDSTATE_AI_CONTROL"/>
+      <Constant Name="PEDSTATE_SEEK_CAR"/>
+      <Constant Name="PEDSTATE_SEEK_BOAT_POSITION"/>
+      <Constant Name="PEDSTATE_FOLLOW_ROUTE"/>
+      <Constant Name="PEDSTATE_CPR"/>
+      <Constant Name="PEDSTATE_SOLICIT"/>
+      <Constant Name="PEDSTATE_BUY_ICE_CREAM"/>
+      <Constant Name="PEDSTATE_INVESTIGATE_EVENT"/>
+      <Constant Name="PEDSTATE_EVADE_STEP"/>
+      <Constant Name="PEDSTATE_ON_FIRE"/>
+      <Constant Name="PEDSTATE_SUNBATHE"/>
+      <Constant Name="PEDSTATE_FLASH"/>
+      <Constant Name="PEDSTATE_JOG"/>
+      <Constant Name="PEDSTATE_ANSWER_MOBILE"/>
+      <Constant Name="PEDSTATE_HANG_OUT"/>
+      <Constant Name="PEDSTATE_STATES_NO_AI"/>
+      <Constant Name="PEDSTATE_ABSEIL_FROM_HELI"/>
+      <Constant Name="PEDSTATE_SIT"/>
+      <Constant Name="PEDSTATE_JUMP"/>
+      <Constant Name="PEDSTATE_FALL"/>
+      <Constant Name="PEDSTATE_GETUP"/>
+      <Constant Name="PEDSTATE_STAGGER"/>
+      <Constant Name="PEDSTATE_EVADE_DIVE"/>
+      <Constant Name="PEDSTATE_STATES_CAN_SHOOT"/>
+      <Constant Name="PEDSTATE_ENTER_TRAIN"/>
+      <Constant Name="PEDSTATE_EXIT_TRAIN"/>
+      <Constant Name="PEDSTATE_ARREST_PLAYER"/>
+      <Constant Name="PEDSTATE_DRIVING"/>
+      <Constant Name="PEDSTATE_PASSENGER"/>
+      <Constant Name="PEDSTATE_TAXI_PASSENGER"/>
+      <Constant Name="PEDSTATE_OPEN_DOOR"/>
+      <Constant Name="PEDSTATE_DIE"/>
+      <Constant Name="PEDSTATE_DEAD"/>
+      <Constant Name="PEDSTATE_DIE_BY_STEALTH"/>
+      <Constant Name="PEDSTATE_CARJACK"/>
+      <Constant Name="PEDSTATE_DRAGGED_FROM_CAR"/>
+      <Constant Name="PEDSTATE_ENTER_CAR"/>
+      <Constant Name="PEDSTATE_STEAL_CAR"/>
+      <Constant Name="PEDSTATE_EXIT_CAR"/>
+      <Constant Name="PEDSTATE_HANDS_UP"/>
+      <Constant Name="PEDSTATE_ARRESTED"/>
+      <Constant Name="PEDSTATE_DEPLOY_STINGER"/>
+    </Enum>
+    <Enum Name="CAR_NODE" Global="true">
+      <Constant Name="CAR_NODE_CHASSIS"/>
+      <Constant Name="CAR_NODE_WHEEL_RF"/>
+      <Constant Name="CAR_NODE_WHEEL_RM"/>
+      <Constant Name="CAR_NODE_WHEEL_RB"/>
+      <Constant Name="CAR_NODE_WHEEL_LF"/>
+      <Constant Name="CAR_NODE_WHEEL_LM"/>
+      <Constant Name="CAR_NODE_WHEEL_LB"/>
+      <Constant Name="CAR_NODE_DOOR_RF"/>
+      <Constant Name="CAR_NODE_DOOR_RR"/>
+      <Constant Name="CAR_NODE_DOOR_LF"/>
+      <Constant Name="CAR_NODE_DOOR_LR"/>
+      <Constant Name="CAR_NODE_BUMP_FRONT"/>
+      <Constant Name="CAR_NODE_BUMP_REAR"/>
+      <Constant Name="CAR_NODE_WING_RF"/>
+      <Constant Name="CAR_NODE_WING_LF"/>
+      <Constant Name="CAR_NODE_BONNET"/>
+      <Constant Name="CAR_NODE_BOOT"/>
+      <Constant Name="CAR_NODE_WINDSCREEN"/>
+      <Constant Name="CAR_NODE_EXHAUST"/>
+      <Constant Name="CAR_NODE_MISC_A"/>
+      <Constant Name="CAR_NODE_MISC_B"/>
+      <Constant Name="CAR_NODE_MISC_C"/>
+      <Constant Name="CAR_NODE_MISC_D"/>
+      <Constant Name="CAR_NODE_MISC_E"/>
+    </Enum>
+    <Enum Name="CAR_NODE_DOOR" Global="true">
+      <Constant Name="CAR_NODE_DOOR_RF" Value="8"/>
+      <Constant Name="CAR_NODE_DOOR_RR" Value="9"/>
+      <Constant Name="CAR_NODE_DOOR_LF" Value="10"/>
+      <Constant Name="CAR_NODE_DOOR_LR" Value="11"/>
+    </Enum>
+    <Enum Name="STAT" Global="true">
+      <Constant Name="STAT_PLAYER"/>
+      <Constant Name="STAT_COP"/>
+      <Constant Name="STAT_MEDIC"/>
+      <Constant Name="STAT_FIREMAN"/>
+      <Constant Name="STAT_GANG1"/>
+      <Constant Name="STAT_GANG2"/>
+      <Constant Name="STAT_GANG3"/>
+      <Constant Name="STAT_GANG4"/>
+      <Constant Name="STAT_GANG5"/>
+      <Constant Name="STAT_GANG6"/>
+      <Constant Name="STAT_GANG7"/>
+      <Constant Name="STAT_GANG8"/>
+      <Constant Name="STAT_GANG9"/>
+      <Constant Name="STAT_GANG10"/>
+      <Constant Name="STAT_STREET_GUY"/>
+      <Constant Name="STAT_SUIT_GUY"/>
+      <Constant Name="STAT_SENSIBLE_GUY"/>
+      <Constant Name="STAT_GEEK_GUY"/>
+      <Constant Name="STAT_OLD_GUY"/>
+      <Constant Name="STAT_TOUGH_GUY"/>
+      <Constant Name="STAT_STREET_GIRL"/>
+      <Constant Name="STAT_SUIT_GIRL"/>
+      <Constant Name="STAT_SENSIBLE_GIRL"/>
+      <Constant Name="STAT_GEEK_GIRL"/>
+      <Constant Name="STAT_OLD_GIRL"/>
+      <Constant Name="STAT_TOUGH_GIRL"/>
+      <Constant Name="STAT_TRAMP_MALE"/>
+      <Constant Name="STAT_TRAMP_FEMALE"/>
+      <Constant Name="STAT_TOURIST"/>
+      <Constant Name="STAT_PROSTITUTE"/>
+      <Constant Name="STAT_CRIMINAL"/>
+      <Constant Name="STAT_BUSKER"/>
+      <Constant Name="STAT_TAXIDRIVER"/>
+      <Constant Name="STAT_PSYCHO"/>
+      <Constant Name="STAT_STEWARD"/>
+      <Constant Name="STAT_SPORTSFAN"/>
+      <Constant Name="STAT_SHOPPER"/>
+      <Constant Name="STAT_OLDSHOPPER"/>
+      <Constant Name="STAT_BEACH_GUY"/>
+      <Constant Name="STAT_BEACH_GIRL"/>
+      <Constant Name="STAT_SKATER"/>
+      <Constant Name="STAT_STD_MISSION"/>
+      <Constant Name="STAT_COWARD"/>
+    </Enum>
+    <Enum Name="CAMERAMODE" Global="true">
+      <Constant Name="CAMERAMODE_NONE"/>
+      <Constant Name="CAMERAMODE_TOPDOWN"/>
+      <Constant Name="CAMERAMODE_GTACLASSIC"/>
+      <Constant Name="CAMERAMODE_BEHINDCAR"/>
+      <Constant Name="CAMERAMODE_FOLLOWPED"/>
+      <Constant Name="CAMERAMODE_AIMING"/>
+      <Constant Name="CAMERAMODE_DEBUG"/>
+      <Constant Name="CAMERAMODE_SNIPER"/>
+      <Constant Name="CAMERAMODE_ROCKETLAUNCHER"/>
+      <Constant Name="CAMERAMODE_MODELVIEW"/>
+      <Constant Name="CAMERAMODE_BILL"/>
+      <Constant Name="CAMERAMODE_SYPHON"/>
+      <Constant Name="CAMERAMODE_CIRCLE"/>
+      <Constant Name="CAMERAMODE_CHEESYZOOM"/>
+      <Constant Name="CAMERAMODE_WHEELCAM"/>
+      <Constant Name="CAMERAMODE_FIXED"/>
+      <Constant Name="CAMERAMODE_1STPERSON"/>
+      <Constant Name="CAMERAMODE_FLYBY"/>
+      <Constant Name="CAMERAMODE_CAM_ON_A_STRING"/>
+      <Constant Name="CAMERAMODE_REACTION"/>
+      <Constant Name="CAMERAMODE_FOLLOW_PED_WITH_BIND"/>
+      <Constant Name="CAMERAMODE_CHRIS"/>
+      <Constant Name="CAMERAMODE_BEHINDBOAT"/>
+      <Constant Name="CAMERAMODE_PLAYER_FALLEN_WATER"/>
+      <Constant Name="CAMERAMODE_CAM_ON_TRAIN_ROOF"/>
+      <Constant Name="CAMERAMODE_CAM_RUNNING_SIDE_TRAIN"/>
+      <Constant Name="CAMERAMODE_BLOOD_ON_THE_TRACKS"/>
+      <Constant Name="CAMERAMODE_IM_THE_PASSENGER_WOOWOO"/>
+      <Constant Name="CAMERAMODE_SYPHON_CRIM_IN_FRONT"/>
+      <Constant Name="CAMERAMODE_PED_DEAD_BABY"/>
+      <Constant Name="CAMERAMODE_PILLOWS_PAPS"/>
+      <Constant Name="CAMERAMODE_LOOK_AT_CARS"/>
+      <Constant Name="CAMERAMODE_ARRESTCAM_ONE"/>
+      <Constant Name="CAMERAMODE_ARRESTCAM_TWO"/>
+      <Constant Name="CAMERAMODE_M16_1STPERSON"/>
+      <Constant Name="CAMERAMODE_SPECIAL_FIXED_FOR_SYPHON"/>
+      <Constant Name="CAMERAMODE_FIGHT_CAM"/>
+      <Constant Name="CAMERAMODE_TOP_DOWN_PED"/>
+      <Constant Name="CAMERAMODE_LIGHTHOUSE"/>
+      <Constant Name="CAMERAMODE_SNIPER_RUNABOUT"/>
+      <Constant Name="CAMERAMODE_ROCKETLAUNCHER_RUNABOUT"/>
+      <Constant Name="CAMERAMODE_1STPERSON_RUNABOUT"/>
+      <Constant Name="CAMERAMODE_M16_1STPERSON_RUNABOUT"/>
+      <Constant Name="CAMERAMODE_FIGHT_CAM_RUNABOUT"/>
+      <Constant Name="CAMERAMODE_EDITOR"/>
+      <Constant Name="CAMERAMODE_HELICANNON_1STPERSON"/>
+      <Constant Name="CAMERAMODE_CAMERA"/>
+      <Constant Name="CAMERAMODE_ATTACHCAM"/>
+      <Constant Name="CAMERAMODE_TWOPLAYER"/>
+      <Constant Name="CAMERAMODE_TWOPLAYER_IN_CAR_AND_SHOOTING"/>
+      <Constant Name="CAMERAMODE_TWOPLAYER_SEPARATE_CARS"/>
+      <Constant Name="CAMERAMODE_ROCKETLAUNCHER_HS"/>
+      <Constant Name="CAMERAMODE_ROCKETLAUNCHER_RUNABOUT_HS"/>
+      <Constant Name="CAMERAMODE_AIMWEAPON"/>
+      <Constant Name="CAMERAMODE_TWOPLAYER_SEPARATE_CARS_TOPDOWN"/>
+      <Constant Name="CAMERAMODE_AIMWEAPON_FROMCAR"/>
+      <Constant Name="CAMERAMODE_DW_HELI_CHASE"/>
+      <Constant Name="CAMERAMODE_DW_CAM_MAN"/>
+      <Constant Name="CAMERAMODE_DW_BIRDY"/>
+      <Constant Name="CAMERAMODE_DW_PLANE_SPOTTER"/>
+      <Constant Name="CAMERAMODE_DW_DOG_FIGHT"/>
+      <Constant Name="CAMERAMODE_DW_FISH"/>
+      <Constant Name="CAMERAMODE_DW_PLANECAM1"/>
+      <Constant Name="CAMERAMODE_DW_PLANECAM2"/>
+      <Constant Name="CAMERAMODE_DW_PLANECAM3"/>
+      <Constant Name="CAMERAMODE_AIMWEAPON_ATTACHED"/>
+    </Enum>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PT: Dentro de <Commands> (normalmente no fim) adicione:
+EN: Within <Commands> (usually at the end) add:
+
+
+    
+    <!-- WHILE TRUE, RETURN_TRUE, RETURN_FALSE -->
+    
+    <Command ID="0x485" Name="TRUE"/>
+    <Command ID="0x485" Name="RETURN_TRUE"/>
+    <Command ID="0x59a" Name="RETURN_FALSE"/>
+
+    
+    <!-- CLEO+ -->
+    
+    <Command ID="0xEA0" Name="SET_CHAR_SECOND_PLAYER">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Desc="EnableCamera"/>
+        <Arg Type="INT" Desc="SeparateCars"/>
+      </Args>
+    </Command>
+    <Command ID="0xEA1" Name="DISABLE_SECOND_PLAYER">
+      <Args>
+        <Arg Type="INT" Desc="RestoreCamera"/>
+      </Args>
+    </Command>
+    <Command ID="0xEA2" Name="FIX_TWO_PLAYERS_SEPARATED_CARS">
+      <Args>
+        <Arg Type="INT" Desc="Bool"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD4C" Name="GET_STRING_LENGTH">
+      <Args>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="STRING"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE01" Name="CREATE_OBJECT_NO_SAVE">
+      <Args>
+        <Arg Type="INT" Enum="DEFAULTMODEL"/>
+        <Arg Type="FLOAT" Desc="X Coord"/>
+        <Arg Type="FLOAT" Desc="Y Coord"/>
+        <Arg Type="FLOAT" Desc="Z Coord"/>
+        <Arg Type="INT" Desc="UseOffset"/>
+        <Arg Type="INT" Desc="UseGround"/>
+        <Arg Type="INT" Out="true" Entity="OBJECT"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE02" Name="SET_CAR_GENERATOR_NO_SAVE">
+      <Args>
+        <Arg Type="INT" Entity="CAR_GENERATOR"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD59" Name="GET_CURRENT_WEATHER">
+      <Args>
+        <Arg Type="INT" Desc="Weather ID" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE03" Name="PERLIN_NOISE">
+      <Args>
+        <Arg Type="FLOAT" Desc="Progress"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE04" Name="GET_NEXT_WEATHER">
+      <Args>
+        <Arg Type="INT" Desc="Weather ID" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE05" Name="SET_NEXT_WEATHER">
+      <Args>
+        <Arg Type="INT" Enum="WEATHER" Desc="Weather ID"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE06" Name="GET_RAIN_INTENSITY">
+      <Args>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE07" Name="SET_RAIN_INTENSITY">
+      <Args>
+        <Arg Type="FLOAT"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE08" Name="IS_CAR_SCRIPT_CONTROLLED">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>   
+      </Args>
+    </Command>
+    
+    <Command ID="0xE09" Name="MARK_CAR_AS_NEEDED">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>   
+      </Args>
+    </Command>
+
+    <Command ID="0xE0A" Name="IS_CHAR_SCRIPT_CONTROLLED">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>   
+      </Args>
+    </Command>
+    
+    <Command ID="0xE0B" Name="MARK_CHAR_AS_NEEDED">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>   
+      </Args>
+    </Command>
+    
+    <Command ID="0xE0C" Name="IS_OBJECT_SCRIPT_CONTROLLED">
+      <Args>
+        <Arg Type="INT" Entity="OBJECT"/>   
+      </Args>
+    </Command>
+    
+    <Command ID="0xE0D" Name="MARK_OBJECT_AS_NEEDED">
+      <Args>
+        <Arg Type="INT" Entity="OBJECT"/>   
+      </Args>
+    </Command>
+
+    <Command ID="0xE0E" Name="GET_CURRENT_RESOLUTION">
+      <Args>
+        <Arg Type="INT" Desc="Width" Out="true"/>
+        <Arg Type="INT" Desc="Height" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE0F" Name="GET_FIXED_XY_ASPECT_RATIO">
+      <Args>
+        <Arg Type="FLOAT" Desc="Width"/>
+        <Arg Type="FLOAT" Desc="Height"/>
+        <Arg Type="FLOAT" Desc="Width" Out="true"/>
+        <Arg Type="FLOAT" Desc="Height" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE10" Name="IS_MOUSE_WHEEL_UP">
+    </Command>
+
+    <Command ID="0xE11" Name="IS_MOUSE_WHEEL_DOWN">
+    </Command>
+    
+    <Command ID="0xE12" Name="GET_VEHICLE_SUBCLASS">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>   
+        <Arg Type="INT" Enum="VEHICLE_SUBCLASS" Out="true"/>   
+      </Args>
+    </Command>
+
+    <Command ID="0xE13" Name="GET_ENTITY_TYPE">
+      <Args>
+        <Arg Type="INT"/>   
+        <Arg Type="INT" Enum="ENTITY_TYPE" Out="true"/>   
+      </Args>
+    </Command>
+
+    <Command ID="0xE14" Name="INIT_EXTENDED_CHAR_VARS">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>  
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="ID"/>
+        <Arg Type="INT" Desc="TotalVars"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xE15" Name="SET_EXTENDED_CHAR_VAR">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>  
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="ID"/>
+        <Arg Type="INT" Desc="VarNumber"/>
+        <Arg Type="INT" Desc="Value"/>
+      </Args>
+    </Command>
+	 
+    <Command ID="0xE16" Name="GET_EXTENDED_CHAR_VAR">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>  
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="ID"/>
+        <Arg Type="INT" Desc="VarNumber"/>
+        <Arg Type="INT" Desc="Value" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE17" Name="INIT_EXTENDED_CAR_VARS">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="ID"/>
+        <Arg Type="INT" Desc="TotalVars"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE18" Name="SET_EXTENDED_CAR_VAR">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="ID"/>
+        <Arg Type="INT" Desc="VarNumber"/>
+        <Arg Type="INT" Desc="Value"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE19" Name="GET_EXTENDED_CAR_VAR">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="ID"/>
+        <Arg Type="INT" Desc="VarNumber"/>
+        <Arg Type="INT" Desc="Value" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE1A" Name="INIT_EXTENDED_OBJECT_VARS">
+      <Args>
+        <Arg Type="INT" Entity="OBJECT"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="ID"/>
+        <Arg Type="INT" Desc="TotalVars"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE1B" Name="SET_EXTENDED_OBJECT_VAR">
+      <Args>
+        <Arg Type="INT" Entity="OBJECT"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="ID"/>
+        <Arg Type="INT" Desc="VarNumber"/>
+        <Arg Type="INT" Desc="Value"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE1C" Name="GET_EXTENDED_OBJECT_VAR">
+      <Args>
+        <Arg Type="INT" Entity="OBJECT"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="ID"/>
+        <Arg Type="INT" Desc="VarNumber"/>
+        <Arg Type="INT" Desc="Value" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE1D" Name="IS_ON_MISSION">
+    </Command>
+
+    <Command ID="0xE1E" Name="DRAW_TEXTURE_PLUS">
+      <Args>
+        <Arg Type="INT" Entity="RWTEXTURE"/>
+        <Arg Type="INT" Enum="DRAW_EVENT"/>
+        <Arg Type="FLOAT" Desc="PosX"/>  
+        <Arg Type="FLOAT" Desc="PosY"/>   
+        <Arg Type="FLOAT" Desc="SizeX"/>  
+        <Arg Type="FLOAT" Desc="SizeY"/>
+        <Arg Type="FLOAT" Desc="Angle"/>
+        <Arg Type="FLOAT" Desc="Depth"/>
+        <Arg Type="INT" Desc="FixAR"/>  
+        <Arg Type="INT" Desc="MaskVertCount"/>
+        <Arg Type="INT" Desc="MaskVertArray"/>
+        <Arg Type="INT" Desc="Red"/>  
+        <Arg Type="INT" Desc="Green"/>  
+        <Arg Type="INT" Desc="Blue"/>  
+        <Arg Type="INT" Desc="Alpha"/>  
+      </Args>
+    </Command>
+
+    <Command ID="0xD1E" Name="QUAT_SLERP">
+      <Args>
+        <Arg Type="INT" Desc="From"/>
+        <Arg Type="INT" Desc="To"/>
+        <Arg Type="FLOAT" Desc="t"/>
+        <Arg Type="INT" Desc="Result"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE1F" Name="EASE">
+      <Args>
+        <Arg Type="FLOAT" Desc="k"/>
+        <Arg Type="INT" Enum="EASE_MODE" Desc="Mode"/>
+        <Arg Type="INT" Enum="EASE_WAY" Desc="Way"/>
+        <Arg Type="FLOAT" Desc="Result"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE20" Name="IS_ON_SAMP">
+    </Command>
+    
+    <Command ID="0xE21" Name="GET_AUDIO_SFX_VOLUME">
+      <Args>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE22" Name="GET_AUDIO_RADIO_VOLUME">
+      <Args>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE23" Name="GET_MOUSE_SENSIBILITY">
+      <Args>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE24" Name="FIX_CHAR_GROUND_BRIGHTNESS_AND_FADE_IN">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Desc="FixZground"/>
+        <Arg Type="INT" Desc="FixBrightness"/>
+        <Arg Type="INT" Desc="FadeIn"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE25" Name="IS_ON_CUTSCENE">
+    </Command>
+    
+    <Command ID="0xE26" Name="IS_WEAPON_FIRE_TYPE">
+      <Args>
+        <Arg Type="INT" Enum="WEAPONTYPE"/>
+        <Arg Type="INT" Enum="WEAPONFIRE"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE27" Name="GET_ANGLE_FROM_TWO_COORDS">
+      <Args>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Angle" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD4E" Name="READ_STRUCT_OFFSET">
+      <Args>
+        <Arg Type="INT" Desc="Pointer"/>
+        <Arg Type="INT" Desc="Offset"/>
+        <Arg Type="INT" Desc="Size"/>
+        <Arg Type="PARAM" Desc="Result" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE28" Name="WRITE_STRUCT_OFFSET">
+      <Args>
+        <Arg Type="INT" Desc="Pointer"/>
+        <Arg Type="INT" Desc="Offset"/>
+        <Arg Type="INT" Desc="Size"/>
+        <Arg Type="PARAM" Desc="Value"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE29" Name="PERLIN_NOISE_FRACTAL">
+      <Args>
+        <Arg Type="FLOAT" Desc="Progress"/>
+        <Arg Type="INT" Desc="Octaves"/>
+        <Arg Type="FLOAT" Desc="Frequency"/>
+        <Arg Type="FLOAT" Desc="Amplitude"/>
+        <Arg Type="FLOAT" Desc="Lacunarity"/>
+        <Arg Type="FLOAT" Desc="Persistence"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE2A" Name="ADD_CLEO_BLIP">
+      <Args>
+        <Arg Type="INT" Enum="RADAR_SPRITE"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="INT" Desc="Short"/>
+        <Arg Type="INT" Desc="Red"/>
+        <Arg Type="INT" Desc="Green"/>
+        <Arg Type="INT" Desc="Blue"/>
+        <Arg Type="INT" Desc="Alpha"/>
+        <Arg Type="INT" Out="true" Entity="CLEOBLIP"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE2B" Name="REMOVE_CLEO_BLIP">
+      <Args>
+        <Arg Type="INT" Entity="CLEOBLIP"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE2C" Name="GET_CURRENT_SAVE_SLOT">
+      <Args>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE2D" Name="IS_GAME_FIRST_START">
+    </Command>
+
+    <Command ID="0xE2E" Name="CREATE_RENDER_OBJECT_TO_CHAR_BONE">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Enum="DEFAULTMODEL"/>
+        <Arg Type="INT" Enum="BONE"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="RX"/>
+        <Arg Type="FLOAT" Desc="RY"/>
+        <Arg Type="FLOAT" Desc="RZ"/>
+        <Arg Type="INT" Out="true" Entity="RENDEROBJECT"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE2F" Name="DELETE_RENDER_OBJECT">
+      <Args>
+        <Arg Type="INT" Entity="RENDEROBJECT"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE30" Name="SET_RENDER_OBJECT_AUTO_HIDE">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Desc="Dead"/>
+        <Arg Type="INT" Desc="Weapon"/>
+        <Arg Type="INT" Desc="Car"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE31" Name="SET_RENDER_OBJECT_VISIBLE">
+      <Args>
+        <Arg Type="INT" Entity="RENDEROBJECT"/>
+        <Arg Type="INT" Desc="Bool"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE35" Name="SET_RENDER_OBJECT_POSITION">
+      <Args>
+        <Arg Type="INT" Entity="RENDEROBJECT"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE36" Name="SET_RENDER_OBJECT_ROTATION">
+      <Args>
+        <Arg Type="INT" Entity="RENDEROBJECT"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE37" Name="SET_RENDER_OBJECT_SCALE">
+      <Args>
+        <Arg Type="INT" Entity="RENDEROBJECT"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE3A" Name="SET_RENDER_OBJECT_DISTORTION">
+      <Args>
+        <Arg Type="INT" Entity="RENDEROBJECT"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="W"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE32" Name="SET_CHAR_COORDINATES_SIMPLE">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE33" Name="GET_PICKUP_THIS_COORD">
+      <Args>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="INT" Desc="NotCollected"/>
+        <Arg Type="INT" Out="true" Entity="PICKUP"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE34" Name="GET_PICKUP_MODEL">
+      <Args>
+        <Arg Type="INT" Entity="PICKUP"/>
+        <Arg Type="INT" Enum="DEFAULTMODEL" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE38" Name="GET_PICKUP_POINTER">
+      <Args>
+        <Arg Type="INT" Entity="PICKUP"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE39" Name="GET_PICKUP_TYPE">
+      <Args>
+        <Arg Type="INT" Entity="PICKUP"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE3B" Name="GET_AUDIOSTREAM_INTERNAL">
+      <Args>
+        <Arg Type="INT" Entity="AUDIO_STREAM"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE3C" Name="GET_TEXTURE_FROM_SPRITE">
+      <Args>
+        <Arg Type="INT"/>
+        <Arg Type="INT" Out="true" Entity="RWTEXTURE"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE3D" Name="IS_KEY_JUST_PRESSED">
+      <Args>
+        <Arg Type="INT" Enum="WIN32_VK"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xE3E" Name="IS_BUTTON_JUST_PRESSED">
+      <Args>
+        <Arg Type="INT" Enum="PAD"/>
+        <Arg Type="INT" Enum="BUTTON"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xE3F" Name="CONVERT_3D_TO_SCREEN_2D">
+      <Args>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="INT" Desc="CheckNearClip"/>
+        <Arg Type="INT" Desc="CheckFarClip"/>
+        <Arg Type="FLOAT" Desc="X" Out="true"/>
+        <Arg Type="FLOAT" Desc="Y" Out="true"/>
+        <Arg Type="FLOAT" Desc="SizeX" Out="true"/>
+        <Arg Type="FLOAT" Desc="SizeY" Out="true"/>
+      </Args>
+    </Command>
+	
+	
+    <Command ID="0xE40" Name="GET_CURRENT_HOUR">
+      <Args>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xE41" Name="GET_CURRENT_MINUTE">
+      <Args>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+			
+    <Command ID="0xE42" Name="IS_CHAR_DOING_TASK_ID">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Enum="TASK"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xE43" Name="GET_CHAR_TASK_POINTER_BY_ID">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Enum="TASK"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xE44" Name="GET_CHAR_KILL_TARGET_CHAR">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Entity="CHAR" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE45" Name="FRAME_MOD">
+      <Args>
+        <Arg Type="INT"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE46" Name="IS_CHAR_USING_GUN">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE47" Name="IS_CHAR_FIGHTING">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+      </Args>
+    </Command>   
+    
+    <Command ID="0xE48" Name="IS_CHAR_FALLEN_ON_GROUND">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+      </Args>
+    </Command>    
+    
+    <Command ID="0xE49" Name="IS_CHAR_ENTERING_ANY_CAR">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE4A" Name="IS_CHAR_EXITING_ANY_CAR">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE4B" Name="IS_CHAR_PLAYING_ANY_SCRIPT_ANIMATION">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Enum="INCLUDE_ANIMS"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE4C" Name="IS_CHAR_DOING_ANY_IMPORTANT_TASK">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Enum="INCLUDE_ANIMS"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE4D" Name="RANDOM_PERCENT">
+      <Args>
+        <Arg Type="INT" Desc="Percent"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE4E" Name="DISPLAY_ONSCREEN_TIMER_LOCAL">
+      <Args>
+        <Arg Type="INT" Desc="Lvar"/>
+        <Arg Type="INT" Enum="TIMER"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE4F" Name="DISPLAY_ONSCREEN_TIMER_WITH_STRING_LOCAL">
+      <Args>
+        <Arg Type="INT" Desc="Lvar"/>
+        <Arg Type="INT" Enum="TIMER"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="GXT"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE50" Name="DISPLAY_ONSCREEN_COUNTER_LOCAL">
+      <Args>
+        <Arg Type="INT" Desc="Lvar"/>
+        <Arg Type="INT" Enum="COUNTER_DISPLAY"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE51" Name="DISPLAY_ONSCREEN_COUNTER_WITH_STRING_LOCAL">
+      <Args>
+        <Arg Type="INT" Desc="Lvar"/>
+        <Arg Type="INT" Enum="COUNTER_DISPLAY"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="GXT"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE52" Name="DISPLAY_TWO_ONSCREEN_COUNTERS_LOCAL">
+      <Args>
+        <Arg Type="INT" Desc="Lvar"/>
+        <Arg Type="INT" Desc="LvarMaxValue"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE53" Name="DISPLAY_TWO_ONSCREEN_COUNTERS_WITH_STRING_LOCAL">
+      <Args>
+        <Arg Type="INT" Desc="Lvar"/>
+        <Arg Type="INT" Desc="LvarMaxValue"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="GXT"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE54" Name="CLEAR_ONSCREEN_TIMER_LOCAL">
+      <Args>
+        <Arg Type="INT" Desc="Lvar"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE55" Name="CLEAR_ONSCREEN_COUNTER_LOCAL">
+      <Args>
+        <Arg Type="INT" Desc="Lvar"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE56" Name="SET_ONSCREEN_COUNTER_FLASH_WHEN_FIRST_DISPLAYED_LOCAL">
+      <Args>
+        <Arg Type="INT" Desc="Lvar"/>
+        <Arg Type="INT" Desc="Bool"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE57" Name="SET_TIMER_BEEP_COUNTDOWN_TIME_LOCAL">
+      <Args>
+        <Arg Type="INT" Desc="Lvar"/>
+        <Arg Type="INT" Desc="Secs"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE58" Name="SET_ONSCREEN_COUNTER_COLOUR_LOCAL">
+      <Args>
+        <Arg Type="INT" Desc="Lvar"/>
+        <Arg Type="INT" Desc="ColorID"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE59" Name="GET_TRAILER_FROM_CAR">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Entity="CAR" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE5A" Name="GET_CAR_FROM_TRAILER">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Entity="CAR" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE5B" Name="GET_CAR_DUMMY_COORD">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Enum="VEHICLE_DUMMY"/>
+        <Arg Type="INT" Desc="WorldCoords"/>
+        <Arg Type="INT" Desc="InvertX"/>
+        <Arg Type="FLOAT" Desc="X" Out="true"/>
+        <Arg Type="FLOAT" Desc="Y" Out="true"/>
+        <Arg Type="FLOAT" Desc="Z" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD27" Name="COPY_MEMORY">
+      <Args>
+        <Arg Type="INT" Desc="From"/>
+        <Arg Type="INT" Desc="To"/>
+        <Arg Type="INT" Desc="Size"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE5D" Name="IS_CHEAT_ACTIVE">
+      <Args>
+        <Arg Type="INT" Desc="CheatID"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE5E" Name="CHANGE_PLAYER_MONEY">
+      <Args>
+        <Arg Type="INT" Desc="Player"/>
+        <Arg Type="INT" Enum="CHANGE_MONEY"/>
+        <Arg Type="INT" Desc="Value"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE5F" Name="CAR_HORN">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE60" Name="SET_CAMERA_CONTROL">
+      <Args>
+        <Arg Type="INT" Desc="Bool"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE61" Name="SET_CAR_ALARM">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Enum="CAR_ALARM"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE00" Name="GET_CAR_ALARM">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Enum="CAR_ALARM" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD39" Name="GET_CHAR_MAX_HEALTH">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE5C" Name="GET_CHAR_HEALTH_PERCENT">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE64" Name="GET_CURRENT_CAMERA_MODE">
+      <Args>
+        <Arg Type="INT" Enum="CAMERAMODE" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE65" Name="GET_CAR_COLLISION_INTENSITY">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE66" Name="GET_CAR_COLLISION_COORDINATES">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="FLOAT" Out="true"/>
+        <Arg Type="FLOAT" Out="true"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE67" Name="IS_AIM_BUTTON_PRESSED">
+      <Args>
+        <Arg Type="INT" Enum="PAD"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE68" Name="SET_PLAYER_CONTROL_PAD">
+      <Args>
+        <Arg Type="INT" Enum="PAD"/>
+        <Arg Type="INT" Desc="Bool"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE69" Name="SET_PLAYER_CONTROL_PAD_MOVEMENT">
+      <Args>
+        <Arg Type="INT" Enum="PAD"/>
+        <Arg Type="INT" Desc="Bool"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE6A" Name="MAKE_NOP">
+      <Args>
+        <Arg Type="INT" Desc="Address"/>
+        <Arg Type="INT" Desc="Size"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD3A" Name="GET_COLLISION_BETWEEN_POINTS">
+      <Args>
+        <Arg Type="FLOAT" Desc="FromX"/>
+        <Arg Type="FLOAT" Desc="FromY"/>
+        <Arg Type="FLOAT" Desc="FromZ"/>
+        <Arg Type="FLOAT" Desc="ToX"/>
+        <Arg Type="FLOAT" Desc="ToY"/>
+        <Arg Type="FLOAT" Desc="ToZ"/>
+        <Arg Type="INT" Desc="Buildings"/>
+        <Arg Type="INT" Desc="Vehicles"/>
+        <Arg Type="INT" Desc="Peds"/>
+        <Arg Type="INT" Desc="Objects"/>
+        <Arg Type="INT" Desc="Dummies"/>
+        <Arg Type="INT" Desc="SeeThroughCheck"/>
+        <Arg Type="INT" Desc="CameraIgnoreCheck"/>
+        <Arg Type="INT" Desc="ShotThroughCheck"/>
+        <Arg Type="INT" Desc="EntityToIgnore"/>
+        <Arg Type="INT" Entity="COLPOINT"/>
+        <Arg Type="FLOAT" Desc="OutX" Out="true"/>
+        <Arg Type="FLOAT" Desc="OutY" Out="true"/>
+        <Arg Type="FLOAT" Desc="OutZ" Out="true"/>
+        <Arg Type="INT" Desc="Entity" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD3B" Name="GET_COLPOINT_NORMAL_VECTOR">
+      <Args>
+        <Arg Type="INT" Entity="COLPOINT"/>
+        <Arg Type="FLOAT" Desc="X" Out="true"/>
+        <Arg Type="FLOAT" Desc="Y" Out="true"/>
+        <Arg Type="FLOAT" Desc="Z" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD3C" Name="GET_COLPOINT_DEPTH">
+      <Args>
+        <Arg Type="INT" Entity="COLPOINT"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD3D" Name="GET_COLPOINT_SURFACE">
+      <Args>
+        <Arg Type="INT" Entity="COLPOINT"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE6B" Name="GET_COLPOINT_LIGHTING">
+      <Args>
+        <Arg Type="INT" Entity="COLPOINT"/>
+        <Arg Type="INT" Desc="FromNight"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE6C" Name="GET_DAY_NIGHT_BALANCE">
+      <Args>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE6D" Name="GET_UNDERWATERNESS">
+      <Args>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE6E" Name="IS_SELECT_MENU_JUST_PRESSED">
+    </Command>
+    
+    <Command ID="0xE6F" Name="STREAM_CUSTOM_SCRIPT_FROM_LABEL">
+      <Args>
+        <Arg Type="LABEL"/>
+        <Arg Type="PARAM" Optional="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE70" Name="GET_LAST_CREATED_CUSTOM_SCRIPT">
+      <Args>
+        <Arg Type="INT" Desc="ThreadPointer" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD0F" Name="SET_CAR_MODEL_ALPHA">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Desc="Alpha"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD10" Name="SET_CHAR_MODEL_ALPHA">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Desc="Alpha"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD11" Name="SET_OBJECT_MODEL_ALPHA">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Desc="Alpha"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD2D" Name="GET_LOCAL_TIME">
+      <Args>
+        <Arg Type="INT" Desc="Year" Out="true"/>
+        <Arg Type="INT" Desc="Month" Out="true"/>
+        <Arg Type="INT" Desc="WeekDay" Out="true"/>
+        <Arg Type="INT" Desc="Day" Out="true"/>
+        <Arg Type="INT" Desc="Hour" Out="true"/>
+        <Arg Type="INT" Desc="Minute" Out="true"/>
+        <Arg Type="INT" Desc="Second" Out="true"/>
+        <Arg Type="INT" Desc="Millisecond" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD2E" Name="SET_THREAD_VAR">
+      <Args>
+        <Arg Type="INT" Desc="ThreadPointer"/>
+        <Arg Type="INT" Desc="VarIndex"/>
+        <Arg Type="PARAM" Desc="Value"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD2F" Name="GET_THREAD_VAR">
+      <Args>
+        <Arg Type="INT" Desc="ThreadPointer"/>
+        <Arg Type="INT" Desc="VarIndex"/>
+        <Arg Type="PARAM" Desc="Value" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD33" Name="SET_CAR_DOOR_WINDOW_STATE">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Enum="CAR_NODE_DOOR"/>
+        <Arg Type="INT" Desc="Bool"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE71" Name="GET_OBJECT_CENTRE_OF_MASS_TO_BASE_OF_MODEL">
+      <Args>
+        <Arg Type="INT" Entity="OBJECT"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE72" Name="CREATE_LIST">
+      <Args>
+        <Arg Type="INT" Enum="DATATYPE"/>
+        <Arg Type="INT" Entity="LIST" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE73" Name="DELETE_LIST">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE74" Name="LIST_ADD">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+        <Arg Type="PARAM"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE7B" Name="LIST_ADD_STRING">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE75" Name="LIST_REMOVE_VALUE">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+        <Arg Type="PARAM"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE7C" Name="LIST_REMOVE_STRING_VALUE">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE76" Name="LIST_REMOVE_INDEX">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+        <Arg Type="INT" Desc="Index"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE77" Name="GET_LIST_SIZE">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+        <Arg Type="INT" Desc="Size" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE78" Name="GET_LIST_VALUE_BY_INDEX">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+        <Arg Type="INT" Desc="Index"/>
+        <Arg Type="PARAM" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE7A" Name="GET_LIST_STRING_VALUE_BY_INDEX">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+        <Arg Type="INT" Desc="Index"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE79" Name="RESET_LIST">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE7D" Name="LIST_REMOVE_INDEX_RANGE">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+        <Arg Type="INT" Desc="IndexStart"/>
+        <Arg Type="INT" Desc="IndexEnd"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE7E" Name="REVERSE_LIST">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE62" Name="DRAW_STRING">
+      <Args>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+        <Arg Type="INT" Enum="DRAW_EVENT"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="SX"/>
+        <Arg Type="FLOAT" Desc="SY"/>
+        <Arg Type="INT" Enum="FixAR"/>
+        <Arg Type="INT" Enum="FONT"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE63" Name="DRAW_STRING_EXT">
+      <Args>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+        <Arg Type="INT" Enum="DRAW_EVENT"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="SX"/>
+        <Arg Type="FLOAT" Desc="SY"/>
+        <Arg Type="INT" Enum="FixAR"/>
+        <Arg Type="INT" Enum="FONT"/>
+        <Arg Type="INT" Desc="Prop"/>
+        <Arg Type="INT" Enum="ALIGN"/>
+        <Arg Type="FLOAT" Desc="Wrap"/>
+        <Arg Type="INT" Desc="Just"/>
+        <Arg Type="INT" Desc="R"/>
+        <Arg Type="INT" Desc="G"/>
+        <Arg Type="INT" Desc="B"/>
+        <Arg Type="INT" Desc="A"/>
+        <Arg Type="INT" Desc="Edge"/>
+        <Arg Type="INT" Desc="Shadow"/>
+        <Arg Type="INT" Desc="DropR"/>
+        <Arg Type="INT" Desc="DropG"/>
+        <Arg Type="INT" Desc="DropB"/>
+        <Arg Type="INT" Desc="DropA"/>
+        <Arg Type="INT" Desc="Bg"/>
+        <Arg Type="INT" Desc="BgR"/>
+        <Arg Type="INT" Desc="BgG"/>
+        <Arg Type="INT" Desc="BgB"/>
+        <Arg Type="INT" Desc="BgA"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE7F" Name="GET_MODEL_TYPE">
+      <Args>
+        <Arg Type="INT" Enum="DEFAULTMODEL"/>
+        <Arg Type="INT" Enum="MODEL_TYPE" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE80" Name="IS_STRING_EQUAL">
+      <Args>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+        <Arg Type="INT" Desc="MaxSize"/>
+        <Arg Type="INT" Desc="CaseSensitive"/>
+        <Arg Type="STRING" Desc="IgnoreCharactere" AllowPointer="false" PreserveCase="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE81" Name="IS_STRING_COMMENT">
+      <Args>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE82" Name="DOES_CAR_HAVE_PART_NODE">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Enum="CAR_NODE"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE83" Name="GET_CURRENT_CHAR_WEAPONINFO">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Entity="WEAPONINFO" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE84" Name="GET_WEAPONINFO">
+      <Args>
+        <Arg Type="INT" Enum="WEAPONTYPE"/>
+        <Arg Type="INT" Desc="Skill"/>
+        <Arg Type="INT" Entity="WEAPONINFO" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE85" Name="GET_WEAPONINFO_MODELS">
+      <Args>
+        <Arg Type="INT" Entity="WEAPONINFO"/>
+        <Arg Type="INT" Enum="DEFAULTMODEL" Out="true"/>
+        <Arg Type="INT" Enum="DEFAULTMODEL" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE86" Name="GET_WEAPONINFO_FLAGS">
+      <Args>
+        <Arg Type="INT" Entity="WEAPONINFO"/>
+        <Arg Type="INT" Enum="WEAPONINFO_FLAGS" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE87" Name="GET_WEAPONINFO_ANIMGROUP">
+      <Args>
+        <Arg Type="INT" Entity="WEAPONINFO"/>
+        <Arg Type="INT" Desc="AnimGroup" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE88" Name="GET_WEAPONINFO_TOTAL_CLIP">
+      <Args>
+        <Arg Type="INT" Entity="WEAPONINFO"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE89" Name="GET_WEAPONINFO_FIRE_TYPE">
+      <Args>
+        <Arg Type="INT" Entity="WEAPONINFO"/>
+        <Arg Type="INT" Enum="WEAPONFIRE" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE8A" Name="GET_WEAPONINFO_SLOT">
+      <Args>
+        <Arg Type="INT" Entity="WEAPONINFO"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE8B" Name="GET_CHAR_WEAPON_STATE">
+      <Args>
+        <Arg Type="INT" Entity="WEAPONINFO"/>
+        <Arg Type="INT" Enum="WEAPONSTATE" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE8C" Name="GET_CHAR_WEAPON_CLIP">
+      <Args>
+        <Arg Type="INT" Entity="WEAPONINFO"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE8D" Name="IS_ANY_FIRE_BUTTON_PRESSED">
+      <Args>
+        <Arg Type="INT" Enum="PAD"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE8E" Name="GET_CHAR_COLLISION_SURFACE">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE8F" Name="GET_CHAR_COLLISION_LIGHTING">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE90" Name="GET_CAR_COLLISION_SURFACE">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE91" Name="GET_CAR_COLLISION_LIGHTING">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE92" Name="IS_CHAR_REALLY_IN_AIR">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE93" Name="IS_CAR_REALLY_IN_AIR">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE94" Name="IS_OBJECT_REALLY_IN_AIR">
+      <Args>
+        <Arg Type="INT" Entity="OBJECT"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE95" Name="SIMULATE_OBJECT_DAMAGE">
+      <Args>
+        <Arg Type="INT" Entity="OBJECT"/>
+        <Arg Type="FLOAT" Desc="Damage"/>
+        <Arg Type="INT" Enum="WEAPONTYPE"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE96" Name="CLEAR_CHAR_PRIMARY_TASKS">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE97" Name="CLEAR_CHAR_SECONDARY_TASKS">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE98" Name="REQUEST_PRIORITY_MODEL">
+      <Args>
+        <Arg Type="INT" Enum="DEFAULTMODEL"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE99" Name="LOAD_ALL_PRIORITY_MODELS_NOW">
+    </Command>
+    
+    <Command ID="0xE9A" Name="LOAD_SPECIAL_CHARACTER_FOR_ID">
+      <Args>
+        <Arg Type="INT"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xE9B" Name="UNLOAD_SPECIAL_CHARACTER_FROM_ID">
+      <Args>
+        <Arg Type="INT"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE9C" Name="GET_MODEL_BY_NAME">
+      <Args>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE9D" Name="IS_MODEL_AVAILABLE_BY_NAME">
+      <Args>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE9E" Name="GET_MODEL_DOESNT_EXIST_IN_RANGE">
+      <Args>
+        <Arg Type="INT" Desc="Start"/>
+        <Arg Type="INT" Desc="End"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xE9F" Name="REMOVE_ALL_UNUSED_MODELS">
+    </Command>
+
+    <Command ID="0xEA3" Name="REMOVE_MODEL_IF_UNUSED">
+      <Args>
+        <Arg Type="INT" Enum="DEFAULTMODEL"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEA4" Name="IS_CHAR_ON_FIRE">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEA5" Name="GET_CLOSEST_COP_NEAR_CHAR">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="FLOAT" Desc="Radius"/>
+        <Arg Type="INT" Desc="Alive"/>
+        <Arg Type="INT" Desc="InCar"/>
+        <Arg Type="INT" Desc="OnFoot"/>
+        <Arg Type="INT" Desc="SeenInFront"/>
+        <Arg Type="INT" Entity="CHAR" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEA6" Name="GET_CLOSEST_COP_NEAR_POS">
+      <Args>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="Radius"/>
+        <Arg Type="INT" Desc="Alive"/>
+        <Arg Type="INT" Desc="InCar"/>
+        <Arg Type="INT" Desc="OnFoot"/>
+        <Arg Type="INT" Entity="CHAR" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEA7" Name="GET_ANY_CHAR_NO_SAVE_RECURSIVE">
+      <Args>
+        <Arg Type="INT" Desc="Progress"/>
+        <Arg Type="INT" Desc="Progress" Out="true"/>
+        <Arg Type="INT" Entity="CHAR" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEA8" Name="GET_ANY_CAR_NO_SAVE_RECURSIVE">
+      <Args>
+        <Arg Type="INT" Desc="Progress"/>
+        <Arg Type="INT" Desc="Progress" Out="true"/>
+        <Arg Type="INT" Entity="CAR" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEA9" Name="GET_ANY_OBJECT_NO_SAVE_RECURSIVE">
+      <Args>
+        <Arg Type="INT" Desc="Progress"/>
+        <Arg Type="INT" Desc="Progress" Out="true"/>
+        <Arg Type="INT" Entity="OBJECT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEAA" Name="SET_CHAR_ARRESTED">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEAB" Name="GET_CHAR_PEDSTATE">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Enum="PEDSTATE" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEAC" Name="GET_CHAR_PROOFS">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Desc="Bullet" Out="true"/>
+        <Arg Type="INT" Desc="Fire" Out="true"/>
+        <Arg Type="INT" Desc="Explosion" Out="true"/>
+        <Arg Type="INT" Desc="Collision" Out="true"/>
+        <Arg Type="INT" Desc="Melee" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEAD" Name="GET_CAR_PROOFS">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Desc="Bullet" Out="true"/>
+        <Arg Type="INT" Desc="Fire" Out="true"/>
+        <Arg Type="INT" Desc="Explosion" Out="true"/>
+        <Arg Type="INT" Desc="Collision" Out="true"/>
+        <Arg Type="INT" Desc="Melee" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEAE" Name="GET_OBJECT_PROOFS">
+      <Args>
+        <Arg Type="INT" Entity="OBJECT"/>
+        <Arg Type="INT" Desc="Bullet" Out="true"/>
+        <Arg Type="INT" Desc="Fire" Out="true"/>
+        <Arg Type="INT" Desc="Explosion" Out="true"/>
+        <Arg Type="INT" Desc="Collision" Out="true"/>
+        <Arg Type="INT" Desc="Melee" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEAF" Name="IS_CHAR_WEAPON_VISIBLE_SET">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEB0" Name="GET_FORCED_WEATHER">
+      <Args>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEB1" Name="GET_CHAR_STAT_ID">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Enum="PEDSTAT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEB2" Name="GET_OFFSET_FROM_CAMERA_IN_WORLD_COORDS">
+      <Args>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="X" Out="true"/>
+        <Arg Type="FLOAT" Desc="Y" Out="true"/>
+        <Arg Type="FLOAT" Desc="Z" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD0A" Name="GET_OFFSET_FROM_MATRIX_IN_WORLD_COORDS">
+      <Args>
+        <Arg Type="INT" Entity="MATRIX"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="X" Out="true"/>
+        <Arg Type="FLOAT" Desc="Y" Out="true"/>
+        <Arg Type="FLOAT" Desc="Z" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEB4" Name="SET_CAR_COORDINATES_SIMPLE">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEB5" Name="GET_CHAR_DAMAGE_LAST_FRAME">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Entity="ENTITY" Out="true"/>
+        <Arg Type="INT" Desc="Type" Out="true"/>
+        <Arg Type="INT" Desc="Piece" Out="true"/>
+        <Arg Type="FLOAT" Desc="Intensity" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEB6" Name="GET_CAR_WEAPON_DAMAGE_LAST_FRAME">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Entity="CHAR" Out="true"/>
+        <Arg Type="INT" Desc="Type" Out="true"/>
+        <Arg Type="FLOAT" Desc="Intensity" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEB7" Name="IS_ON_SCRIPTED_CUTSCENE">
+    </Command>
+    
+    <Command ID="0xEB8" Name="IS_RADAR_VISIBLE">
+    </Command>
+    
+    <Command ID="0xEB9" Name="IS_HUD_VISIBLE">
+    </Command>
+    
+    <Command ID="0xEBA" Name="GET_MODEL_PED_TYPE">
+      <Args>
+        <Arg Type="INT" Enum="DEFAULTMODEL"/>
+        <Arg Type="INT" Enum="PEDTYPE" Out="true"/>
+        <Arg Type="INT" Enum="PEDSTAT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEBB" Name="PASS_TIME">
+      <Args>
+        <Arg Type="INT" Desc="Mins"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEBC" Name="GENERATE_RANDOM_INT_IN_RANGE_WITH_SEED">
+      <Args>
+        <Arg Type="INT" Desc="Seed"/>
+        <Arg Type="INT" Desc="Min"/>
+        <Arg Type="INT" Desc="Max"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEBD" Name="GENERATE_RANDOM_FLOAT_IN_RANGE_WITH_SEED">
+      <Args>
+        <Arg Type="INT" Desc="Seed"/>
+        <Arg Type="FLOAT" Desc="Min"/>
+        <Arg Type="FLOAT" Desc="Max"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEBE" Name="LOCATE_CAMERA_DISTANCE_TO_COORDINATES">
+      <Args>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="Radius"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEBF" Name="GET_FX_SYSTEM_POINTER">
+      <Args>
+        <Arg Type="INT" Entity="FX_SYSTEM"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEC0" Name="ADD_FX_SYSTEM_PARTICLE">
+      <Args>
+        <Arg Type="INT" Entity="FX_SYSTEM"/>
+        <Arg Type="FLOAT" Desc="PosX"/>
+        <Arg Type="FLOAT" Desc="PosY"/>
+        <Arg Type="FLOAT" Desc="PosZ"/>
+        <Arg Type="FLOAT" Desc="VelX"/>
+        <Arg Type="FLOAT" Desc="VelY"/>
+        <Arg Type="FLOAT" Desc="VelZ"/>
+        <Arg Type="FLOAT" Desc="Size"/>
+        <Arg Type="FLOAT" Desc="Brightness"/>
+        <Arg Type="FLOAT" Desc="R"/>
+        <Arg Type="FLOAT" Desc="G"/>
+        <Arg Type="FLOAT" Desc="B"/>
+        <Arg Type="FLOAT" Desc="A"/>
+        <Arg Type="FLOAT" Desc="LastFactor"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEC1" Name="IS_FX_SYSTEM_AVAILABLE_WITH_NAME">
+      <Args>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEC2" Name="SET_STRING_UPPER">
+      <Args>
+        <Arg Type="INT" Desc="StringPointer"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEC3" Name="SET_STRING_LOWER">
+      <Args>
+        <Arg Type="INT" Desc="StringPointer"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEC4" Name="STRING_FIND">
+      <Args>
+        <Arg Type="INT" Enum="STRING_FIND"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="StringOrigin"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="StringFind"/>
+        <Arg Type="INT" Desc="Index" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEC5" Name="CUT_STRING_AT">
+      <Args>
+        <Arg Type="INT" Desc="StringPointer"/>
+        <Arg Type="INT" Desc="Index"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEC6" Name="IS_STRING_CHARACTER_AT">
+      <Args>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+        <Arg Type="STRING" AllowPointer="false" PreserveCase="true" Desc="Charactere"/>
+        <Arg Type="INT" Desc="Index"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEC7" Name="GET_FADE_ALPHA">
+      <Args>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEC8" Name="GET_CHAR_RANDOM_SEED">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEC9" Name="GET_CAR_RANDOM_SEED">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xECA" Name="GET_OBJECT_RANDOM_SEED">
+      <Args>
+        <Arg Type="INT" Entity="OBJECT"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xECB" Name="GET_CHAR_MOVE_STATE">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Enum="MOVE_STATE" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xECC" Name="DONT_DELETE_CHAR_UNTIL_TIME">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Desc="MsFromNow"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xECD" Name="DONT_DELETE_CAR_UNTIL_TIME">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Desc="MsFromNow"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xECE" Name="GET_TIME_CHAR_IS_DEAD">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xECF" Name="GET_TIME_CAR_IS_DEAD">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xED0" Name="RETURN_SCRIPT_EVENT">
+    </Command>
+    
+    <Command ID="0xED1" Name="SET_SCRIPT_EVENT_SAVE_CONFIRMATION">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+        <Arg Type="INT" Desc="VarSlot"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xED2" Name="SET_SCRIPT_EVENT_CHAR_DELETE">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+        <Arg Type="INT" Desc="VarChar"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xED3" Name="SET_SCRIPT_EVENT_CHAR_CREATE">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+        <Arg Type="INT" Desc="VarChar"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xED4" Name="SET_SCRIPT_EVENT_CAR_DELETE">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+        <Arg Type="INT" Desc="VarCar"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xED5" Name="SET_SCRIPT_EVENT_CAR_CREATE">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+        <Arg Type="INT" Desc="VarCar"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xED6" Name="SET_SCRIPT_EVENT_OBJECT_DELETE">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+        <Arg Type="INT" Desc="VarObject"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xED7" Name="SET_SCRIPT_EVENT_OBJECT_CREATE">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+        <Arg Type="INT" Desc="VarObject"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xED8" Name="SET_SCRIPT_EVENT_ON_MENU">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+
+        <Arg Type="INT" Desc="VarJustPaused"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xED9" Name="SET_CHAR_IGNORE_DAMAGE_ANIMS">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Desc="Bool"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEDA" Name="SET_SCRIPT_EVENT_CHAR_PROCESS">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+        <Arg Type="INT" Desc="VarChar"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEDB" Name="SET_SCRIPT_EVENT_CAR_PROCESS">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+        <Arg Type="INT" Desc="VarCar"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEDC" Name="SET_SCRIPT_EVENT_OBJECT_PROCESS">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+        <Arg Type="INT" Desc="VarObject"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEDD" Name="SET_SCRIPT_EVENT_BUILDING_PROCESS">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+        <Arg Type="INT" Desc="VarBuilding"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEDE" Name="SET_SCRIPT_EVENT_CHAR_DAMAGE">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+        <Arg Type="INT" Desc="VarChar"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEDF" Name="SET_SCRIPT_EVENT_CAR_WEAPON_DAMAGE">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+        <Arg Type="INT" Desc="VarCar"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEE0" Name="SET_SCRIPT_EVENT_BULLET_IMPACT">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+        <Arg Type="INT" Entity="CHAR" Desc="VarCHARowner"/>
+        <Arg Type="INT" Entity="ENTITY" Desc="VarENTITYvictim"/>
+        <Arg Type="INT" Enum="WEAPONTYPE" Desc="VarWEAPONTYPE"/>
+        <Arg Type="INT" Entity="COLPOINT" Desc="VarCOLPOINT"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEE1" Name="GET_COLPOINT_COORDINATES">
+      <Args>
+        <Arg Type="INT" Entity="COLPOINT"/>
+        <Arg Type="FLOAT" Desc="X" Out="true"/>
+        <Arg Type="FLOAT" Desc="Y" Out="true"/>
+        <Arg Type="FLOAT" Desc="Z" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEE2" Name="READ_STRUCT_OFFSET_MULTI">
+      <Args>
+        <Arg Type="INT" Desc="Pointer"/>
+        <Arg Type="INT" Desc="Offset"/>
+        <Arg Type="INT" Desc="Count"/>
+        <Arg Type="INT" Desc="Size"/>
+        <Arg Type="PARAM" Optional="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEE3" Name="WRITE_STRUCT_OFFSET_MULTI">
+      <Args>
+        <Arg Type="INT" Desc="Pointer"/>
+        <Arg Type="INT" Desc="Offset"/>
+        <Arg Type="INT" Desc="Count"/>
+        <Arg Type="INT" Desc="Size"/>
+        <Arg Type="PARAM" Optional="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEE4" Name="LOCATE_CHAR_DISTANCE_TO_CHAR">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="FLOAT" Desc="Radius"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEE5" Name="LOCATE_CHAR_DISTANCE_TO_CAR">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="FLOAT" Desc="Radius"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEE6" Name="LOCATE_CHAR_DISTANCE_TO_OBJECT">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Entity="OBJECT"/>
+        <Arg Type="FLOAT" Desc="Radius"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEE7" Name="LOCATE_CAR_DISTANCE_TO_OBJECT">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Entity="OBJECT"/>
+        <Arg Type="FLOAT" Desc="Radius"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEE8" Name="LOCATE_CAR_DISTANCE_TO_CAR">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="FLOAT" Desc="Radius"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEE9" Name="LOCATE_OBJECT_DISTANCE_TO_OBJECT">
+      <Args>
+        <Arg Type="INT" Entity="OBJECT"/>
+        <Arg Type="INT" Entity="OBJECT"/>
+        <Arg Type="FLOAT" Desc="Radius"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEEA" Name="LOCATE_CHAR_DISTANCE_TO_COORDINATES">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="Radius"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEEB" Name="LOCATE_CAR_DISTANCE_TO_COORDINATES">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="Radius"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEEC" Name="LOCATE_OBJECT_DISTANCE_TO_COORDINATES">
+      <Args>
+        <Arg Type="INT" Entity="OBJECT"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="Radius"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEED" Name="LOCATE_ENTITY_DISTANCE_TO_ENTITY">
+      <Args>
+        <Arg Type="INT" Entity="ENTITY"/>
+        <Arg Type="INT" Entity="ENTITY"/>
+        <Arg Type="FLOAT" Desc="Radius"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEEE" Name="GET_ENTITY_COORDINATES">
+      <Args>
+        <Arg Type="INT" Entity="ENTITY"/>
+        <Arg Type="FLOAT" Desc="X" Out="true"/>
+        <Arg Type="FLOAT" Desc="Y" Out="true"/>
+        <Arg Type="FLOAT" Desc="Z" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xEEF" Name="GET_ENTITY_HEADING">
+      <Args>
+        <Arg Type="INT" Entity="ENTITY"/>
+        <Arg Type="FLOAT" Desc="Angle" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEF0" Name="GET_COORD_FROM_ANGLED_DISTANCE">
+      <Args>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Angle"/>
+        <Arg Type="FLOAT" Desc="Distance"/>
+        <Arg Type="FLOAT" Desc="X" Out="true"/>
+        <Arg Type="FLOAT" Desc="Y" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEF1" Name="PERLIN_NOISE_FRACTAL_2D">
+      <Args>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="INT" Desc="Octaves"/>
+        <Arg Type="FLOAT" Desc="Frequency"/>
+        <Arg Type="FLOAT" Desc="Amplitude"/>
+        <Arg Type="FLOAT" Desc="Lacunarity"/>
+        <Arg Type="FLOAT" Desc="Persistence"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEF2" Name="PERLIN_NOISE_FRACTAL_3D">
+      <Args>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="INT" Desc="Octaves"/>
+        <Arg Type="FLOAT" Desc="Frequency"/>
+        <Arg Type="FLOAT" Desc="Amplitude"/>
+        <Arg Type="FLOAT" Desc="Lacunarity"/>
+        <Arg Type="FLOAT" Desc="Persistence"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xEF3" Name="LERP">
+      <Args>
+        <Arg Type="FLOAT" Desc="A"/>
+        <Arg Type="FLOAT" Desc="B"/>
+        <Arg Type="FLOAT" Desc="T"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xEF4" Name="CLAMP_FLOAT">
+      <Args>
+        <Arg Type="FLOAT"/>
+        <Arg Type="FLOAT" Desc="Min"/>
+        <Arg Type="FLOAT" Desc="Max"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xEF5" Name="IS_CAR_OWNED_BY_PLAYER">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xEF6" Name="SET_CAR_OWNED_BY_PLAYER">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Desc="Bool"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xEF7" Name="CLAMP_INT">
+      <Args>
+        <Arg Type="INT"/>
+        <Arg Type="INT" Desc="Min"/>
+        <Arg Type="INT" Desc="Max"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xEF8" Name="GET_MODEL_INFO">
+      <Args>
+        <Arg Type="INT" Enum="DEFAULTMODEL"/>
+        <Arg Type="INT" Entity="MODELINFO"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xEF9" Name="GET_CAR_ANIMGROUP">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Enum="CAR_ANIMGROUP" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xEFA" Name="GET_CHAR_FEAR">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xEFB" Name="IS_CAR_CONVERTIBLE">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xEFC" Name="GET_CAR_VALUE">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="INT" Out="true" />
+      </Args>
+    </Command>
+	
+    <Command ID="0xEFD" Name="GET_CAR_PEDALS">
+      <Args>
+        <Arg Type="INT" Entity="CAR"/>
+        <Arg Type="FLOAT" Desc="Gas" Out="true" />
+        <Arg Type="FLOAT" Desc="Break" Out="true" />
+      </Args>
+    </Command>
+	
+    <Command ID="0xEFE" Name="GET_LOADED_LIBRARY">
+      <Args>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+        <Arg Type="INT" Desc="Pointer"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xEFF" Name="GET_CHAR_SIMPLEST_ACTIVE_TASK">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Enum="TASK" Out="true" />
+        <Arg Type="INT" Desc="TaskPointer" Out="true" />
+      </Args>
+    </Command>
+	
+    <Command ID="0xB20" Name="READ_CLIPBOARD_DATA_TO">
+      <Args>
+        <Arg Type="INT" Desc="To"/>
+        <Arg Type="INT" Desc="Size"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xB21" Name="WRITE_CLIPBOARD_DATA_FROM">
+      <Args>
+        <Arg Type="INT" Desc="From"/>
+        <Arg Type="INT" Desc="Size"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD37" Name="WRITE_STRUCT_PARAM">
+      <Args>
+        <Arg Type="INT" Desc="Pointer"/>
+        <Arg Type="INT" Desc="ParamIndex"/>
+        <Arg Type="PARAM" Desc="Value"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD38" Name="READ_STRUCT_PARAM">
+      <Args>
+        <Arg Type="INT" Desc="Pointer"/>
+        <Arg Type="INT" Desc="ParamIndex"/>
+        <Arg Type="PARAM" Desc="Value" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD4D" Name="COPY_STRING">
+      <Args>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+        <Arg Type="INT" Desc="Pointer"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD16" Name="SET_MATRIX_ROTATION_FROM_QUAT">
+      <Args>
+        <Arg Type="INT" Desc="Matrix"/>
+        <Arg Type="INT" Desc="Quat"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD17" Name="SET_QUAT_FROM_MATRIX">
+      <Args>
+        <Arg Type="INT" Desc="Quat"/>
+        <Arg Type="INT" Desc="Matrix"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD18" Name="ROTATE_QUAT_ON_AXIS">
+      <Args>
+        <Arg Type="INT" Desc="Quat"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="Angle"/>
+        <Arg Type="INT" Enum="RWCOMBINE"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD19" Name="GET_NORMALISED_QUAT">
+      <Args>
+        <Arg Type="INT" Desc="Quat"/>
+        <Arg Type="INT" Desc="Quat"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD1A" Name="MULTIPLY_QUATS">
+      <Args>
+        <Arg Type="INT" Desc="Quat"/>
+        <Arg Type="INT" Desc="Quat"/>
+        <Arg Type="INT" Desc="QuatResult"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD24" Name="INITIALISE_QUAT">
+      <Args>
+        <Arg Type="INT" Desc="Quat"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="Real"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xD29" Name="GET_QUAT_ELEMENTS">
+      <Args>
+        <Arg Type="INT" Desc="Quat"/>
+        <Arg Type="FLOAT" Desc="X" Out="true"/>
+        <Arg Type="FLOAT" Desc="Y" Out="true"/>
+        <Arg Type="FLOAT" Desc="Z" Out="true"/>
+        <Arg Type="FLOAT" Desc="Real" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xEB3" Name="CONVERT_DIRECTION_TO_QUAT">
+      <Args>
+        <Arg Type="INT" Desc="Quat"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD01" Name="ROTATE_MATRIX_ON_AXIS">
+      <Args>
+        <Arg Type="INT" Desc="Matrix"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="Angle"/>
+        <Arg Type="INT" Enum="RWCOMBINE"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD02" Name="GET_MATRIX_X_ANGLE">
+      <Args>
+        <Arg Type="INT" Desc="Matrix"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD03" Name="GET_MATRIX_Y_ANGLE">
+      <Args>
+        <Arg Type="INT" Desc="Matrix"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD04" Name="GET_MATRIX_Z_ANGLE">
+      <Args>
+        <Arg Type="INT" Desc="Matrix"/>
+        <Arg Type="FLOAT" Out="true"/>
+      </Args>
+    </Command>
