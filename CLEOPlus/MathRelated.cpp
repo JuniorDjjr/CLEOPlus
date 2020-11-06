@@ -2,8 +2,7 @@
 #include "CGeneral.h"
 #include "PerlinNoise\SimplexNoise.h"
 #include "Fx_c.h"
-#include <math.h>
-#include <cmath>
+#include <algorithm>
 
 // 0E27=5,get_angle_from_two_coords %1d% %2d% and %3d% %4d% to %5d%
 OpcodeResult WINAPI GET_ANGLE_FROM_TWO_COORDS(CScriptThread* thread)
@@ -37,8 +36,6 @@ OpcodeResult WINAPI GET_ANGLE_FROM_TWO_COORDS(CScriptThread* thread)
 	CLEO_SetFloatOpcodeParam(thread, result);
 	return OR_CONTINUE;
 }
-
-
 
 // 0D1E=4,quat_slerp_from %1d% to %2d% lambda %3d% result %4d%
 OpcodeResult WINAPI QUAT_SLERP(CScriptThread* thread)
@@ -79,7 +76,7 @@ OpcodeResult WINAPI EASE(CScriptThread* thread)
 	int mode = CLEO_GetIntOpcodeParam(thread);
 	int way = CLEO_GetIntOpcodeParam(thread);
 
-	float result;
+	float result = 0.0f;
 
 	switch (mode)
 	{

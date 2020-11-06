@@ -14,7 +14,7 @@ OpcodeResult WINAPI GET_AUDIO_RADIO_VOLUME(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-//// 0E3B=2,get_audiostream_internal %1d% store_to %2d%
+// 0E3B=2,get_audiostream_internal %1d% store_to %2d%
 OpcodeResult WINAPI GET_AUDIOSTREAM_INTERNAL(CScriptThread* thread)
 {
 	HSTREAM stream = CLEO_GetInternalAudioStream(thread, CLEO_GetIntOpcodeParam(thread));

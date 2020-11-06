@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.645
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CLEOPlus", "CLEOPlus\CLEOPlus.vcxproj", "{B212DDA4-2A8E-45B2-914D-7BEEB31D06B1}"
 EndProject
@@ -32,6 +32,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {418D4835-D000-43EC-B9D6-5F699B77F668}
+		SolutionGuid = {FE94DEBA-6320-4683-8598-E0BC165773A1}
 	EndGlobalSection
 EndGlobal

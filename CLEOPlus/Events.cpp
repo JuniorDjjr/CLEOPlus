@@ -3,6 +3,7 @@
 #include "CMenuManager.h"
 
 vector<ScriptEvent*> scriptEvents[ScriptEvent::TOTAL_SCRIPT_EVENTS];
+extern bool pausedLastFrame;
 
 void ScriptEvent::ClearAllForScript(CRunningScript* script)
 {

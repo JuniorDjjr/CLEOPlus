@@ -2,61 +2,138 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="CLEOPlus.cpp" />
-    <ClCompile Include="Environment.cpp" />
-    <ClCompile Include="Misc.cpp" />
-    <ClCompile Include="NoSave.cpp" />
-    <ClCompile Include="Screen.cpp" />
-    <ClCompile Include="ScriptEntities.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="Types.cpp" />
-    <ClCompile Include="ExtendedEntityVars.cpp" />
-    <ClCompile Include="Drawing.cpp" />
-    <ClCompile Include="MathRelated.cpp" />
-    <ClCompile Include="Audio.cpp" />
-    <ClCompile Include="Memory.cpp" />
-    <ClCompile Include="Patches.cpp" />
-    <ClCompile Include="Coop.cpp" />
-    <ClCompile Include="RadarBlip.cpp" />
-    <ClCompile Include="RenderObjectOnChar.cpp" />
-    <ClCompile Include="PedExtendedData.cpp" />
-    <ClCompile Include="Pickup.cpp" />
-    <ClCompile Include="Intelligence.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="PerlinNoise\SimplexNoise.cpp">
-      <Filter>PerlinNoise</Filter>
-    </ClCompile>
-    <ClCompile Include="Colpoint.cpp" />
-    <ClCompile Include="List.cpp" />
     <ClCompile Include="TextDrawer\TextDrawer.cpp">
       <Filter>TextDrawer</Filter>
     </ClCompile>
-    <ClCompile Include="VehExtendedData.cpp" />
-    <ClCompile Include="Events.cpp" />
+    <ClCompile Include="PerlinNoise\SimplexNoise.cpp">
+      <Filter>PerlinNoise</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Colpoint.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Coop.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Environment.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Events.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ExtendedEntityVars.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Intelligence.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="List.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MathRelated.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Misc.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="NoSave.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Patches.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PedExtendedData.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Pickup.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="RadarBlip.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderObjectOnChar.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Screen.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptEntities.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Types.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="VehExtendedData.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OpcodesCommon.h" />
-    <ClInclude Include="Screen.h" />
-    <ClInclude Include="Drawing.h" />
-    <ClInclude Include="Patches.h" />
-    <ClInclude Include="RadarBlip.h" />
-    <ClInclude Include="PedExtendedData.h" />
-    <ClInclude Include="RenderObjectOnChar.h" />
-    <ClInclude Include="PerlinNoise\SimplexNoise.h">
-      <Filter>PerlinNoise</Filter>
-    </ClInclude>
+    <Filter Include="TextDrawer">
+      <UniqueIdentifier>{c86b2ed6-2e17-4f9c-8bad-68163e735d86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PerlinNoise">
+      <UniqueIdentifier>{dbf8233a-2e26-40d0-9cde-0e5e7955f1a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{2790bad4-9c08-4482-a6a9-af5e30dbafbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game_sa">
+      <UniqueIdentifier>{28f6d24f-e23e-407a-b3d9-394a6ce44322}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="TextDrawer\TextDrawer.h">
       <Filter>TextDrawer</Filter>
     </ClInclude>
-    <ClInclude Include="VehExtendedData.h" />
-    <ClInclude Include="Events.h" />
-    <ClInclude Include="CPedDamageResponseCalculator.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="PerlinNoise">
-      <UniqueIdentifier>{a3cb4fb4-d7d9-47ef-861b-9e7e494aec0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="TextDrawer">
-      <UniqueIdentifier>{d59a9ec1-0713-46fb-a32b-5732deb7935a}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="PerlinNoise\SimplexNoise.h">
+      <Filter>PerlinNoise</Filter>
+    </ClInclude>
+    <ClInclude Include="CPedDamageResponseCalculator.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Events.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="OpcodesCommon.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Patches.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="PedExtendedData.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="RadarBlip.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderObjectOnChar.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Screen.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="VehExtendedData.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="game_sa\CarGeneratorsEx.h">
+      <Filter>game_sa</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
