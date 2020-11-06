@@ -1,5 +1,5 @@
 # CLEOPlus
-Download binaries:  
+Full download with better information for end-users and change log:  
 https://www.mixmods.com.br/2020/03/CLEOPlus.html  
 
 .cleo plugin for CLEO Library
