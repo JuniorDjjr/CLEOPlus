@@ -1326,21 +1326,23 @@ OpcodeResult WINAPI GENERATE_RANDOM_INT_IN_RANGE_WITH_SEED(CScriptThread* thread
 	int seed = CLEO_GetIntOpcodeParam(thread);
 	int min = CLEO_GetIntOpcodeParam(thread);
 	int max = CLEO_GetIntOpcodeParam(thread) - 1;
+	unsigned int resetSeed = rand() / 2;
 	srand(seed);
 	CLEO_SetIntOpcodeParam(thread, Random(min, max));
-	srand(time(0)); // reset
+	srand((time(0) / 2) + resetSeed); // reset
 	return OR_CONTINUE;
 }
-
+ 
 // 0xEBD=4,generate_random_float_in_range_with_seed %1d% min %2d% max %3d% store_to %4d%
 OpcodeResult WINAPI GENERATE_RANDOM_FLOAT_IN_RANGE_WITH_SEED(CScriptThread* thread)
 {
 	int seed = CLEO_GetIntOpcodeParam(thread);
 	float min = CLEO_GetFloatOpcodeParam(thread);
 	float max = CLEO_GetFloatOpcodeParam(thread);
+	unsigned int resetSeed = rand() / 2;
 	srand(seed);
 	CLEO_SetFloatOpcodeParam(thread, fmaf((float)rand() / RAND_MAX, max - min, min));
-	srand(time(0)); // reset
+	srand((time(0) / 2) + resetSeed); // reset
 	return OR_CONTINUE;
 }
 

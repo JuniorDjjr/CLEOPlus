@@ -78,12 +78,12 @@ CdeclEvent <AddressList<0x618F51, H_CALL>, PRIORITY_BEFORE, ArgPickNone, void()>
 ThiscallEvent <AddressList<0x5E49EF, H_CALL>, PRIORITY_AFTER, ArgPickN<CPed*, 0>, void(CPed*) >    pedAfterSetModelIndex;
 ThiscallEvent <AddressList<0x6D6494, H_CALL>, PRIORITY_AFTER, ArgPickN<CVehicle*, 0>, void(CVehicle*)> vehiclePreRenderEvent;
 ThiscallEvent <AddressList<0x4F77DA, H_CALL>, PRIORITY_AFTER, ArgPickN<CVehicle*, 0>, void(CVehicle*)> vehicleAfterCtor;
-ThiscallEvent <AddressList<0x58D568, H_CALL>, PRIORITY_AFTER, ArgPickNone, void()> drawAfterFade;
+CdeclEvent <AddressList<0x53EB9D, H_CALL>, PRIORITY_AFTER, ArgPickNone, void()> drawAfterFade;
 CdeclEvent <AddressList<0x57C2B0, H_CALL>, PRIORITY_AFTER, ArgPickNone, void()> onMenu;
 CdeclEvent <AddressList<0x53BF4E, H_CALL>, PRIORITY_BEFORE, ArgPickNone, void()> beforeGameProcess;
 ThiscallEvent <AddressList<0x53E98B, H_CALL>, PRIORITY_BEFORE, ArgPickNone, void(void*)> afterGameProcess;
-CdeclEvent <AddressList<0x53E4FA, H_CALL>, PRIORITY_AFTER, ArgPickNone, void()> beforeHud;
-CdeclEvent <AddressList<0x53E504, H_CALL>, PRIORITY_BEFORE, ArgPickNone, void()> afterHud;
+CdeclEvent <AddressList<0x53E298, H_CALL>, PRIORITY_AFTER, ArgPickNone, void()> beforeHud;
+ThiscallEvent <AddressList<0x53E52B, H_JUMP>, PRIORITY_AFTER, ArgPickNone, void(void*)> afterHud;
 void CacheOnePedTask(CPed *ped, PedExtended &xdata, int &activeTaskIndex, CTask *task, bool isSecondary);
 void ClearScriptLists();
 
@@ -444,7 +444,7 @@ public:
 			return;
 		}
 
-		Events::initRwEvent +=[]
+		Events::initRwEvent.after +=[]
 		{
 			if (initialized) return;
 
@@ -1339,6 +1339,7 @@ public:
 
 			UpdateKeyPresses(); // It's better to update all keys and buttons after all game processing, to make it compatible with script events
 		};
+
 
 		CLEO_AddScriptDeleteDelegate(ScriptDeleteEvent);
     }
