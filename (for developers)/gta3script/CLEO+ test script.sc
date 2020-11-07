@@ -1,13 +1,13 @@
 /*
 Test codes for CLEO+ by Junior_Djjr - MixMods.com.br
-Everything about CLEO+: https://forum.mixmods.com.br/f141-gta3script-cleo/t5206-como-criar-scripts-com-cleo
+Everything about CLEO+: https://forum.mixmods.com.br/f141-gta3script-cleo/t5206-como-criar-scripts-com-cleoplus
 Maybe not all codes here is working, and maybe it's expected, well, welcome to the mess...
 */
 
 SCRIPT_START
 {
-    LVAR_INT i j k l m n o eventArgVar
-    LVAR_FLOAT g g1 g2 g3
+    LVAR_INT i j k l m n o eventArgVar lCircles
+    LVAR_FLOAT g g1 g2 g3 radius
     LVAR_FLOAT x y z x2 y2 z2
     LVAR_INT scplayer obj car char pBuffer
     LVAR_TEXT_LABEL16 string
@@ -18,7 +18,7 @@ SCRIPT_START
         WAIT 0
 
         IF TEST_CHEAT "P1"
-            GOSUB Test62
+            GOSUB Test74
         ENDIF
         IF TEST_CHEAT "P2"
             GOSUB Test71
@@ -26,7 +26,6 @@ SCRIPT_START
         IF TEST_CHEAT "P3"
             GOSUB Test10
         ENDIF
-
         IF TEST_CHEAT "P4"
             j = 123 // the value will fall off in the first var from our new thread, so, "i" will be 123
             STREAM_CUSTOM_SCRIPT_FROM_LABEL Test47 j
@@ -41,9 +40,47 @@ SCRIPT_START
         IF TEST_CHEAT "P5"
             TERMINATE_THIS_CUSTOM_SCRIPT
         ENDIF
+        IF TEST_CHEAT "P6"
+            GOSUB Test23
+        ENDIF
+        IF TEST_CHEAT "P7"
+            GOSUB Test73
+        ENDIF
+        IF TEST_CHEAT "P8"
+            GOSUB Test66
+        ENDIF
 
     ENDWHILE
 
+    Test74:
+    WHILE NOT TEST_CHEAT "EXIT"
+        WAIT 0
+        y = 50.0
+        DRAW_STRING "DRAW_EVENT_AFTER_BLIPS" DRAW_EVENT_AFTER_BLIPS 100.0 y 0.5 1.0 TRUE FONT_SUBTITLES
+        y += 10.0
+        DRAW_STRING "DRAW_EVENT_AFTER_DRAWING" DRAW_EVENT_AFTER_DRAWING 100.0 y 0.5 1.0 TRUE FONT_SUBTITLES
+        y += 10.0
+        DRAW_STRING "DRAW_EVENT_AFTER_FADE" DRAW_EVENT_AFTER_FADE 100.0 y 0.5 1.0 TRUE FONT_SUBTITLES
+        y += 10.0
+        DRAW_STRING "DRAW_EVENT_AFTER_HUD" DRAW_EVENT_AFTER_HUD 100.0 y 0.5 1.0 TRUE FONT_SUBTITLES
+        y += 10.0
+        DRAW_STRING "DRAW_EVENT_AFTER_RADAR" DRAW_EVENT_AFTER_RADAR 100.0 y 0.5 1.0 TRUE FONT_SUBTITLES
+        y += 10.0
+        DRAW_STRING "DRAW_EVENT_AFTER_RADAR_OVERLAY" DRAW_EVENT_AFTER_RADAR_OVERLAY 100.0 y 0.5 1.0 TRUE FONT_SUBTITLES
+        y += 10.0
+        DRAW_STRING "DRAW_EVENT_BEFORE_BLIPS" DRAW_EVENT_BEFORE_BLIPS 100.0 y 0.5 1.0 TRUE FONT_SUBTITLES
+        y += 10.0
+        DRAW_STRING "DRAW_EVENT_BEFORE_DRAWING" DRAW_EVENT_BEFORE_DRAWING 100.0 y 0.5 1.0 TRUE FONT_SUBTITLES
+        y += 10.0
+        DRAW_STRING "DRAW_EVENT_BEFORE_HUD" DRAW_EVENT_BEFORE_HUD 100.0 y 0.5 1.0 TRUE FONT_SUBTITLES
+        y += 10.0
+        DRAW_STRING "DRAW_EVENT_BEFORE_RADAR" DRAW_EVENT_BEFORE_RADAR 100.0 y 0.5 1.0 TRUE FONT_SUBTITLES
+        y += 10.0
+        DRAW_STRING "DRAW_EVENT_BEFORE_RADAR_OVERLAY" DRAW_EVENT_BEFORE_RADAR_OVERLAY 100.0 y 0.5 1.0 TRUE FONT_SUBTITLES
+
+        DRAW_TEXTURE_PLUS 0 DRAW_EVENT_AFTER_HUD 320.0 224.0 640.0 448.0 0.0 0.0 FALSE 0 0 255 255 0 100
+    ENDWHILE
+    RETURN
 
     Test73:
     PRINT_STRING_NOW "Y to force weapon fire. EXIT to exit" 2000
@@ -140,34 +177,38 @@ SCRIPT_START
     RETURN
 
     Test68:
-    PRINT_STRING "Use CTRL+C / CTRL+V" 1000
-    GET_LABEL_POINTER Buffer128 i
+    IF GET_LOADED_LIBRARY "SAMPFUNCS.asi" (i)
+        PRINT_STRING "~r~WRITE_CLIPBOARD_DATA_FROM and READ_CLIPBOARD_DATA_TO are incompatible with SAMPFuncs" 5000
+    ELSE
+        PRINT_STRING "Use CTRL+C / CTRL+V" 1000
+        GET_LABEL_POINTER Buffer128 i
 
-    WHILE NOT IS_BUTTON_PRESSED PAD1 TRIANGLE
-        WAIT 0
+        WHILE NOT IS_BUTTON_PRESSED PAD1 TRIANGLE
+            WAIT 0
 
-        IF IS_KEY_PRESSED VK_LCONTROL
-        AND IS_KEY_PRESSED VK_KEY_C
-            COPY_STRING "Test 1" i
-            GET_STRING_LENGTH $i (j)
-            j++ // null terminator
-            IF WRITE_CLIPBOARD_DATA_FROM i j
-                PRINT_STRING "Clipboard set" 500
-            ELSE
-                PRINT_STRING "~r~Fail to write clipboard" 2000
+            IF IS_KEY_PRESSED VK_LCONTROL
+            AND IS_KEY_PRESSED VK_KEY_C
+                COPY_STRING "Test 1" i
+                GET_STRING_LENGTH $i (j)
+                j++ // null terminator
+                IF WRITE_CLIPBOARD_DATA_FROM i j
+                    PRINT_STRING "Clipboard set" 500
+                ELSE
+                    PRINT_STRING "~r~Fail to write clipboard" 2000
+                ENDIF
             ENDIF
-        ENDIF
 
-        IF IS_KEY_PRESSED VK_LCONTROL
-        AND IS_KEY_PRESSED VK_KEY_V
-            IF READ_CLIPBOARD_DATA_TO i 128 // 128 is the max size of our buffer
-                PRINT_FORMATTED_NOW "'%s'" 2000 $i
-            ELSE
-                PRINT_STRING "~r~Fail to read clipboard" 2000
+            IF IS_KEY_PRESSED VK_LCONTROL
+            AND IS_KEY_PRESSED VK_KEY_V
+                IF READ_CLIPBOARD_DATA_TO i 128 // 128 is the max size of our buffer
+                    PRINT_FORMATTED_NOW "'%s'" 2000 $i
+                ELSE
+                    PRINT_STRING "~r~Fail to read clipboard" 2000
+                ENDIF
             ENDIF
-        ENDIF
 
-    ENDWHILE
+        ENDWHILE
+    ENDIF
     RETURN
 
     Test67:
@@ -348,7 +389,7 @@ SCRIPT_START
     PRINT_STRING_NOW "Adding events. Hold action to remove them." 1000
     WAIT 500
     SET_SCRIPT_EVENT_CHAR_CREATE ON EventCharCreate_StartInternalThread eventArgVar
-    //SET_SCRIPT_EVENT_CAR_CREATE ON EventCarCreate_StartInternalThread eventArgVar
+    SET_SCRIPT_EVENT_CAR_CREATE ON EventCarCreate_StartInternalThread eventArgVar
     timera = 0
     WHILE timera < 2000
         WAIT 0
@@ -357,7 +398,7 @@ SCRIPT_START
         ENDIF
     ENDWHILE
     SET_SCRIPT_EVENT_CHAR_CREATE OFF EventCharCreate_StartInternalThread eventArgVar
-    //SET_SCRIPT_EVENT_CAR_CREATE OFF EventCarCreate_StartInternalThread eventArgVar
+    SET_SCRIPT_EVENT_CAR_CREATE OFF EventCarCreate_StartInternalThread eventArgVar
     RETURN
 
     Test62:
@@ -615,7 +656,7 @@ SCRIPT_START
     Test47:
     WHILE TRUE
         PRINT_FORMATTED_NOW "Running label %i" 1 i
-        IF TEST_CHEAT "P6"
+        IF TEST_CHEAT "EXIT"
             TERMINATE_THIS_CUSTOM_SCRIPT
         ENDIF
         WAIT 0
@@ -840,8 +881,8 @@ SCRIPT_START
     RETURN
 
     Test28:
-    LOAD_TEXTURE_DICTIONARY LD_CHAT
-    LOAD_SPRITE 1 thumbup
+    LOAD_TEXTURE_DICTIONARY afro
+    LOAD_SPRITE 1 afrobeard
     GET_TEXTURE_FROM_SPRITE 1 i
     WRITE_MEMORY 0xB4E690 4 i FALSE // CVehicleModelInfo::ms_pLightsOnTexture (this test doesn't work with IVF cars)
     PRINT_FORMATTED_NOW "sprite texture %x" 1000 i
@@ -868,7 +909,7 @@ SCRIPT_START
     GET_CURRENT_MINUTE j
     PRINT_FORMATTED_NOW "%i:%i" 1000 i j
     RETURN
-    
+
     Test24:
     ADD_TEXT_LABEL CLEOP01 "Busy"
     WHILE TRUE
@@ -1262,7 +1303,7 @@ SCRIPT_START
     Test16:
     GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS scplayer 0.0 2.0 0.0 x y z
     CREATE_CHAR PEDTYPE_CIVMALE MALE01 x y z (char)
-    FIX_CHAR_GROUND_BRIGHTNESS_AND_FADE_IN char FALSE TRUE TRUE
+    FIX_CHAR_GROUND_BRIGHTNESS_AND_FADE_IN char TRUE TRUE TRUE
     RETURN
 
     Test15:
@@ -1288,7 +1329,7 @@ SCRIPT_START
     g = 0.0
     WHILE g < 1.0
         WAIT 0
-        g +=@ 0.005 // linear interpolation
+        g +=@ 0.01 // linear interpolation
         EASE g EASE_MODE_CUBIC EASE_WAY_INOUT (g2) // get ease interpolation from linear
         PRINT_FORMATTED_NOW "%.3f ease %.3f" 10 g g2
         g1 = 100.0 * g2 // use ease for distance to travel progress
@@ -1396,9 +1437,9 @@ SCRIPT_START
             y -=@ 5.0
         ENDIF
 
-        DRAW_TEXTURE_PLUS i DRAW_EVENT_BEFORE_HUD (x y) (200.0 200.0) g 0.0 TRUE 4 k 255 255 255 255
+        DRAW_TEXTURE_PLUS i DRAW_EVENT_BEFORE_HUD (x y) (200.0 200.0) g 0.0 TRUE 4 k 255 255 255 180
 
-        DRAW_TEXTURE_PLUS i DRAW_EVENT_BEFORE_HUD (300.0 300.0) (200.0 200.0) 0.0 0.0 TRUE 4 j 255 255 255 255
+        DRAW_TEXTURE_PLUS i DRAW_EVENT_BEFORE_HUD (300.0 300.0) (200.0 200.0) 0.0 0.0 TRUE 4 j 255 255 255 180
         
         PRINT_STRING_NOW "Drawning, (pos NUMPAD) (angle -+)" 10
     ENDWHILE
