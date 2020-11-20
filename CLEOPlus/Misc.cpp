@@ -1261,7 +1261,7 @@ OpcodeResult WINAPI GET_CHAR_DAMAGE_LAST_FRAME(CScriptThread* thread)
 	CLEO_SetIntOpcodeParam(thread, data.lastDamageWeapon);
 	CLEO_SetIntOpcodeParam(thread, data.lastDamagePart);
 	CLEO_SetFloatOpcodeParam(thread, data.lastDamageIntensity);
-	if (data.lastDamageIntensity != 0) bResult = true;
+	if (data.lastDamageIntensity > 0.0f) bResult = true;
 	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(bResult);
 	return OR_CONTINUE;
 }
@@ -1363,16 +1363,17 @@ OpcodeResult WINAPI LOCATE_CAMERA_DISTANCE_TO_COORDINATES(CScriptThread* thread)
 // 0xEBF=2,get_fx_system_pointer %1d% store_to %2d%
 OpcodeResult WINAPI GET_FX_SYSTEM_POINTER(CScriptThread* thread)
 {
-	bool bResult = false;
 	int handle = CLEO_GetIntOpcodeParam(thread);
 	if (handle >= 0) {
 		handle = CTheScripts::GetActualScriptThingIndex(handle, 1);
 		if (handle >= 0) {
 			CLEO_SetIntOpcodeParam(thread, (DWORD)ScriptEffectSystemArray[handle].m_pFxSystem);
-			bResult = true;
+			reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(true);
+			return OR_CONTINUE;
 		}
 	}
-	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(bResult);
+	CLEO_SetIntOpcodeParam(thread, 0);
+	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(false);
 	return OR_CONTINUE;
 }
 

@@ -18,9 +18,12 @@
 #include "rw/rpworld.h"
 #include <set>
 
+constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01000300;
+
 using namespace plugin;
 using namespace std;
 using namespace injector;
+
 
 // -- Variables
 int gameVersion = -1;
@@ -426,6 +429,8 @@ OpcodeResult WINAPI LIST_ADD_STRING(CScriptThread* thread);
 OpcodeResult WINAPI LIST_REMOVE_STRING_VALUE(CScriptThread* thread);
 OpcodeResult WINAPI LIST_REMOVE_INDEX_RANGE(CScriptThread* thread);
 OpcodeResult WINAPI REVERSE_LIST(CScriptThread* thread);
+
+
 
 class CLEOPlus
 {
@@ -924,6 +929,41 @@ public:
 					if (activeTaskIndex < 31) xdata.activeTasks[activeTaskIndex] = -1; // set terminator
 				}
 			}
+
+		};
+
+		Events::processScriptsEvent.after += []
+		{
+			// Reset ped data per frame
+			auto &pedsPool = CPools::ms_pPedPool;
+			for (int index = 0; index < pedsPool->m_nSize; ++index)
+			{
+				if (CPed* ped = pedsPool->GetAt(index))
+				{
+					PedExtended& xdata = extData.Get(ped);
+
+					// Reset last damage;
+					xdata.lastDamageEntity = nullptr;
+					xdata.lastDamageWeapon = 0;
+					xdata.lastDamagePart = 0;
+					xdata.lastDamageIntensity = 0.0f;
+				}
+			}
+			// Reset vehicle data per frame
+			auto& vehsPool = CPools::ms_pVehiclePool;
+			for (int index = 0; index < vehsPool->m_nSize; ++index)
+			{
+				if (CVehicle* vehicle = vehsPool->GetAt(index))
+				{
+					VehExtended& xdata = vehExtData.Get(vehicle);
+
+					// Reset last damage;
+					xdata.lastDamagePed = nullptr;
+					xdata.lastDamageType = 0;
+					xdata.lastDamageIntensity = 0.0f;
+				}
+			}
+			controllerMode = ReadMemory<uint8_t>(0x47F399, false);
 		};
 
 		afterGameProcess +=[]
@@ -951,38 +991,6 @@ public:
 				}
 				disabledCamControlLastFrame = false;
 			}
-
-			// Reset ped data per frame
-			auto& pedsPool = CPools::ms_pPedPool;
-			for (int index = 0; index < pedsPool->m_nSize; ++index)
-			{
-				if (CPed *ped = pedsPool->GetAt(index))
-				{
-					PedExtended &xdata = extData.Get(ped);
-
-					// Reset last damage;
-					xdata.lastDamageEntity = nullptr;
-					xdata.lastDamageWeapon = 0;
-					xdata.lastDamagePart = 0;
-					xdata.lastDamageIntensity = 0.0f;
-				}
-			}
-
-			// Reset vehicle data per frame
-			auto& vehsPool = CPools::ms_pVehiclePool;
-			for (int index = 0; index < vehsPool->m_nSize; ++index)
-			{
-				if (CVehicle *vehicle = vehsPool->GetAt(index))
-				{
-					VehExtended &xdata = vehExtData.Get(vehicle);
-
-					// Reset last damage;
-					xdata.lastDamagePed = nullptr;
-					xdata.lastDamageType = 0;
-					xdata.lastDamageIntensity = 0.0f;
-				}
-			}
-			controllerMode = ReadMemory<uint8_t>(0x47F399, false);
 		};
 
 		// EntityPreRender (caution, this is called A LOT)
@@ -1092,7 +1100,7 @@ public:
 
 			}
 		};
-		
+		 
 		// ----------------------------------------------------------------------------------------
 
 		startSaveGame += []
@@ -1206,36 +1214,44 @@ public:
 		};
 
 		// Bullet impact event
-		injector::MakeInline<0x73B5B0, 0x73B5B0 + 7>([](injector::reg_pack& regs)
+		patch::RedirectCall(0x73CD92, MyDoBulletImpact);
+		patch::RedirectCall(0x741199, MyDoBulletImpact);
+		patch::RedirectCall(0x7411DF, MyDoBulletImpact);
+		patch::RedirectCall(0x7412DF, MyDoBulletImpact);
+		patch::RedirectCall(0x741E30, MyDoBulletImpact);
+		/*injector::MakeInline<0x73B57C, 0x73B57C + 7>([](injector::reg_pack& regs)
 		{
-			regs.esi = *(uint32_t*)(regs.esp + 0x88 + 0x8); //mov     esi, [esp+88h+_victim]
+			// not compatible with Bullet Mod and 
+			regs.ebx = *(uint32_t*)(regs.esp + 0x90 + 0x4); //mov     ebx, [esp+90h+owner]
 			CWeapon *weapon = (CWeapon *)regs.edi;
 			CPed *owner = (CPed *)regs.ebx;
-			CEntity *victim = (CEntity*)regs.esi;
-			CColPoint *colPoint = *(CColPoint**)(regs.esp + 0x88 + 0x14);
+			CEntity *victim = *(CEntity**)(regs.esp + 0x90 + 0x8);
+			CColPoint *colPoint = *(CColPoint**)(regs.esp + 0x90 + 0x14);
 
 			if (scriptEvents[ScriptEvent::List::BulletImpact].size() > 0) {
 				int ownerRef = -1;
 				if (owner) ownerRef = CPools::GetPedRef(owner);
 				for (auto scriptEvent : scriptEvents[ScriptEvent::List::BulletImpact]) scriptEvent->RunScriptEvent((DWORD)ownerRef, (DWORD)victim, (DWORD)weapon->m_nType, (DWORD)colPoint);
 			}
-		});
+		});*/
 
 		// Ped damage event
 		injector::MakeInline<0x4B3238, 0x4B3238 + 6>([](injector::reg_pack& regs)
 		{
 			regs.eax = *(uint32_t*)(regs.esi + 0x540); //mov     eax, [esi+540h]
 			CPedDamageResponseCalculator *damageCalculator = (CPedDamageResponseCalculator *)regs.ebp;
-			CPed *ped = (CPed *)regs.esi;
-			PedExtended &data = extData.Get(ped);
-			data.lastDamageEntity = damageCalculator->m_pDamager;
-			data.lastDamageIntensity = damageCalculator->m_fDamageFactor;
-			data.lastDamageWeapon = damageCalculator->m_weaponType;
-			data.lastDamagePart = damageCalculator->m_pedPieceType;
+			if (damageCalculator->m_fDamageFactor != 0.0f) {
+				CPed* ped = (CPed*)regs.esi;
+				PedExtended& data = extData.Get(ped);
+				data.lastDamageEntity = damageCalculator->m_pDamager;
+				data.lastDamageIntensity = damageCalculator->m_fDamageFactor;
+				data.lastDamageWeapon = damageCalculator->m_weaponType;
+				data.lastDamagePart = damageCalculator->m_pedPieceType;
 
-			if (scriptEvents[ScriptEvent::List::CharDamage].size() > 0) {
-				int ref = CPools::GetPedRef(ped);
-				for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharDamage]) scriptEvent->RunScriptEvent(ref);
+				if (scriptEvents[ScriptEvent::List::CharDamage].size() > 0) {
+					int ref = CPools::GetPedRef(ped);
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharDamage]) scriptEvent->RunScriptEvent(ref);
+				}
 			}
 		});
 
@@ -1337,12 +1353,22 @@ public:
 			ClearMySprites(sprites[DrawEvent::AfterFade]);
 			textDrawer[DrawEvent::AfterFade].DrawPrints();
 
-			UpdateKeyPresses(); // It's better to update all keys and buttons after all game processing, to make it compatible with script events
+			// It's better to update all keys and buttons after all game processing, to make it compatible with script events
+			UpdateKeyPresses(); 
 		};
 
 
 		CLEO_AddScriptDeleteDelegate(ScriptDeleteEvent);
     }
+
+	static void __fastcall MyDoBulletImpact(CWeapon* weapon, int i, CEntity* owner, CEntity* victim, CVector* startPoint, CVector* endPoint, CColPoint* colPoint, int a7)
+	{
+		if (scriptEvents[ScriptEvent::List::BulletImpact].size() > 0) {
+			for (auto scriptEvent : scriptEvents[ScriptEvent::List::BulletImpact]) scriptEvent->RunScriptEvent((DWORD)owner, (DWORD)victim, (DWORD)weapon->m_nType, (DWORD)colPoint);
+		}
+		weapon->DoBulletImpact(owner, victim, startPoint, endPoint, colPoint, a7);
+		return;
+	}
 
 	static void UpdateKeyPresses()
 	{
@@ -1389,3 +1415,8 @@ public:
 	}
 
 } cLEOPlus;
+
+extern "C" uint32_t __declspec(dllexport) GetCleoPlusVersion(CVehicle * vehicle)
+{
+	return CLEOPLUS_VERSION_INT;
+}
