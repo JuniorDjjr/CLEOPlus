@@ -68,7 +68,10 @@ OpcodeResult WINAPI READ_STRUCT_OFFSET_MULTI(CScriptThread* thread)
 	for (unsigned int i = 0; i < (count * size); i += size)
 	{
 		SCRIPT_VAR *pointer = CLEO_GetPointerToScriptVariable(thread);
-		if (pointer > 0) memcpy(pointer, (void *)(struc + i), size);
+		if (pointer > 0) {
+			*(DWORD*)pointer = 0;
+			memcpy(pointer, (void*)(struc + i), size);
+		}
 	}
 	while(*thread->ip) CLEO_SkipOpcodeParams(thread, 1);
 	++thread->ip;
