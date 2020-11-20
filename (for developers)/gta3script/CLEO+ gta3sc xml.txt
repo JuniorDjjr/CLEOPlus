@@ -2674,7 +2674,7 @@ EN: Within <Commands> (usually at the end) add:
       <Args>
         <Arg Type="INT" Desc="Add"/>
         <Arg Type="LABEL"/>
-        <Arg Type="INT" Entity="CHAR" Desc="VarCHARowner"/>
+        <Arg Type="INT" Entity="ENTITY" Desc="VarENTITYowner"/>
         <Arg Type="INT" Entity="ENTITY" Desc="VarENTITYvictim"/>
         <Arg Type="INT" Enum="WEAPONTYPE" Desc="VarWEAPONTYPE"/>
         <Arg Type="INT" Entity="COLPOINT" Desc="VarCOLPOINT"/>

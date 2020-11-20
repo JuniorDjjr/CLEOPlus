@@ -11,11 +11,27 @@ SCRIPT_START
     LVAR_FLOAT x y z x2 y2 z2
     LVAR_INT scplayer obj car char pBuffer
     LVAR_TEXT_LABEL16 string
+
+    IF GET_LOADED_LIBRARY "CLEO+.cleo" (i) // Note: this will crash if there is no CLEO+ installed
+        IF GET_DYNAMIC_LIBRARY_PROCEDURE "GetCleoPlusVersion" i (i)
+            CALL_FUNCTION_RETURN i 0 0 ()(i)
+            IF i < 0x01000300 // 01 00 03 00 = v1.0.3.0
+                PRINT_STRING_NOW "Outdated CLEO+ version. Update it." 5000
+                TERMINATE_THIS_CUSTOM_SCRIPT
+            ENDIF
+        ENDIF
+    ENDIF
     
     GET_PLAYER_CHAR 0 scplayer
 
     WHILE TRUE
         WAIT 0
+
+        k = 1234784832
+        i = 100
+        GET_VAR_POINTER i j
+        READ_STRUCT_OFFSET_MULTI j 0x0 1 1 (k)
+        PRINT_FORMATTED_NOW "%i" 1000 k
 
         IF TEST_CHEAT "P1"
             GOSUB Test74
@@ -1694,12 +1710,15 @@ SCRIPT_START
     RETURN_SCRIPT_EVENT
     
     EventBulletImpact:
-    // i = char, j = entity, k = weapontype, l = colpoint
+    // i = entity owner, j = entity victim, k = weapontype, l = colpoint
     // bullets can be fired without char, and without entity and colpoint collision (e.g. sky), so, consider it!
+    m = -1
     IF i > 0
-        GET_CHAR_MODEL i m
-    ELSE
-        m = -1
+        GET_ENTITY_TYPE i m
+        IF m = ENTITY_TYPE_PED
+            GET_PED_REF i i
+            GET_CHAR_MODEL i m
+        ENDIF
     ENDIF
     IF j > 0
         READ_STRUCT_OFFSET j 0x22 2 n //CEntity->m_nModelIndex

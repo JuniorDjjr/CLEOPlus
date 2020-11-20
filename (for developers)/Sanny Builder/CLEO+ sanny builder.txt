@@ -1,4 +1,9 @@
 
+********
+PT: ATENÇÃO!!! Sanny Builder implementou oficialmente a partir da v3.6.0, ou seja, você só precisa fazer isto se você, por algum motivo, ainda quer usar a versão antiga do SB.
+EN: ATTENTION!!! Sanny Builder officially implemented from v3.6.0, that is, you only need to do this if you, for some reason, still want to use the old SB version.
+********
+
 PT: Abra o "data/sa/SASCM.INI" localizado na pasta do Sanny Builder, e adicione:
 EN: Open the "data/sa/SASCM.INI" located in the Sanny Builder folder, and add it:
 
