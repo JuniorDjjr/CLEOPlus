@@ -15,7 +15,7 @@ SCRIPT_START
     IF GET_LOADED_LIBRARY "CLEO+.cleo" (i) // Note: this will crash if there is no CLEO+ installed
         IF GET_DYNAMIC_LIBRARY_PROCEDURE "GetCleoPlusVersion" i (i)
             CALL_FUNCTION_RETURN i 0 0 ()(i)
-            IF i < 0x01000300 // 01 00 03 00 = v1.0.3.0
+            IF i < 0x01000400 // 01 00 04 00 = v1.0.4.0
                 PRINT_STRING_NOW "Outdated CLEO+ version. Update it." 5000
                 TERMINATE_THIS_CUSTOM_SCRIPT
             ENDIF
@@ -26,12 +26,6 @@ SCRIPT_START
 
     WHILE TRUE
         WAIT 0
-
-        k = 1234784832
-        i = 100
-        GET_VAR_POINTER i j
-        READ_STRUCT_OFFSET_MULTI j 0x0 1 1 (k)
-        PRINT_FORMATTED_NOW "%i" 1000 k
 
         IF TEST_CHEAT "P1"
             GOSUB Test74

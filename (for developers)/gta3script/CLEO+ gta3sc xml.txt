@@ -1719,14 +1719,14 @@ EN: Within <Commands> (usually at the end) add:
       </Args>
     </Command>
     
-    <Command ID="0xD3C" Name="GET_COLPOINT_DEPTH">
+    <Command ID="0xD3E" Name="GET_COLPOINT_DEPTH">
       <Args>
         <Arg Type="INT" Entity="COLPOINT"/>
         <Arg Type="FLOAT" Out="true"/>
       </Args>
     </Command>
     
-    <Command ID="0xD3D" Name="GET_COLPOINT_SURFACE">
+    <Command ID="0xD3C" Name="GET_COLPOINT_SURFACE">
       <Args>
         <Arg Type="INT" Entity="COLPOINT"/>
         <Arg Type="INT" Out="true"/>

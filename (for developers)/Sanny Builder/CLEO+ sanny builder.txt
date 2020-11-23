@@ -49,21 +49,21 @@ EN: Open the "data/sa/SASCM.INI" located in the Sanny Builder folder, and add it
 0E8D=1,is_any_fire_button_pressed %1d%
 0E6E=0,is_select_menu_just_pressed
 0ED0=0,return_script_event
-0ED1=3,set_script_event_save_confirmation %1d% label %2p% args %3d%
-0ED2=3,set_script_event_char_delete %1d% label %2p% args %3d%
-0ED3=3,set_script_event_char_create %1d% label %2p% args %3d%
-0ED4=3,set_script_event_car_delete %1d% label %2p% args %3d%
-0ED5=3,set_script_event_car_create %1d% label %2p% args %3d%
-0ED6=3,set_script_event_object_delete %1d% label %2p% args %3d%
-0ED7=3,set_script_event_object_create %1d% label %2p% args %3d%
-0ED8=3,set_script_event_on_menu %1d% label %2p% %3d%
-0EDA=3,set_script_event_char_process %1d% label %2p% args %3d%
-0EDB=3,set_script_event_car_process %1d% label %2p% args %3d%
-0EDC=3,set_script_event_object_process %1d% label %2p% args %3d%
-0EDD=3,set_script_event_building_process %1d% label %2p% args %3d%
-0EDE=3,set_script_event_char_damage %1d% label %2p% args %3d%
-0EDF=3,set_script_event_car_weapon_damage %1d% label %2p% args %3d%
-0EE0=6,set_script_event_bullet_impact %1d% label %2p% args %3d% %4d% %5d% %6d%
+0ED1=3,set_script_event_save_confirmation %1d% label %2p% var_slot %3d%
+0ED2=3,set_script_event_char_delete %1d% label %2p% var_char %3d%
+0ED3=3,set_script_event_char_create %1d% label %2p% var_char %3d%
+0ED4=3,set_script_event_car_delete %1d% label %2p% var_car %3d%
+0ED5=3,set_script_event_car_create %1d% label %2p% var_car %3d%
+0ED6=3,set_script_event_object_delete %1d% label %2p% var_object %3d%
+0ED7=3,set_script_event_object_create %1d% label %2p% var_object %3d%
+0ED8=3,set_script_event_on_menu %1d% label %2p% var_just_paused %3d%
+0EDA=3,set_script_event_char_process %1d% label %2p% var_char %3d%
+0EDB=3,set_script_event_car_process %1d% label %2p% var_car %3d%
+0EDC=3,set_script_event_object_process %1d% label %2p% var_object %3d%
+0EDD=3,set_script_event_building_process %1d% label %2p% var_building %3d%
+0EDE=3,set_script_event_char_damage %1d% label %2p% var_char %3d%
+0EDF=3,set_script_event_car_weapon_damage %1d% label %2p% var_car %3d%
+0EE0=6,set_script_event_bullet_impact %1d% label %2p% var_owner %3d% var_victim %4d% var_weapon %5d% var_colpoint %6d%
 0E12=2,get_vehicle %1d% subclass_to %2d%
 0E13=2,get_entity %1d% type_to %2d%
 0E14=3,init_extended_char_vars %1d% id %2d% new_vars %3d%
@@ -282,8 +282,8 @@ EN: Open the "data/sa/SASCM.INI" located in the Sanny Builder folder, and add it
 0EFF=3,get_char_simplest_active_task %1d% id_to %2d% pointer_to %3d%
 0D3A=20,get_collision_between_points %1d% %2d% %3d% and %4d% %5d% %6d% flags %7d% %8d% %9d% %10d% %11d% %12d% %13d% %14d% ignore_entity %15d% store_point_to %17d% %18d% %19d% entity_to %20d% colpoint_data_to %16d% // keep NewOpcodes order
 0D3B=4,get_colpoint_normal_vector %1d% store_to %2d% %3d% %4d%
-0D3C=2,get_colpoint_depth %1d% store_to %2d%
-0D3D=2,get_colpoint_surface %1d% store_to %2d%
+0D3E=2,get_colpoint_depth %1d% store_to %2d%
+0D3C=2,get_colpoint_surface %1d% store_to %2d%
 0E6B=2,get_colpoint_lighting %1d% from_night %2d% store_to %3d%
 0EE1=4,get_colpoint_coordinates %1d% store_to %2d% %3d% %4d%
 0E72=2,create_list %1d% store_to %2d%
@@ -354,21 +354,21 @@ EN: Open the "data/sa/opcodes.txt" located in the Sanny Builder folder, and add 
 0E8D: is_any_fire_button_pressed 1@
 0E6E: is_select_menu_just_pressed
 0ED0: return_script_event
-0ED1: set_script_event_save_confirmation 1@ label 2@ args 3@
-0ED2: set_script_event_char_delete 1@ label 2@ args 3@
-0ED3: set_script_event_char_create 1@ label 2@ args 3@
-0ED4: set_script_event_car_delete 1@ label 2@ args 3@
-0ED5: set_script_event_car_create 1@ label 2@ args 3@
-0ED6: set_script_event_object_delete 1@ label 2@ args 3@
-0ED7: set_script_event_object_create 1@ label 2@ args 3@
-0ED8: set_script_event_on_menu 1@ label 2@ args 3@
-0EDA: set_script_event_char_process 1@ label 2@ args 3@
-0EDB: set_script_event_car_process 1@ label 2@ args 3@
-0EDC: set_script_event_object_process 1@ label 2@ args 3@
-0EDD: set_script_event_building_process 1@ label 2@ args 3@
-0EDE: set_script_event_char_damage 1@ label 2@ args 3@
-0EDF: set_script_event_car_weapon_damage 1@ label 2@ args 3@
-0EE0: set_script_event_bullet_impact 1@ label 2@ args 3@ 4@ 5@ 6@
+0ED1: set_script_event_save_confirmation 1@ label 2@ var_slot 3@
+0ED2: set_script_event_char_delete 1@ label 2@ var_char 3@
+0ED3: set_script_event_char_create 1@ label 2@ var_char 3@
+0ED4: set_script_event_car_delete 1@ label 2@ var_car 3@
+0ED5: set_script_event_car_create 1@ label 2@ var_car 3@
+0ED6: set_script_event_object_delete 1@ label 2@ var_object 3@
+0ED7: set_script_event_object_create 1@ label 2@ var_object 3@
+0ED8: set_script_event_on_menu 1@ label 2@ var_just_paused 3@
+0EDA: set_script_event_char_process 1@ label 2@ var_char 3@
+0EDB: set_script_event_car_process 1@ label 2@ var_car 3@
+0EDC: set_script_event_object_process 1@ label 2@ var_object 3@
+0EDD: set_script_event_building_process 1@ label 2@ var_building 3@
+0EDE: set_script_event_char_damage 1@ label 2@ var_char 3@
+0EDF: set_script_event_car_weapon_damage 1@ label 2@ var_car 3@
+0EE0: set_script_event_bullet_impact 1@ label 2@ args var_owner 3@ var_victim 4@ var_weapon 5@ var_colpoint 6@
 0E12: get_vehicle 1@ subclass_to 2@
 0E13: get_entity 1@ type_to 2@
 0E14: init_extended_char_vars 1@ id 2@ new_vars 3@
