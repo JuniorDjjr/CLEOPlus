@@ -18,7 +18,7 @@
 #include "rw/rpworld.h"
 #include <set>
 
-constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01000300;
+constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01000400;
 
 using namespace plugin;
 using namespace std;
@@ -829,8 +829,8 @@ public:
 			{
 				CLEO_RegisterOpcode(0xD3A, GET_COLLISION_BETWEEN_POINTS); // 0D3A=20,get_collision_between_points %1d% %2d% %3d% and %4d% %5d% %6d% flags %7d% %8d% %9d% %10d% %11d% %12d% %13d% %14d% ignore_entity %15d% store_point_to %17d% %18d% %19d% entity_to %20d% colpoint_data_to %16d% // keep NewOpcodes order
 				CLEO_RegisterOpcode(0xD3B, GET_COLPOINT_NORMAL_VECTOR); // 0D3B=4,get_colpoint_normal_vector %1d% store_to %2d% %3d% %4d%
-				CLEO_RegisterOpcode(0xD3C, GET_COLPOINT_DEPTH); // 0D3C=2,get_colpoint_depth %1d% store_to %2d%
-				CLEO_RegisterOpcode(0xD3D, GET_COLPOINT_SURFACE); // 0D3D=2,get_colpoint_surface %1d% store_to %2d%
+				CLEO_RegisterOpcode(0xD3C, GET_COLPOINT_SURFACE); // 0D3D=2,get_colpoint_surface %1d% store_to %2d%
+				CLEO_RegisterOpcode(0xD3E, GET_COLPOINT_DEPTH); // 0D3C=2,get_colpoint_depth %1d% store_to %2d%
 			}
 			CLEO_RegisterOpcode(0xE6B, GET_COLPOINT_LIGHTING); // 0xE6B=2,get_colpoint_lighting %1d% from_night %2d% store_to %3d%
 			CLEO_RegisterOpcode(0xEE1, GET_COLPOINT_COORDINATES); // 0xEE1=4,get_colpoint_coordinates %1d% store_to %2d% %3d% %4d%
@@ -1100,7 +1100,7 @@ public:
 
 			}
 		};
-		 
+		  
 		// ----------------------------------------------------------------------------------------
 
 		startSaveGame += []
