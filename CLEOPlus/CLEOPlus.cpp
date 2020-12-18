@@ -18,7 +18,7 @@
 #include "rw/rpworld.h"
 #include <set>
 
-constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01000400;
+constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01000500;
 
 using namespace plugin;
 using namespace std;

@@ -788,7 +788,10 @@ OpcodeResult WINAPI REQUEST_PRIORITY_MODEL(CScriptThread* thread)
 // 0E99=0,load_all_priority_models_now
 OpcodeResult WINAPI LOAD_ALL_PRIORITY_MODELS_NOW(CScriptThread* thread)
 {
-	CStreaming::LoadAllRequestedModels(true);
+	//CStreaming::LoadAllRequestedModels(true);
+	CTimer::Suspend();
+	CStreaming::LoadAllRequestedModels(false); // "true" doesn't work, I don't know why, so, now it works just like LOAD_ALL_MODELS_NOW
+	CTimer::Resume();
 	return OR_CONTINUE;
 }
 

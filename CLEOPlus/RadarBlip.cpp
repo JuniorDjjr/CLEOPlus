@@ -59,9 +59,10 @@ namespace RadarBlip
 		float width = (RsGlobal.maximumWidth * *ARwidthFromWF * blipSize);
 		float height = (RsGlobal.maximumHeight * *ARheightFromWF * blipSize);
 
-		int spriteId = (blip->spriteId != -1) ? blip->spriteId : RADAR_SPRITE_NONE;
+		int spriteIdForDisplay = (blip->spriteId != -1) ? blip->spriteId : RADAR_SPRITE_PROPERTYG;
+		int spriteIdForLegend = (blip->spriteId != -1) ? blip->spriteId : RADAR_SPRITE_NONE;
 
-		if (CRadar::DisplayThisBlip(spriteId, -99))
+		if (CRadar::DisplayThisBlip(spriteIdForDisplay, -99))
 		{
 			CRect rect;
 			rect.left = x - width;
@@ -69,7 +70,7 @@ namespace RadarBlip
 			rect.right = width + x;
 			rect.bottom = height + y;
 			blip->sprite->Draw(rect, blip->color);
-			if (spriteId > 0) CRadar::AddBlipToLegendList(0, spriteId);
+			if (spriteIdForLegend != RADAR_SPRITE_NONE) CRadar::AddBlipToLegendList(0, spriteIdForLegend);
 		}
 	}
 
