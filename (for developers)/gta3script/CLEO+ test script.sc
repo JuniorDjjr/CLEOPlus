@@ -12,14 +12,19 @@ SCRIPT_START
     LVAR_INT scplayer obj car char pBuffer
     LVAR_TEXT_LABEL16 string
 
-    IF GET_LOADED_LIBRARY "CLEO+.cleo" (i) // Note: this will crash if there is no CLEO+ installed
-        IF GET_DYNAMIC_LIBRARY_PROCEDURE "GetCleoPlusVersion" i (i)
-            CALL_FUNCTION_RETURN i 0 0 ()(i)
-            IF i < 0x01000400 // 01 00 04 00 = v1.0.4.0
-                PRINT_STRING_NOW "Outdated CLEO+ version. Update it." 5000
+    IF LOAD_DYNAMIC_LIBRARY "CLEO+.cleo" (i)
+        IF GET_DYNAMIC_LIBRARY_PROCEDURE "GetCleoPlusVersion" i (j)
+            CALL_FUNCTION_RETURN j 0 0 ()(j)
+            IF j < 0x01000600 // 01 00 06 00 = v1.0.6.0
+                PRINT_STRING_NOW "~r~Outdated CLEO+ version. Update it." 5000
+                FREE_DYNAMIC_LIBRARY i
                 TERMINATE_THIS_CUSTOM_SCRIPT
             ENDIF
         ENDIF
+        FREE_DYNAMIC_LIBRARY i
+    ELSE
+        PRINT_STRING_NOW "~r~CLEO+ not installed." 5000
+        TERMINATE_THIS_CUSTOM_SCRIPT
     ENDIF
     
     GET_PLAYER_CHAR 0 scplayer

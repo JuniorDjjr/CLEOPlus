@@ -165,7 +165,7 @@ EN: Open the "data/sa/SASCM.INI" located in the Sanny Builder folder, and add it
 0EC3=1,set_string_lower %1s%
 0EC4=4,string_find %1d% %2s% %3s% store_to %4d%
 0EC5=2,cut_string_at %1d% %2d%
-0EC6=2,is_string_character_at %1d% %2d%
+0EC6=3,is_string_character_at %1d% character %2d% index %2d%
 0EC8=2,get_char_random_seed %1d% store_to %2d%
 0EC9=2,get_car_random_seed %1d% store_to %2d%
 0ECA=2,get_object_random_seed %1d% store_to %2d%
