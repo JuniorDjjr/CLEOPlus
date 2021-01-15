@@ -17,8 +17,8 @@
 #include "CTimer.h"
 #include "rw/rpworld.h"
 #include <set>
-
-constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01000500;
+ 
+constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01000600;
 
 using namespace plugin;
 using namespace std;
@@ -683,7 +683,7 @@ public:
 			CLEO_RegisterOpcode(0xEC3, SET_STRING_LOWER); // 0xEC3=1,set_string_lower %1s%
 			CLEO_RegisterOpcode(0xEC4, STRING_FIND); // 0xEC4=4,string_find %1d% %2s% %3s% store_to %4d%
 			CLEO_RegisterOpcode(0xEC5, CUT_STRING_AT); // 0xEC5=2,cut_string_at %1d% %2d%
-			CLEO_RegisterOpcode(0xEC6, IS_STRING_CHARACTER_AT); // 0xEC6=2,is_string_character_at %1d% %2d%
+			CLEO_RegisterOpcode(0xEC6, IS_STRING_CHARACTER_AT); // 0xEC6=3,is_string_character_at %1d% character %2d% index %2d%
 			CLEO_RegisterOpcode(0xEC8, GET_CHAR_RANDOM_SEED); // 0xEC8=2,get_char_random_seed %1d% store_to %2d%
 			CLEO_RegisterOpcode(0xEC9, GET_CAR_RANDOM_SEED); // 0xEC9=2,get_car_random_seed %1d% store_to %2d%
 			CLEO_RegisterOpcode(0xECA, GET_OBJECT_RANDOM_SEED); // 0xECA=2,get_object_random_seed %1d% store_to %2d%
@@ -888,8 +888,6 @@ public:
 			{
 				if (CPed* ped = pedsPool->GetAt(index))
 				{
-					PedExtended& xdata = extData.Get(ped);
-
 					// Call char process script event if invisible, because our ped render hook will not call it
 					if (ped->m_nPedState == 50) {
 						if (scriptEvents[ScriptEvent::List::CharProcess].size() > 0) {
@@ -898,35 +896,39 @@ public:
 						}
 					}
 
-					// Reset AI flags
-					xdata.aiFlagsIntValue = 0;
-
-					// Cache tasks
-					int activeTaskIndex = 0;
-					if (ped->m_pIntelligence)
+					PedExtended& xdata = extData.Get(ped);
+					if (&xdata != nullptr)
 					{
-						CTaskManager* taskMgr = &ped->m_pIntelligence->m_TaskMgr;
-						for (int i = 0; i < 5; i++)
-						{
-							CTask* task = taskMgr->m_aPrimaryTasks[i];
-							while (task)
-							{
-								CacheOnePedTask(ped, xdata, activeTaskIndex, task, false);
-								task = task->GetSubTask();
-							}
-						}
+						// Reset AI flags
+						xdata.aiFlagsIntValue = 0;
 
-						for (int i = 0; i < 5; i++)
+						// Cache tasks
+						int activeTaskIndex = 0;
+						if (ped->m_pIntelligence)
 						{
-							CTask* task = taskMgr->m_aSecondaryTasks[i];
-							while (task)
+							CTaskManager* taskMgr = &ped->m_pIntelligence->m_TaskMgr;
+							for (int i = 0; i < 5; i++)
 							{
-								CacheOnePedTask(ped, xdata, activeTaskIndex, task, true);
-								task = task->GetSubTask();
+								CTask* task = taskMgr->m_aPrimaryTasks[i];
+								while (task)
+								{
+									CacheOnePedTask(ped, xdata, activeTaskIndex, task, false);
+									task = task->GetSubTask();
+								}
+							}
+
+							for (int i = 0; i < 5; i++)
+							{
+								CTask* task = taskMgr->m_aSecondaryTasks[i];
+								while (task)
+								{
+									CacheOnePedTask(ped, xdata, activeTaskIndex, task, true);
+									task = task->GetSubTask();
+								}
 							}
 						}
+						if (activeTaskIndex < 31) xdata.activeTasks[activeTaskIndex] = -1; // set terminator
 					}
-					if (activeTaskIndex < 31) xdata.activeTasks[activeTaskIndex] = -1; // set terminator
 				}
 			}
 
@@ -940,13 +942,14 @@ public:
 			{
 				if (CPed* ped = pedsPool->GetAt(index))
 				{
-					PedExtended& xdata = extData.Get(ped);
-
-					// Reset last damage;
-					xdata.lastDamageEntity = nullptr;
-					xdata.lastDamageWeapon = 0;
-					xdata.lastDamagePart = 0;
-					xdata.lastDamageIntensity = 0.0f;
+					PedExtended &xdata = extData.Get(ped);
+					if (&xdata != nullptr) {
+						// Reset last damage;
+						xdata.lastDamageEntity = nullptr;
+						xdata.lastDamageWeapon = 0;
+						xdata.lastDamagePart = 0;
+						xdata.lastDamageIntensity = 0.0f;
+					}
 				}
 			}
 			// Reset vehicle data per frame
@@ -955,12 +958,14 @@ public:
 			{
 				if (CVehicle* vehicle = vehsPool->GetAt(index))
 				{
-					VehExtended& xdata = vehExtData.Get(vehicle);
+					VehExtended &xdata = vehExtData.Get(vehicle);
 
-					// Reset last damage;
-					xdata.lastDamagePed = nullptr;
-					xdata.lastDamageType = 0;
-					xdata.lastDamageIntensity = 0.0f;
+					if (&xdata) {
+						// Reset last damage;
+						xdata.lastDamagePed = nullptr;
+						xdata.lastDamageType = 0;
+						xdata.lastDamageIntensity = 0.0f;
+					}
 				}
 			}
 			controllerMode = ReadMemory<uint8_t>(0x47F399, false);
@@ -1044,7 +1049,7 @@ public:
 			// -- Render objects
 			if (ped->m_bIsVisible && ped->m_pRwObject)
 			{
-				if (xdata.renderObjects.size() > 0)
+				if (&xdata != nullptr && xdata.renderObjects.size() > 0)
 				{
 					for (RenderObject *renderObject : xdata.renderObjects)
 					{
@@ -1159,7 +1164,7 @@ public:
 		Events::pedDtorEvent.before += [](CPed *ped)
 		{
 			PedExtended &data = extData.Get(ped);
-			if (&data && data.renderObjects.size() > 0)
+			if (&data != nullptr && data.renderObjects.size() > 0)
 			{
 				DeleteAllRenderObjectsFromChar(data);
 			}
@@ -1242,11 +1247,13 @@ public:
 			CPedDamageResponseCalculator *damageCalculator = (CPedDamageResponseCalculator *)regs.ebp;
 			if (damageCalculator->m_fDamageFactor != 0.0f) {
 				CPed* ped = (CPed*)regs.esi;
-				PedExtended& data = extData.Get(ped);
-				data.lastDamageEntity = damageCalculator->m_pDamager;
-				data.lastDamageIntensity = damageCalculator->m_fDamageFactor;
-				data.lastDamageWeapon = damageCalculator->m_weaponType;
-				data.lastDamagePart = damageCalculator->m_pedPieceType;
+				PedExtended &data = extData.Get(ped);
+				if (&data != nullptr) {
+					data.lastDamageEntity = damageCalculator->m_pDamager;
+					data.lastDamageIntensity = damageCalculator->m_fDamageFactor;
+					data.lastDamageWeapon = damageCalculator->m_weaponType;
+					data.lastDamagePart = damageCalculator->m_pedPieceType;
+				}
 
 				if (scriptEvents[ScriptEvent::List::CharDamage].size() > 0) {
 					int ref = CPools::GetPedRef(ped);
@@ -1262,9 +1269,11 @@ public:
 			if (intensity != 0.0f) {
 				CVehicle *vehicle = (CVehicle *)regs.esi;
 				VehExtended &data = vehExtData.Get(vehicle);
-				data.lastDamagePed = (CEntity *)regs.edi;
-				data.lastDamageType = regs.ebx;
-				data.lastDamageIntensity = intensity;
+				if (&data != nullptr) {
+					data.lastDamagePed = (CEntity*)regs.edi;
+					data.lastDamageType = regs.ebx;
+					data.lastDamageIntensity = intensity;
+				}
 
 				if (scriptEvents[ScriptEvent::List::CarWeaponDamage].size() > 0) {
 					int ref = CPools::GetVehicleRef(vehicle);
@@ -1281,7 +1290,7 @@ public:
 			regs.ecx = *(uint32_t*)(regs.ebx + 0x534); //mov     ecx, [ebx+534h]
 			CPed *ped = (CPed *)regs.ebx;
 			PedExtended &data = extData.Get(ped);
-			if (data.ignoreDamageAnims) {
+			if (&data != nullptr && data.ignoreDamageAnims) {
 				*(uintptr_t*)(regs.esp - 0x4) = 0x4B4019; // ret
 			}
 		});

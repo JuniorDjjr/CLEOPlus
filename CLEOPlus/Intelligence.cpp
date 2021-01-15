@@ -152,15 +152,17 @@ OpcodeResult WINAPI IS_CHAR_DOING_TASK_ID(CScriptThread* thread)
 	PedExtended &data = extData.Get(ped);
 	int taskId = CLEO_GetIntOpcodeParam(thread);
 
-	for (int i = 0; i < 32; ++i) {
-		int activeTaskId = data.activeTasks[i];
-		if (activeTaskId != -1) {
-			if (activeTaskId == taskId) {
-				bResult = true;
-				break;
+	if (&data != nullptr) {
+		for (int i = 0; i < 32; ++i) {
+			int activeTaskId = data.activeTasks[i];
+			if (activeTaskId != -1) {
+				if (activeTaskId == taskId) {
+					bResult = true;
+					break;
+				}
 			}
+			else break;
 		}
-		else break;
 	}
 	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(bResult);
 	return OR_CONTINUE;
@@ -176,7 +178,7 @@ OpcodeResult WINAPI GET_CHAR_TASK_POINTER_BY_ID(CScriptThread* thread)
 
 	int activeTaskIndex = 0;
 	CTask* task;
-	if (ped->m_pIntelligence)
+	if (ped->m_pIntelligence && &data != nullptr)
 	{
 		CTaskManager* taskMgr = &ped->m_pIntelligence->m_TaskMgr;
 		for (int i = 0; i < 5; i++)
@@ -220,7 +222,7 @@ OpcodeResult WINAPI GET_CHAR_KILL_TARGET_CHAR(CScriptThread* thread)
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
 	CEntity *entity = nullptr;
 	PedExtended &data = extData.Get(ped);
-	entity = data.killTargetPed;
+	if (&data != nullptr) entity = data.killTargetPed;
 	if (reinterpret_cast<int>(entity) == -1 && ped->IsPlayer()) {
 		entity = reinterpret_cast<CPlayerPed*>(ped)->m_pPlayerTargettedPed;
 	}
@@ -238,7 +240,7 @@ OpcodeResult WINAPI IS_CHAR_USING_GUN(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
 	PedExtended &xdata = extData.Get(ped);
-	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(xdata.aiFlags.bUsingGun);
+	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(&xdata != nullptr && xdata.aiFlags.bUsingGun);
 	return OR_CONTINUE;
 }
 
@@ -247,16 +249,16 @@ OpcodeResult WINAPI IS_CHAR_FIGHTING(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
 	PedExtended &xdata = extData.Get(ped);
-	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(xdata.aiFlags.bFighting);
+	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(&xdata != nullptr && xdata.aiFlags.bFighting);
 	return OR_CONTINUE;
 }
-
+ 
 // 0E48=1,is_char_fallen_on_ground %1d%
 OpcodeResult WINAPI IS_CHAR_FALLEN_ON_GROUND(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
 	PedExtended &xdata = extData.Get(ped);
-	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(xdata.aiFlags.bFallenOnGround);
+	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(&xdata != nullptr && xdata.aiFlags.bFallenOnGround);
 	return OR_CONTINUE;
 }
 
@@ -265,7 +267,7 @@ OpcodeResult WINAPI IS_CHAR_ENTERING_ANY_CAR(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
 	PedExtended &xdata = extData.Get(ped);
-	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(xdata.aiFlags.bEnteringAnyCar);
+	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(&xdata != nullptr && xdata.aiFlags.bEnteringAnyCar);
 	return OR_CONTINUE;
 }
 
@@ -274,7 +276,7 @@ OpcodeResult WINAPI IS_CHAR_EXITING_ANY_CAR(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
 	PedExtended &xdata = extData.Get(ped);
-	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(xdata.aiFlags.bExitingAnyCar);
+	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(&xdata != nullptr && xdata.aiFlags.bExitingAnyCar);
 	return OR_CONTINUE;
 }
 
@@ -285,7 +287,7 @@ OpcodeResult WINAPI IS_CHAR_PLAYING_ANY_SCRIPT_ANIMATION(CScriptThread* thread)
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
 	int includeAnims = CLEO_GetIntOpcodeParam(thread);
 	PedExtended &xdata = extData.Get(ped);
-	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(CheckPlayingAnyAnim(xdata, includeAnims));
+	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(&xdata != nullptr && CheckPlayingAnyAnim(xdata, includeAnims));
 	return OR_CONTINUE;
 }
 
@@ -296,7 +298,7 @@ OpcodeResult WINAPI IS_CHAR_DOING_ANY_IMPORTANT_TASK(CScriptThread* thread)
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
 	int includeAnims = CLEO_GetIntOpcodeParam(thread);
 	PedExtended &xdata = extData.Get(ped);
-	if (xdata.aiFlags.bRootTaskIsntImportant && !xdata.aiFlags.bKillingSomething) {
+	if (&xdata != nullptr && xdata.aiFlags.bRootTaskIsntImportant && !xdata.aiFlags.bKillingSomething) {
 		bResult = CheckPlayingAnyAnim(xdata, includeAnims);
 	}
 	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(bResult);

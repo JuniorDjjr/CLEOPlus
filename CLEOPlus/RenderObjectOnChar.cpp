@@ -47,7 +47,9 @@ OpcodeResult WINAPI CREATE_RENDER_OBJECT_TO_CHAR_BONE(CScriptThread* thread)
 			renderObject = new RenderObject(ped, 0, rwFrame, rpAtomic, model, boneId, x, y, z, rx, ry, rz, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
 			PedExtended &data = extData.Get(ped);
-			data.renderObjects.push_back(renderObject);
+			if (&data != nullptr) {
+				data.renderObjects.push_back(renderObject);
+			}
 		}
 	}
 	else
@@ -61,7 +63,9 @@ OpcodeResult WINAPI CREATE_RENDER_OBJECT_TO_CHAR_BONE(CScriptThread* thread)
 			renderObject = new RenderObject(ped, rpClump, 0, 0, model, boneId, x, y, z, rx, ry, rz, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
 			PedExtended &data = extData.Get(ped);
-			data.renderObjects.push_back(renderObject);
+			if (&data != nullptr) {
+				data.renderObjects.push_back(renderObject);
+			}
 		}
 	}
 
@@ -77,7 +81,7 @@ OpcodeResult WINAPI DELETE_RENDER_OBJECT(CScriptThread* thread)
 	if (renderObject)
 	{
 		PedExtended &data = extData.Get((CPed*)renderObject->owner);
-		if (&data)
+		if (&data != nullptr)
 		{
 			for (std::vector<RenderObject*>::iterator iter = data.renderObjects.begin(); iter != data.renderObjects.end(); ++iter)
 			{
