@@ -18,7 +18,7 @@
 #include "rw/rpworld.h"
 #include <set>
  
-constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01000600;
+constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01000700;
 
 using namespace plugin;
 using namespace std;
@@ -960,7 +960,7 @@ public:
 				{
 					VehExtended &xdata = vehExtData.Get(vehicle);
 
-					if (&xdata) {
+					if (&xdata != nullptr) {
 						// Reset last damage;
 						xdata.lastDamagePed = nullptr;
 						xdata.lastDamageType = 0;

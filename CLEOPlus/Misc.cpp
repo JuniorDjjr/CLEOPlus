@@ -1260,20 +1260,20 @@ OpcodeResult WINAPI GET_CHAR_DAMAGE_LAST_FRAME(CScriptThread* thread)
 	int ref = CLEO_GetIntOpcodeParam(thread);
 	CPed *ped = CPools::GetPed(ref);
 	PedExtended &data = extData.Get(ped);
-	if (&data)
-	{
-		CLEO_SetIntOpcodeParam(thread, -1);
-		CLEO_SetIntOpcodeParam(thread, -1);
-		CLEO_SetIntOpcodeParam(thread, -1);
-		CLEO_SetFloatOpcodeParam(thread, 0.0f);
-	}
-	else
+	if (&data != nullptr)
 	{
 		CLEO_SetIntOpcodeParam(thread, (DWORD)data.lastDamageEntity);
 		CLEO_SetIntOpcodeParam(thread, data.lastDamageWeapon);
 		CLEO_SetIntOpcodeParam(thread, data.lastDamagePart);
 		CLEO_SetFloatOpcodeParam(thread, data.lastDamageIntensity);
 		if (data.lastDamageIntensity > 0.0f) bResult = true;
+	}
+	else
+	{
+		CLEO_SetIntOpcodeParam(thread, -1);
+		CLEO_SetIntOpcodeParam(thread, -1);
+		CLEO_SetIntOpcodeParam(thread, -1);
+		CLEO_SetFloatOpcodeParam(thread, 0.0f);
 	}
 	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(bResult);
 	return OR_CONTINUE;
@@ -1289,11 +1289,6 @@ OpcodeResult WINAPI GET_CAR_WEAPON_DAMAGE_LAST_FRAME(CScriptThread* thread)
 	int pedReturn = -1;
 
 	if (&data != nullptr) {
-		CLEO_SetIntOpcodeParam(thread, pedReturn);
-		CLEO_SetIntOpcodeParam(thread, -1);
-		CLEO_SetFloatOpcodeParam(thread, 0.0f);
-	}
-	else {
 		if (data.lastDamagePed) {
 			pedReturn = CPools::GetPedRef((CPed*)data.lastDamagePed);
 		}
@@ -1302,6 +1297,11 @@ OpcodeResult WINAPI GET_CAR_WEAPON_DAMAGE_LAST_FRAME(CScriptThread* thread)
 		CLEO_SetIntOpcodeParam(thread, pedReturn);
 		CLEO_SetIntOpcodeParam(thread, data.lastDamageType);
 		CLEO_SetFloatOpcodeParam(thread, data.lastDamageIntensity);
+	}
+	else {
+		CLEO_SetIntOpcodeParam(thread, pedReturn);
+		CLEO_SetIntOpcodeParam(thread, -1);
+		CLEO_SetFloatOpcodeParam(thread, 0.0f);
 	}
 	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(bResult);
 	return OR_CONTINUE;
