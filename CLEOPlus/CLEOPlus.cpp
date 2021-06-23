@@ -18,7 +18,7 @@
 #include "rw/rpworld.h"
 #include <set>
  
-constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01000700;
+constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01000800;
 
 using namespace plugin;
 using namespace std;
@@ -49,6 +49,8 @@ uintptr_t startPickups;
 uintptr_t endPickups;
 uint8_t sizeOfCPickup;
 uint32_t sizePickups;
+int* CTheScripts__ScriptConnectLodsObjects;
+uint32_t sizeScriptConnectLodsObjects;
 bool disableCamControl = false;
 bool disabledCamControlLastFrame = false;
 bool controllerMode = false;
@@ -75,6 +77,7 @@ VehFuncs_Ext_GetVehicleDummyPosAdapted vehFuncs_Ext_GetVehicleDummyPosAdapted;
 tScriptEffectSystem *ScriptEffectSystemArray;
 
 CdeclEvent <AddressList<0x5D19CE, H_CALL>, PRIORITY_AFTER, ArgPickNone, void()> loadingEvent;
+CdeclEvent <AddressList<0x5D1907, H_CALL>, PRIORITY_BEFORE, ArgPickNone, void()> loadingEventAfterPoolsLoaded;
 CdeclEvent <AddressList<0x53C6DB, H_CALL>, PRIORITY_BEFORE, ArgPickNone, void()> restartEvent;
 CdeclEvent <AddressList<0x748E1C, H_CALL>, PRIORITY_AFTER, ArgPickNone, void()> newGameFirstStartEvent;
 CdeclEvent <AddressList<0x618F51, H_CALL>, PRIORITY_BEFORE, ArgPickNone, void()> startSaveGame;
@@ -874,9 +877,11 @@ public:
 			sizeOfCPickup = ReadMemory<uint8_t>(0x4590DF + 2, true);
 			sizePickups = (endPickups - (uintptr_t)startPickups) / sizeOfCPickup;
 
+			CTheScripts__ScriptConnectLodsObjects = ReadMemory<int*>(0x5D5225 + 1, true);
+			sizeScriptConnectLodsObjects = ReadMemory<uint32_t>(0x5D522A + 1, true) * 2;
+
 			ApplyPatches();
 		};
-
 
 		// ----------------------------------------------------------------------------------------
 
@@ -1111,12 +1116,28 @@ public:
 		startSaveGame += []
 		{
 			currentSaveSlot = FrontEndMenuManager.m_bSelectedSaveGame;
-			for (auto scriptEvent : scriptEvents[ScriptEvent::List::SaveConfirmation]) scriptEvent->RunScriptEvent(currentSaveSlot);
+			for (auto scriptEvent : scriptEvents[ScriptEvent::List::SaveConfirmation]) scriptEvent->RunScriptEvent(currentSaveSlot + 1);
 		};
 
 		loadingEvent += []
 		{
 			currentSaveSlot = FrontEndMenuManager.m_bSelectedSaveGame;
+		};
+
+		// Fixes corrupted old saves with deleted LOD objects
+		loadingEventAfterPoolsLoaded.before += []
+		{
+			for (int i = 0; i < sizeScriptConnectLodsObjects; ++i)
+			{
+				if (CTheScripts__ScriptConnectLodsObjects[i] != -1)
+				{
+					CObject* obj = CPools::GetObject(CTheScripts__ScriptConnectLodsObjects[i]);
+					if ((uintptr_t)obj < 0x00400000)
+					{
+						CTheScripts__ScriptConnectLodsObjects[i] = -1;
+					}
+				}
+			}
 		};
 
 		newGameFirstStartEvent += []
@@ -1203,9 +1224,13 @@ public:
 		});
 
 		Events::objectDtorEvent.before += [](CObject *object) {
+			int ref = CPools::GetObjectRef(object);
 			if (scriptEvents[ScriptEvent::List::ObjectCreate].size() > 0) {
-				int ref = CPools::GetObjectRef(object);
 				for (auto scriptEvent : scriptEvents[ScriptEvent::List::ObjectDelete]) scriptEvent->RunScriptEvent(ref);
+			}
+			for (int i = 0; i < sizeScriptConnectLodsObjects; ++i)
+			{
+				if (CTheScripts__ScriptConnectLodsObjects[i] == ref) CTheScripts__ScriptConnectLodsObjects[i] = -1;
 			}
 		};
 
@@ -1245,7 +1270,7 @@ public:
 		{
 			regs.eax = *(uint32_t*)(regs.esi + 0x540); //mov     eax, [esi+540h]
 			CPedDamageResponseCalculator *damageCalculator = (CPedDamageResponseCalculator *)regs.ebp;
-			if (damageCalculator->m_fDamageFactor != 0.0f) {
+			//if (damageCalculator-> != 0.0f) {
 				CPed* ped = (CPed*)regs.esi;
 				PedExtended &data = extData.Get(ped);
 				if (&data != nullptr) {
@@ -1259,7 +1284,7 @@ public:
 					int ref = CPools::GetPedRef(ped);
 					for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharDamage]) scriptEvent->RunScriptEvent(ref);
 				}
-			}
+			//}
 		});
 
 		// Vehicle weapon damage event
@@ -1294,6 +1319,43 @@ public:
 				*(uintptr_t*)(regs.esp - 0x4) = 0x4B4019; // ret
 			}
 		});
+
+		/*if (gameVersion == GAME_10US_HOODLUM)
+		{
+			// Avoid deleted script LOD crash (Hoodlum)
+			injector::MakeInline<0x156DA35, 0x156DA35 + 6>([](injector::reg_pack& regs)
+			{
+				//mov     [eax+30h], esi ; mov     al, [esi+34h]
+				if (regs.eax < 0x00400000)
+				{
+					*(uint32_t*)(regs.esp - 0x4) = 0x156DA59;
+				}
+				else
+				{
+					*(uint32_t*)(regs.eax + 0x30) = regs.esi;
+					regs.eax = *(uint8_t*)(regs.esi + 0x34);
+				}
+			});
+		}
+		else
+		{
+			if (gameVersion == GAME_10US_COMPACT)
+			{
+				// Avoid deleted script LOD crash (Compact)
+				injector::MakeInline<0x470A65, 0x470A65 + 6>([](injector::reg_pack& regs)
+				{
+					if (regs.eax < 0x00400000)
+					{
+						*(uint32_t*)(regs.esp - 0x4) = 0x470A89;
+					}
+					else
+					{
+						*(uint32_t*)(regs.eax + 0x30) = regs.esi;
+						regs.eax = *(uint8_t*)(regs.esi + 0x34);
+					}
+				});
+			}
+		}*/
 
 		//-----------------------------------------------------------------------------------------
 
