@@ -1,0 +1,43 @@
+Instale o ".cs" e digite os comandos abaixo para executar certos testes.
+O arquivo .cs pode ou não ser compatível com a descompilação do Sanny Builder, pois foi compilado com gta3script.
+
+"P1"
+"EXIT" para sair
+Mostra o texto em cada evento de desenho (DRAW_EVENT).
+Isto pode ser útil se todos os eventos de desenho estão sendo chamados no seu jogo.
+É comum que mods de hud, como GTA V Hud e Classic Hud não suporte certos eventos, por exemplo, o de desenhar no radar/minimapa.
+Se você cria mods, perceba que os mais "confiáveis" são "BEFORE_HUD", "AFTER_HUD" e "AFTER_FADE". Evite usar eventos relacionados com radar e blips.
+
+"P2"
+Comando de ação para sair (Triângulo ou F/Enter)
+Cria um objeto de pichação e o posiciona na superfície na frente da câmera.
+
+"P3"
+Desenha duas sprites com o uso de máscara. Você pode movê-las com os números do numpad e - +
+Perceba que pode não funcionar no RenderHook, limitação dele.
+
+"P4"
+Cria um novo script baseado numa label e em seguida altera o valor de uma variável desse novo script.
+"EXIT" para fechar o novo script.
+
+"P5"
+Simplesmente fecha o script de teste. Perceba que o script "filho" criado com P4 também é fechado.
+
+"P6"
+Inicia uma espécie de editor para colocar objetos no CJ. Foi programado de maneira rápida somente para testes, portanto o uso é bem ruim.
+Para usar, segure - + (do numpad) e em seguida pressione as teclas B M P R S D H L XYZ onde cada tecla indica alguma ação.
+Por exemplo segurar + e pressionar B aumenta o ID do Bone, M para o id do modelo etc. P com X Y ou Z para mudar a posição.
+Você pode fazer várias combinações, como segurar + junto com R e X para aumentar a rotação X (se o seu teclado não tem antighost, o problema é seu).
+Há também como segurar SHIFT para subir ou abaixar mais rápido.
+
+"P7"
+"EXIT" para sair
+Pressione Y para simular um tiro utilizando a arma atual. É um exemplo útil para mods de cover etc. Perceba que o tiro sempre sai na frente da pessoa, não da arma, pois é assim que o jogo funciona.
+
+"P8"
+"EXIT" para sair
+Renderiza uma "imagem" com um gradient noise. Você pode usar + e - do numpad com as letras que aparecem na interface para ajustar os parâmetros.
+Note que isto é um processo muito pesado não por causa do gradient noise, mas sim porque, por ser somente um teste, foi utilizado 100x100 comandos DRAW_TEXTURE_PLUS, um pra cada "pixel" para formar a imagem.
+Também desative SCRLog para evitar lag. Só use isto para testar os valores do perlin noise.
+
+

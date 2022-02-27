@@ -1,0 +1,312 @@
+
+********
+PT: ATENÇÃO!!! Sanny Builder implementou oficialmente a partir da v3.6.0, ou seja, você só precisa fazer isto se você, por algum motivo, ainda quer usar a versão antiga do SB.
+EN: ATTENTION!!! Sanny Builder officially implemented from v3.6.0, that is, you only need to do this if you, for some reason, still want to use the old SB version.
+********
+
+PT: Abra o "data/sa/SASCM.INI" localizado na pasta do Sanny Builder, e adicione:
+EN: Open the "data/sa/SASCM.INI" located in the Sanny Builder folder, and add it:
+
+
+0EA0=3,set_actor_second_player %1d% enable_camera %2d% separate_cars %3d%
+0EA1=1,disable_second_player_restore_camera %1d%
+0EA2=1,fix_two_players_separated_cars %1d%
+0B20=2,read_clipboard_data_to %1d% size %2d%
+0B21=2,write_clipboard_data_from %1d% size %2d%
+0E01=7,create_object_no_save %1o% at %2d% %3d% %4d% offset %5d% ground %6d% to %7d%
+0E02=1,set_car_generator %1d% no_save
+0D59=1,get_current_weather_to %1d%
+0E04=1,get_next_weather_to %1d%
+0E05=1,set_next_weather_to %1d%
+0E06=1,get_rain_intensity %1d%
+0E07=1,set_rain_intensity %1d%
+0E40=1,get_current_hour %1d%
+0E41=1,get_current_minute %1d%
+0E6C=1,get_day_night_balance %1d%
+0E6D=1,get_underwaterness %1d%
+0EB0=1,get_forced_weather %1d%
+0E08=1,is_car_script_controlled %1d%
+0E09=1,mark_car_as_needed %1d%
+0E0A=1,is_char_script_controlled %1d%
+0E0B=1,mark_char_as_needed %1d%
+0E0C=1,is_object_script_controlled %1d%
+0E0D=1,mark_object_as_needed %1d%
+0E0E=2,get_current_resolution_to %1d% %2d%
+0E0F=4,get_fixed_xy_aspect_ratio %1d% %2d% to %3d% %4d%
+0E3F=9,convert_3d_to_screen_2d %1d% %2d% %3d% checkNearClip %4d% checkFarClip %5d% store_2d_to %6d% %7d% size_to %8d% %9d%
+0EB8=0,is_radar_visible
+0EB9=0,is_hud_visible
+0EC7=1,get_fade_alpha %1d%
+0E10=0,is_mouse_wheel_up
+0E11=0,is_mouse_wheel_down
+0E23=1,get_mouse_sensibility_to %1d%
+0E3D=1,is_key_just_pressed %1d%
+0E3E=2,is_button_just_pressed %1d% button %2d%
+0E60=2,set_camera_control %1d% %2d% 
+0E67=1,is_aim_button_pressed %1d%
+0E68=2,set_player_control_pad %1d% %2d% 
+0E69=2,set_player_control_pad_movement %1d% %2d% 
+0E8D=1,is_any_fire_button_pressed %1d%
+0E6E=0,is_select_menu_just_pressed
+0ED0=0,return_script_event
+0ED1=3,set_script_event_save_confirmation %1d% label %2p% var_slot %3d%
+0ED2=3,set_script_event_char_delete %1d% label %2p% var_char %3d%
+0ED3=3,set_script_event_char_create %1d% label %2p% var_char %3d%
+0ED4=3,set_script_event_car_delete %1d% label %2p% var_car %3d%
+0ED5=3,set_script_event_car_create %1d% label %2p% var_car %3d%
+0ED6=3,set_script_event_object_delete %1d% label %2p% var_object %3d%
+0ED7=3,set_script_event_object_create %1d% label %2p% var_object %3d%
+0ED8=3,set_script_event_on_menu %1d% label %2p% var_just_paused %3d%
+0EDA=3,set_script_event_char_process %1d% label %2p% var_char %3d%
+0EDB=3,set_script_event_car_process %1d% label %2p% var_car %3d%
+0EDC=3,set_script_event_object_process %1d% label %2p% var_object %3d%
+0EDD=3,set_script_event_building_process %1d% label %2p% var_building %3d%
+0EDE=3,set_script_event_char_damage %1d% label %2p% var_char %3d%
+0EDF=3,set_script_event_car_weapon_damage %1d% label %2p% var_car %3d%
+0EE0=6,set_script_event_bullet_impact %1d% label %2p% var_owner %3d% var_victim %4d% var_weapon %5d% var_colpoint %6d%
+0E12=2,get_vehicle %1d% subclass_to %2d%
+0E13=2,get_entity %1d% type_to %2d%
+0E14=3,init_extended_char_vars %1d% id %2d% new_vars %3d%
+0E15=4,set_extended_char_var %1d% id %2d% var %3d% value %4d%
+0E16=4,get_extended_char_var %1d% id %2d% var %3d% to %4d%
+0E17=3,init_extended_car_vars %1d% id %2d% new_vars %3d%
+0E18=4,set_extended_car_var %1d% id %2d% var %3d% value %4d%
+0E19=4,get_extended_car_var %1d% id %2d% var %3d% to %4d%
+0E1A=3,init_extended_object_vars %1d% id %2d% new_vars %3d%
+0E1B=4,set_extended_object_var %1d% id %2d% var %3d% value %4d%
+0E1C=4,get_extended_object_var %1d% id %2d% var %3d% to %4d%
+0E1D=0,is_on_mission
+0E20=0,is_on_samp
+0E25=0,is_on_cutscene
+0E24=4,fix_char %1d% ground %2d% brightness %3d% and_fade_in %4d%
+0E26=2,is_weapon %1d% fire_type %2d%
+0E2C=1,get_current_save_slot %1d%
+0E2D=0,is_game_first_start
+0E32=4,set_char_coordinates_simple %1d% coord %2d% %3d% %4d%
+0E45=1,frame_mod %1d%
+0E4D=1,random_percent %1d%
+0E59=2,get_trailer_from_car %1d% trailer %2d%
+0E5A=2,get_car_from_trailer %1d% store_to %2d%
+0E5B=7,get_car_dummy_coord %1d% dummy %2d% world_coords %3d% invert_x %4d% store_to %5d% %6d% %7d% // same as NewOpcodes but this is adapted to VehFuncs
+0E5D=1,is_cheat_active %1d%
+0E5E=3,change_player_money %1d% mode %2d% value %3d%
+0E5F=1,car_horn %1d%
+0D4C=2,%2d% = string %1s% length // keep NewOpcodes order
+0D4D=2,copy_string %1s% to %2d%
+0E00=2,get_car_alarm %1d% mode_to %2d%
+0E61=2,set_car_alarm %1d% mode %2d%
+0D39=2,%2d% = get_char_max_health %1d% // keep NewOpcodes order
+0E5C=2,get_player_health_percent %1d% store_to %2d%
+0E64=1,get_camera_mode %1d%
+0E65=2,get_car_collision_intensity %1d% store_to %2d%
+0E66=4,get_car_collision_coordinates %1d% store_to %2d% %3d% %4d%
+0E6F=-1,stream_custom_script_from_label %1p%
+0E70=1,get_last_created_custom_script %1d%
+0E71=2,get_object_centre_of_mass_to_base_of_model %1d% %2d%
+0E7F=2,get_model_type %1d% store_to %2d%
+0E80=5,is_string_equal %1s% %2s% max_size %3d% case_sensitive %4d% ignore_charactere %5s%
+0E81=1,is_string_comment %1s%
+0E82=2,does_car_have_part_node %1d% %2d%
+0E83=2,get_current_char_weaponinfo %1d% store_to %2d%
+0E84=3,get_weaponinfo %1d% skill %2d% store_to %3d%
+0E85=3,get_weaponinfo_models %1d% store_to %2d% %3d%
+0E86=2,get_weaponinfo_flags %1d% store_to %2d%
+0E87=2,get_weaponinfo_animgroup %1d% store_to %2d%
+0E88=2,get_weaponinfo_total_clip %1d% store_to %2d%
+0E89=2,get_weaponinfo_fire_type %1d% store_to %2d%
+0E8A=2,get_weaponinfo_slot %1d% store_to %2d%
+0E8B=2,get_char_weapon_state %1d% store_to %2d%
+0E8C=2,get_char_weapon_clip %1d% store_to %2d%
+0E8E=2,get_char_collision_surface %1d% store_to %2d%
+0E8F=2,get_char_collision_lighting %1d% store_to %2d%
+0E90=2,get_car_collision_surface %1d% store_to %2d%
+0E91=2,get_car_collision_lighting %1d% store_to %2d%
+0E92=1,is_char_really_in_air %1d%
+0E93=1,is_car_really_in_air %1d%
+0E94=1,is_object_really_in_air %1d%
+0E95=3,simulate_object_damage %1d% damage %2d% type %3d%
+0E98=1,request_priority_model %1d%
+0E99=0,load_all_priority_models_now
+0E9A=2,load_special_character_for_id %1d% name %2d%
+0E9B=1,unload_special_character_from_id %1d%
+0E9C=1,get_model_by_name %1d% store_id %2d%
+0E9D=1,get_model_available_by_name %1d%
+0E9E=3,get_model_available_by_name %1d% to %2d% store_to %3d%
+0E9F=0,remove_all_unused_models
+0EA3=1,remove_model_if_unused %1d%
+0EA4=1,is_char_on_fire %1d%
+0EA5=7,get_closest_cop_near_char %1d% radius %2d% alive %3d% in_car %4d% on_foot %5d% seen_in_front %6d% store_to %7d%
+0EA6=8,get_closest_cop_near_char %1d% %2d% %3d% radius %4d% alive %5d% in_car %6d% on_foot %7d% store_to %8d%
+0EA7=3,get_any_char_no_save_recursive %1d% progress_to %2d% char_to %3d%
+0EA8=3,get_any_car_no_save_recursive %1d% progress_to %2d% car_to %3d%
+0EA9=3,get_any_object_no_save_recursive %1d% progress_to %2d% object_to %3d%
+0EAA=1,set_char_arrested %1d%
+0EAB=2,get_char_pedstate %1d% store_to %2d%
+0EAC=6,get_char_proofs %1d% bullet %2d% fire %3d% explosion %4d% collision %5d% melee %6d%
+0EAD=6,get_car_proofs %1d% bullet %2d% fire %3d% explosion %4d% collision %5d% melee %6d%
+0EAE=6,get_object_proofs %1d% bullet %2d% fire %3d% explosion %4d% collision %5d% melee %6d%
+0EAF=1,is_char_weapon_visible_set %1d%
+0EB1=2,get_char_stat_id %1d% store_to %2d%
+0EB2=6,get_offset_from_camera_in_world_coords %1d% %2d% %3d% store_to %4d% %5d% %6d%
+0D0A=7,store_coords_to %5d% %6d% %7d% from_matrix %1d% with_offsets %2d% %3d% %4d% // keep NewOpcodes order
+0EB4=4,set_car_coordinates_simple %1d% position %2d% %3d% %4d%
+0EB5=5,get_char_damage_last_frame %1d% damager %2d% type %3d% part %4d% intensity %5d%
+0EB6=4,get_car_weapon_damage_last_frame %1d% char %2d% type %3d% intensity %4d%
+0EB7=0,is_on_scripted_cutscene
+0EBA=3,get_model_ped_type_and_stat %1d% store_to %2d% %3d%
+0EBB=1,pass_time %1d%
+0EBC=4,generate_random_int_in_range_with_seed %1d% min %2d% max %3d% store_to %4d%
+0EBD=4,generate_random_float_in_range_with_seed %1d% min %2d% max %3d% store_to %4d%
+0EBE=4,locate_camera_distance_to_coordinates %1d% %2d% %3d% radius %4d%
+0EBF=2,get_fx_system_pointer %1d% store_to %2d%
+0EC0=14,add_fx_system_particle %1d% coord %2d% %3d% %4d% vel %5d% %6d% %7d% size %8d% brightness %9d% rgba %10d% %11d% %12d% %13d% lastFactor %14d%
+0EC1=1,is_fx_system_available_with_name %1s%
+0EC2=1,set_string_upper %1s%
+0EC3=1,set_string_lower %1s%
+0EC4=4,string_find %1d% %2s% %3s% store_to %4d%
+0EC5=2,cut_string_at %1d% %2d%
+0EC6=3,is_string_character_at %1d% character %2d% index %3d%
+0EC8=2,get_char_random_seed %1d% store_to %2d%
+0EC9=2,get_car_random_seed %1d% store_to %2d%
+0ECA=2,get_object_random_seed %1d% store_to %2d%
+0ECB=2,get_char_move_state %1d% store_to %2d%
+0ECC=2,dont_delete_char_until_time %1d% %2d%
+0ECD=2,dont_delete_car_until_time %1d% %2d%
+0ECE=2,get_time_char_is_dead %1d% store_to %2d%
+0ECF=2,get_time_car_is_dead %1d% store_to %2d%
+0ED9=2,set_char_ignore_damage_anims %1d% %2d%
+0EE4=3,locate_char_distance_to_char %1d% char %2d% radius %3d%
+0EE5=3,locate_char_distance_to_car %1d% car %2d% radius %3d%
+0EE6=3,locate_char_distance_to_object %1d% object %2d% radius %3d%
+0EE7=3,locate_car_distance_to_object %1d% object %2d% radius %3d%
+0EE8=3,locate_car_distance_to_car %1d% car %2d% radius %3d%
+0EE9=3,locate_object_distance_to_object %1d% object %2d% radius %3d%
+0EEA=5,locate_char_distance_to_coordinates %1d% pos %2d% %3d% %4d% radius %5d%
+0EEB=5,locate_car_distance_to_coordinates %1d% pos %2d% %3d% %4d% radius %5d%
+0EEC=5,locate_object_distance_to_coordinates %1d% pos %2d% %3d% %4d% radius %5d%
+0EED=5,locate_object_distance_to_coordinates %1d% pos %2d% %3d% %4d% radius %5d%
+0EEE=4,get_entity_coordinates %1d% store_to %2d% %3d% %4d%
+0EEF=2,get_entity_heading %1d% store_to %2d%
+0EF5=1,is_car_owned_by_player %1d%
+0EF6=2,set_car_owned_by_player %1d% %2d%
+0EF8=2,get_model_info %1d% store_to %2d%
+0EF9=2,get_car_animgroup %1d% store_to %2d%
+0EFA=2,get_char_fear %1d% store_to %2d%
+0EFB=1,is_car_double_convertible %1d%
+0EFC=2,get_car_value %1d% store_to %2d%
+0EFD=3,get_car_pedals %1d% gas_to %2d% break_to %3d% 
+0EFE=2,get_loaded_library %1d% store_to %2d%
+0D0F=2,set_car_model_alpha %1d% alpha %2d%
+0D10=2,set_char_model_alpha %1d% alpha %2d%
+0D11=2,set_object_model_alpha %1d% alpha %2d%
+0D2D=8,get_local_time_year_to %1d% month_to %2d% day_of_week_to %3d% day_to %4d% hour_to %5d% minute_to %6d% second_to %7d% milliseconds_to %8d%
+0D2E=3,set_script %1d% var %2d% value %3d%
+0D2F=3,%3d% = get_script %1d% var %2d% // keep NewOpcodes order
+0D33=3,set_car %1d% door %2d% window_state %3d%
+0E1E=15,draw_texture_plus %1d% event %2d% pos %3d% %4d% size %5d% %6d% angle %7d% depth %8d% fix_aspect_ratio %9d% maskTrisCount %10d% maskTrisArray %11d% rgba %12d% %13d% %14d% %15d% 
+0E3C=2,get_texture_from_sprite %1d% store_to %2d%
+0E62=8,print %1s% event %2d% at %3d% %4d% scale %5d% %6d% fixAR %7d% style %8d%
+0E63=27,print %1s% event %2d% at %3d% %4d% scale %5d% %6d% fixAR %7d% style %8d% prop %9d% align %10d% wrap %11d% justify %12d% color %13d% %14d% %15d% %16d% outline %17d% shadow %18d% dropColor %19d% %20d% %21d% %22d% background %23d% backColor %24d% %25d% %26d% %27d%
+0D1E=4,quat_slerp %1d% to %2d% lambda %3d% result %4d%
+0D16=2,set_matrix_rotation_from_quat %1d% rotation_from_quat %2d%
+0D17=2,set_quat_from_matrix %1d% to_quat %2d%
+0D18=6,rotate_quat_on_axis %1d% axis_vector %2d% %3d% %4d% angle %5d% combine_op %6d%
+0D19=2,get_normalised_quat %1d% to_quat %2d%
+0D1A=3,multiply_quats %3d% = quat %1d% * quat %2d% // keep NewOpcodes order
+0D24=5,set_quat %1d% elements %2d% %3d% %4d% %5d%
+0D29=5,get_quat %1d% elements_to %2d% %3d% %4d% %5d%
+0D01=6,rotate_matrix %1d% on_axis %2d% %3d% %4d% angle %5d% combine_op %6d%
+0D02=2,%2d% = matrix %1d% x_angle // keep NewOpcodes order
+0D03=2,%2d% = matrix %1d% y_angle // keep NewOpcodes order
+0D04=2,%2d% = matrix %1d% z_angle // keep NewOpcodes order
+0E1F=4,ease %1d% mode %2d% way %3d% to %4d%
+0E27=5,get_angle_from_two_coords %1d% %2d% and %3d% %4d% to %5d%
+0E03=2,perlin_noise %1d% store_to %2d%
+0E29=6,perlin_noise %1d% frequency %2d% amplitude %3d% lacunarity %4d% persistence %5d% store_to %6d%
+0EF0=6,get_coord_from_angled_distance %1d% %2d% angle %3d% dist %4d% store_to %5d% %6d%
+0EF1=7,perlin_noise_fractal_2d %1d% %2d% frequency %3d% amplitude %4d% lacunarity %5d% persistence %6d% store_to %7d%
+0EF2=8,perlin_noise_fractal_3d %1d% %2d% %3d% frequency %4d% amplitude %5d% lacunarity %6d% persistence %7d% store_to %8d%
+0EF4=4,clamp_float %1d% min %2d% max %3d% store_to %4d%
+0EF7=4,clamp_int %1d% min %2d% max %3d% store_to %4d%
+0EB3=4,convert_direction_to_quat %1d% dir %2d% %3d% %4d%
+0EF3=4,lerp %1d% %2d% %3d% store_to %4d%
+0E21=1,get_audio_sfx_volume %1d%
+0E22=1,get_audio_radio_volume %1d%
+0E3B=2,get_audiostream_internal %1d% store_to %2d%
+0E28=4,write_struct %1d% offset %2d% size %3d% value %4d%
+0D4E=4,%4d% = read_struct %1d% offset %2d% size %3d% // keep newOpcodes ordering for SB
+0D4F=4,write_struct %1d% offset %2d% size %3d% value %4d% // newOpcodes version of 0E28, the original one doesn't work, this is a fall off
+0D27=3,copy_memory %1d% to %2d% size %3d%
+0D37=3,write_struct_param %1d% param %2d% value %3d%
+0D38=3,%3d% = read_struct_param %1d% param %2d% // keep newOpcodes ordering for SB
+0E6A=2,make_nop %1d% size %2d%
+0EE2=-1,read_struct_offset_multi %1d% offset %2d% total %3d% size %4d%
+0EE3=-1,write_struct_offset_multi %1d% offset %2d% count %3d% size %4d%
+0E2A=9,add_cleo_blip %1d% position %2d% %3d% is_short %4d% RGBA %5d% %6d% %7d% %8d% store_to %9d%
+0E2B=1,remove_cleo_blip %1d%
+0E2E=10,create_render_object_to_char_bone %1d% model %2d% bone %3d% offset %4d% %5d% %6d% rotation %7d% %8d% %9d% store_to %10d%
+0E2F=1,delete_render_object %1d%
+0E30=4,set_render_object_auto_hide %1d% dead %2d% weapon %3d% car %4d%
+0E31=2,set_render_object_visible %1d% %2d%
+0E35=4,set_render_object_position %1d% %2d% %3d% %4d%
+0E36=4,set_render_object_rotation %1d% %2d% %3d% %4d%
+0E37=4,set_render_object_scale %1d% %2d% %3d% %4d%
+0E3A=5,set_render_object_distortion %1d% %2d% %3d% %4d% %5d%
+0E33=5,get_pickup_this_coord %1d% %2d% %3d% only_available %4d% store_to %5d%
+0E34=2,get_pickup_model %1d% %2d%
+0E38=2,get_pickup_pointer %1d% store_to %2d%
+0E39=2,get_pickup_type %1d% store_to %2d%
+0E4E=2,display_onscreen_timer_local %1d% direction %2d%
+0E4F=3,display_onscreen_timer_with_string_local %1d% direction %2d% GXT %3d%
+0E50=2,display_onscreen_counter_local %1d% direction %2d%
+0E51=3,display_onscreen_counter_with_string_local %1d% direction %2d% GXT %3d%
+0E52=2,display_two_onscreen_counters_local %1d% max_value %2d%
+0E53=3,display_two_onscreen_counters_with_string_local %1d% max_value %2d% GXT %3d%
+0E54=1,clear_onscreen_timer_local %1d%
+0E55=1,clear_onscreen_counter_local %1d%
+0E56=2,set_onscreen_counter_flash_when_first_displayed_local %1d% flash %2d%
+0E57=2,set_timer_beep_countdown_time_local %1d% secs %2d%
+0E58=2,set_onscreen_counter_colour_local %1d% color %2d%
+0E42=2,is_char_doing_task_id %1d% %2d%
+0E43=3,get_char_task_pointer_by_id %1d% %2d% store_to %3d%
+0E44=2,get_char_kill_target_char %1d% store_to %2d%
+0E46=1,is_char_using_gun %1d%
+0E47=1,is_char_fighting %1d%
+0E48=1,is_char_fallen_on_ground %1d%
+0E49=1,is_char_entering_any_car %1d%
+0E4A=1,is_char_exiting_any_car %1d%
+0E4B=2,is_char_playing_any_script_animation %1d% include_anims %2d%
+0E4C=2,is_char_doing_any_important_task %1d% include_anims %2d%
+0E96=1,clear_char_primary_tasks %1d%
+0E97=1,clear_char_secondary_tasks %1d%
+0EFF=3,get_char_simplest_active_task %1d% id_to %2d% pointer_to %3d%
+0D3A=20,get_collision_between_points %1d% %2d% %3d% and %4d% %5d% %6d% flags %7d% %8d% %9d% %10d% %11d% %12d% %13d% %14d% ignore_entity %15d% store_point_to %17d% %18d% %19d% entity_to %20d% colpoint_data_to %16d% // keep NewOpcodes order
+0D3B=4,get_colpoint_normal_vector %1d% store_to %2d% %3d% %4d%
+0D3E=2,get_colpoint_depth %1d% store_to %2d%
+0D3C=2,get_colpoint_surface %1d% store_to %2d%
+0E6B=2,get_colpoint_lighting %1d% from_night %2d% store_to %3d%
+0EE1=4,get_colpoint_coordinates %1d% store_to %2d% %3d% %4d%
+0E72=2,create_list %1d% store_to %2d%
+0E73=1,delete_list %1d%
+0E74=2,list_add %1d% value %2d%
+0E75=2,list_remove_value %1d% value %2d%
+0E76=2,list_remove_index %1d% index %2d%
+0E77=2,get_list_size %1d% size %2d%
+0E78=3,get_list_value_by_index %1d% index %2d% store_to %3d%
+0E79=1,reset_list %1d%
+0E7A=3,get_list_string_value_by_index %1d% index %2d% store_to %3d%
+0E7B=2,list_add_string %1d% value %2d%
+0E7C=2,list_remove_string_value %1d% value %2d%
+0E7D=3,list_remove_index %1d% start %2d% end %3d%
+0E7E=1,reverse_list %1d%
+
+
+
+
+
+
+
+
+
+
+
