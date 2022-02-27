@@ -505,8 +505,8 @@ OpcodeResult WINAPI GET_LOCAL_TIME(CScriptThread* thread)
 
 // 0D2E=3,set_thread %1d% var %2d% to %3d%
 // 0D2E: set_thread 0@ var 10 to 10.0
-// SCR: SET_THREAD_VAR
-OpcodeResult WINAPI SET_THREAD_VAR(CScriptThread* thread)
+// SCR: SET_SCRIPT_VAR
+OpcodeResult WINAPI SET_SCRIPT_VAR(CScriptThread* thread)
 {
 	void *t, *value; unsigned int var; SCRIPT_VAR scrVal;
 	t = (void *)CLEO_GetIntOpcodeParam(thread);
@@ -519,8 +519,8 @@ OpcodeResult WINAPI SET_THREAD_VAR(CScriptThread* thread)
 
 // 0D2F=3,%3d% = get_thread %1d% var %2d%
 // 0D2F: 1@ = get_thread 0@ var 10
-// SCR: GET_THREAD_VAR
-OpcodeResult WINAPI GET_THREAD_VAR(CScriptThread* thread)
+// SCR: GET_SCRIPT_VAR
+OpcodeResult WINAPI GET_SCRIPT_VAR(CScriptThread* thread)
 {
 	void *t; unsigned int var;
 	t = (void *)CLEO_GetIntOpcodeParam(thread);
@@ -1472,15 +1472,15 @@ OpcodeResult WINAPI STRING_FIND(CScriptThread* thread)
 	std::string str = CLEO_ReadStringPointerOpcodeParam(thread, bufferA, 128);
 	std::string strFind = CLEO_ReadStringPointerOpcodeParam(thread, bufferB, 128);
 
-	size_t found = 0;
+	size_t found = string::npos;
 
 	if (mode == 0)
 	{
-		found = str.find_first_of(strFind);
+		found = str.find(strFind);
 	}
 	else if (mode == 1)
 	{
-		found = str.find_last_of(strFind);
+		found = str.rfind(strFind);
 	}
 
 	if (found != string::npos)

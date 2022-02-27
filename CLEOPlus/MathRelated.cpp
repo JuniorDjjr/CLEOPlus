@@ -32,6 +32,9 @@ OpcodeResult WINAPI GET_ANGLE_FROM_TWO_COORDS(CScriptThread* thread)
 	while (result < 0.0) {
 		result += 360.0;
 	}
+	if (_isnan(result)) {
+		result = 0.0f;
+	}
 
 	CLEO_SetFloatOpcodeParam(thread, result);
 	return OR_CONTINUE;
@@ -423,7 +426,11 @@ OpcodeResult WINAPI CLAMP_FLOAT(CScriptThread* thread)
 	float f = CLEO_GetFloatOpcodeParam(thread);
 	float min = CLEO_GetFloatOpcodeParam(thread);
 	float max = CLEO_GetFloatOpcodeParam(thread);
-	CLEO_SetFloatOpcodeParam(thread, clamp(f, min, max));
+	float result = 0.0f;
+	if (!_isnan(f)) {
+		result = clamp(f, min, max);
+	}
+	CLEO_SetFloatOpcodeParam(thread, result);
 	return OR_CONTINUE;
 }
  

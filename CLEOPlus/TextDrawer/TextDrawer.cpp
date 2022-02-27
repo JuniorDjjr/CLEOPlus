@@ -1,3 +1,4 @@
+#include "CMessages.h"
 #include "TextDrawer.h"
 #include "../Screen.h"
 
@@ -5,6 +6,7 @@ TextDrawer textDrawer[DrawEvent::TOTAL_DRAW_EVENT];
 
 void TextDrawer::DrawPrints()
 {
+	char finalString[400];
 	for (auto print : m_aPrints)
 	{
 		float sizX = print->m_fWidth;
@@ -52,7 +54,9 @@ void TextDrawer::DrawPrints()
 			case ALIGN_RIGHT:
 				CFont::SetRightJustifyWrap(print->m_fWrap * magicResolutionWidth); break;
 		}
-		CFont::PrintString(print->m_fX * magicResolutionWidth, print->m_fY * magicResolutionHeight, print->m_text);
+		CMessages::InsertNumberInString(print->m_text, -1, -1, -1, -1, -1, -1, finalString); // this is required to use InsertPlayerControlKeysInString, idkw
+		CMessages::InsertPlayerControlKeysInString(finalString);
+		CFont::PrintString(print->m_fX * magicResolutionWidth, print->m_fY * magicResolutionHeight, finalString);
 	}
 
 	// clear all

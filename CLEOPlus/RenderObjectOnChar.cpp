@@ -107,9 +107,11 @@ OpcodeResult WINAPI DELETE_RENDER_OBJECT(CScriptThread* thread)
 OpcodeResult WINAPI SET_RENDER_OBJECT_AUTO_HIDE(CScriptThread* thread)
 {
 	RenderObject *renderObject = (RenderObject *)CLEO_GetIntOpcodeParam(thread);
-	renderObject->hideIfDead = CLEO_GetIntOpcodeParam(thread);
-	renderObject->hideIfWeapon = CLEO_GetIntOpcodeParam(thread);
-	renderObject->hideIfCar = CLEO_GetIntOpcodeParam(thread);
+	if (renderObject) {
+		renderObject->hideIfDead = CLEO_GetIntOpcodeParam(thread);
+		renderObject->hideIfWeapon = CLEO_GetIntOpcodeParam(thread);
+		renderObject->hideIfCar = CLEO_GetIntOpcodeParam(thread);
+	}
 	return OR_CONTINUE;
 }
 
@@ -128,9 +130,11 @@ OpcodeResult WINAPI SET_RENDER_OBJECT_VISIBLE(CScriptThread* thread)
 OpcodeResult WINAPI SET_RENDER_OBJECT_POSITION(CScriptThread* thread)
 {
 	RenderObject *renderObject = (RenderObject *)CLEO_GetIntOpcodeParam(thread);
-	renderObject->offset.x = CLEO_GetFloatOpcodeParam(thread);
-	renderObject->offset.y = CLEO_GetFloatOpcodeParam(thread);
-	renderObject->offset.z = CLEO_GetFloatOpcodeParam(thread);
+	if (renderObject) {
+		renderObject->offset.x = CLEO_GetFloatOpcodeParam(thread);
+		renderObject->offset.y = CLEO_GetFloatOpcodeParam(thread);
+		renderObject->offset.z = CLEO_GetFloatOpcodeParam(thread);
+	}
 	return OR_CONTINUE;
 }
 
@@ -139,9 +143,11 @@ OpcodeResult WINAPI SET_RENDER_OBJECT_POSITION(CScriptThread* thread)
 OpcodeResult WINAPI SET_RENDER_OBJECT_ROTATION(CScriptThread* thread)
 {
 	RenderObject *renderObject = (RenderObject *)CLEO_GetIntOpcodeParam(thread);
-	renderObject->rot.x = CLEO_GetFloatOpcodeParam(thread);
-	renderObject->rot.y = CLEO_GetFloatOpcodeParam(thread);
-	renderObject->rot.z = CLEO_GetFloatOpcodeParam(thread);
+	if (renderObject) {
+		renderObject->rot.x = CLEO_GetFloatOpcodeParam(thread);
+		renderObject->rot.y = CLEO_GetFloatOpcodeParam(thread);
+		renderObject->rot.z = CLEO_GetFloatOpcodeParam(thread);
+	}
 	return OR_CONTINUE;
 }
 
@@ -150,9 +156,11 @@ OpcodeResult WINAPI SET_RENDER_OBJECT_ROTATION(CScriptThread* thread)
 OpcodeResult WINAPI SET_RENDER_OBJECT_SCALE(CScriptThread* thread)
 {
 	RenderObject *renderObject = (RenderObject *)CLEO_GetIntOpcodeParam(thread);
-	renderObject->scale.x = CLEO_GetFloatOpcodeParam(thread);
-	renderObject->scale.y = CLEO_GetFloatOpcodeParam(thread);
-	renderObject->scale.z = CLEO_GetFloatOpcodeParam(thread);
+	if (renderObject) {
+		renderObject->scale.x = CLEO_GetFloatOpcodeParam(thread);
+		renderObject->scale.y = CLEO_GetFloatOpcodeParam(thread);
+		renderObject->scale.z = CLEO_GetFloatOpcodeParam(thread);
+	}
 	return OR_CONTINUE;
 }
 
@@ -161,9 +169,11 @@ OpcodeResult WINAPI SET_RENDER_OBJECT_SCALE(CScriptThread* thread)
 OpcodeResult WINAPI SET_RENDER_OBJECT_DISTORTION(CScriptThread* thread)
 {
 	RenderObject *renderObject = (RenderObject *)CLEO_GetIntOpcodeParam(thread);
-	renderObject->dist.x = CLEO_GetFloatOpcodeParam(thread);
-	renderObject->dist.y = CLEO_GetFloatOpcodeParam(thread);
-	renderObject->dist.z = CLEO_GetFloatOpcodeParam(thread);
-	renderObject->dist.w = CLEO_GetFloatOpcodeParam(thread);
+	if (renderObject) {
+		renderObject->dist.x = CLEO_GetFloatOpcodeParam(thread);
+		renderObject->dist.y = CLEO_GetFloatOpcodeParam(thread);
+		renderObject->dist.z = CLEO_GetFloatOpcodeParam(thread);
+		renderObject->dist.w = CLEO_GetFloatOpcodeParam(thread);
+	}
 	return OR_CONTINUE;
 }

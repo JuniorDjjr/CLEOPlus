@@ -78,8 +78,10 @@ OpcodeResult WINAPI GET_COLPOINT_NORMAL_VECTOR(CScriptThread* thread)
 // SCR: GET_COL_DATA_DEPTH
 OpcodeResult WINAPI GET_COLPOINT_DEPTH(CScriptThread* thread)
 {
-	CColPoint *colPoint = (CColPoint*)CLEO_GetIntOpcodeParam(thread);
-	CLEO_SetFloatOpcodeParam(thread, colPoint->m_fDepth);
+	//CColPoint *colPoint = (CColPoint*)CLEO_GetIntOpcodeParam(thread);
+	//CLEO_SetFloatOpcodeParam(thread, colPoint->m_fDepth);
+	uint32_t colPoint = CLEO_GetIntOpcodeParam(thread);
+	CLEO_SetFloatOpcodeParam(thread, *(float*)(colPoint + 0x28));
 	return OR_CONTINUE;
 }
 
@@ -88,8 +90,10 @@ OpcodeResult WINAPI GET_COLPOINT_DEPTH(CScriptThread* thread)
 // SCR: GET_COL_DATA_SURFACE
 OpcodeResult WINAPI GET_COLPOINT_SURFACE(CScriptThread* thread)
 {
-	CColPoint *colPoint = (CColPoint*)CLEO_GetIntOpcodeParam(thread);
-	CLEO_SetIntOpcodeParam(thread, colPoint->m_nSurfaceTypeB);
+	//CColPoint *colPoint = (CColPoint*)CLEO_GetIntOpcodeParam(thread);
+	//CLEO_SetIntOpcodeParam(thread, colPoint->m_nSurfaceTypeB);
+	uint32_t colPoint = CLEO_GetIntOpcodeParam(thread);
+	CLEO_SetIntOpcodeParam(thread, *(uint8_t*)(colPoint+0x23));
 	return OR_CONTINUE;
 }
 

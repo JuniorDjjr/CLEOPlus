@@ -18,7 +18,7 @@
 #include "rw/rpworld.h"
 #include <set>
  
-constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01000800;
+constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01000900;
 
 using namespace plugin;
 using namespace std;
@@ -224,8 +224,8 @@ OpcodeResult WINAPI SET_CAR_MODEL_ALPHA(CScriptThread* thread);
 OpcodeResult WINAPI SET_CHAR_MODEL_ALPHA(CScriptThread* thread);
 OpcodeResult WINAPI SET_OBJECT_MODEL_ALPHA(CScriptThread* thread);
 OpcodeResult WINAPI GET_LOCAL_TIME(CScriptThread* thread);
-OpcodeResult WINAPI SET_THREAD_VAR(CScriptThread* thread);
-OpcodeResult WINAPI GET_THREAD_VAR(CScriptThread* thread);
+OpcodeResult WINAPI SET_SCRIPT_VAR(CScriptThread* thread);
+OpcodeResult WINAPI GET_SCRIPT_VAR(CScriptThread* thread);
 OpcodeResult WINAPI SET_CAR_DOOR_WINDOW_STATE(CScriptThread* thread);
 OpcodeResult WINAPI GET_OBJECT_CENTRE_OF_MASS_TO_BASE_OF_MODEL(CScriptThread* thread);
 OpcodeResult WINAPI GET_MODEL_TYPE(CScriptThread* thread);
@@ -723,8 +723,8 @@ public:
 				CLEO_RegisterOpcode(0xD10, SET_CHAR_MODEL_ALPHA); // 0xD10=2,set_char_model_alpha %1d% alpha %2d%
 				CLEO_RegisterOpcode(0xD11, SET_OBJECT_MODEL_ALPHA); // 0xD11=2,set_object_model_alpha %1d% alpha %2d%
 				CLEO_RegisterOpcode(0xD2D, GET_LOCAL_TIME); // 0D2D=8,get_local_time_year_to %1d% month_to %2d% day_of_week_to %3d% day_to %4d% hour_to %5d% minute_to %6d% second_to %7d% milliseconds_to %8d%
-				CLEO_RegisterOpcode(0xD2E, SET_THREAD_VAR); // 0D2E=3,set_thread %1d% var %2d% value %3d%
-				CLEO_RegisterOpcode(0xD2F, GET_THREAD_VAR); // 0D2F=3,%3d% = get_thread %1d% var %2d% // keep NewOpcodes order
+				CLEO_RegisterOpcode(0xD2E, SET_SCRIPT_VAR); // 0D2E=3,set_script %1d% var %2d% value %3d%
+				CLEO_RegisterOpcode(0xD2F, GET_SCRIPT_VAR); // 0D2F=3,%3d% = get_script %1d% var %2d% // keep NewOpcodes order
 				CLEO_RegisterOpcode(0xD33, SET_CAR_DOOR_WINDOW_STATE); // 0D33=3,set_car %1d% door %2d% window_state %3d%
 			}
 
@@ -832,8 +832,8 @@ public:
 			{
 				CLEO_RegisterOpcode(0xD3A, GET_COLLISION_BETWEEN_POINTS); // 0D3A=20,get_collision_between_points %1d% %2d% %3d% and %4d% %5d% %6d% flags %7d% %8d% %9d% %10d% %11d% %12d% %13d% %14d% ignore_entity %15d% store_point_to %17d% %18d% %19d% entity_to %20d% colpoint_data_to %16d% // keep NewOpcodes order
 				CLEO_RegisterOpcode(0xD3B, GET_COLPOINT_NORMAL_VECTOR); // 0D3B=4,get_colpoint_normal_vector %1d% store_to %2d% %3d% %4d%
-				CLEO_RegisterOpcode(0xD3C, GET_COLPOINT_SURFACE); // 0D3D=2,get_colpoint_surface %1d% store_to %2d%
-				CLEO_RegisterOpcode(0xD3E, GET_COLPOINT_DEPTH); // 0D3C=2,get_colpoint_depth %1d% store_to %2d%
+				CLEO_RegisterOpcode(0xD3C, GET_COLPOINT_SURFACE); // 0D3C=2,get_colpoint_surface %1d% store_to %2d%
+				CLEO_RegisterOpcode(0xD3E, GET_COLPOINT_DEPTH); // 0D3E=2,get_colpoint_depth %1d% store_to %2d%
 			}
 			CLEO_RegisterOpcode(0xE6B, GET_COLPOINT_LIGHTING); // 0xE6B=2,get_colpoint_lighting %1d% from_night %2d% store_to %3d%
 			CLEO_RegisterOpcode(0xEE1, GET_COLPOINT_COORDINATES); // 0xEE1=4,get_colpoint_coordinates %1d% store_to %2d% %3d% %4d%
@@ -1225,7 +1225,7 @@ public:
 
 		Events::objectDtorEvent.before += [](CObject *object) {
 			int ref = CPools::GetObjectRef(object);
-			if (scriptEvents[ScriptEvent::List::ObjectCreate].size() > 0) {
+			if (scriptEvents[ScriptEvent::List::ObjectDelete].size() > 0) {
 				for (auto scriptEvent : scriptEvents[ScriptEvent::List::ObjectDelete]) scriptEvent->RunScriptEvent(ref);
 			}
 			for (int i = 0; i < sizeScriptConnectLodsObjects; ++i)
