@@ -1,6 +1,6 @@
 
 ********
-PT: ATENÇÃO!!! Sanny Builder implementou oficialmente a partir da v3.6.0, ou seja, você só precisa fazer isto se você, por algum motivo, ainda quer usar a versão antiga do SB.
+PT: ATENÃ‡ÃƒO!!! Sanny Builder implementou oficialmente a partir da v3.6.0, ou seja, vocÃª sÃ³ precisa fazer isto se vocÃª, por algum motivo, ainda quer usar a versÃ£o antiga do SB.
 EN: ATTENTION!!! Sanny Builder officially implemented from v3.6.0, that is, you only need to do this if you, for some reason, still want to use the old SB version.
 ********
 
@@ -222,10 +222,10 @@ EN: Open the "data/sa/SASCM.INI" located in the Sanny Builder folder, and add it
 0E1F=4,ease %1d% mode %2d% way %3d% to %4d%
 0E27=5,get_angle_from_two_coords %1d% %2d% and %3d% %4d% to %5d%
 0E03=2,perlin_noise %1d% store_to %2d%
-0E29=6,perlin_noise %1d% frequency %2d% amplitude %3d% lacunarity %4d% persistence %5d% store_to %6d%
+0E29=7,perlin_noise %1d% octaves %2d% frequency %3d% amplitude %4d% lacunarity %5d% persistence %6d% store_to %7d%
 0EF0=6,get_coord_from_angled_distance %1d% %2d% angle %3d% dist %4d% store_to %5d% %6d%
-0EF1=7,perlin_noise_fractal_2d %1d% %2d% frequency %3d% amplitude %4d% lacunarity %5d% persistence %6d% store_to %7d%
-0EF2=8,perlin_noise_fractal_3d %1d% %2d% %3d% frequency %4d% amplitude %5d% lacunarity %6d% persistence %7d% store_to %8d%
+0EF1=8,perlin_noise_fractal_2d x %1d% y %2d% octaves %3d% frequency %4d% amplitude %5d% lacunarity %6d% persistence %7d% store_to %8d%
+0EF2=9,perlin_noise_fractal_3d x %1d% y %2d% z %3d% octaves %4d% frequency %5d% amplitude %6d% lacunarity %7d% persistence %8d% store_to %9d%
 0EF4=4,clamp_float %1d% min %2d% max %3d% store_to %4d%
 0EF7=4,clamp_int %1d% min %2d% max %3d% store_to %4d%
 0EB3=4,convert_direction_to_quat %1d% dir %2d% %3d% %4d%

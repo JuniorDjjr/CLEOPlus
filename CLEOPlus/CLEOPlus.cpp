@@ -752,10 +752,10 @@ public:
 			CLEO_RegisterOpcode(0xE1F, EASE); // 0E1F=4,ease %1d% mode %2d% way %3d% to %4d%
 			CLEO_RegisterOpcode(0xE27, GET_ANGLE_FROM_TWO_COORDS); // 0E27=5,get_angle_from_two_coords %1d% %2d% and %3d% %4d% to %5d%
 			CLEO_RegisterOpcode(0xE03, PERLIN_NOISE); // 0E03=2,perlin_noise %1d% store_to %2d%
-			CLEO_RegisterOpcode(0xE29, PERLIN_NOISE_FRACTAL); // 0E29=6,perlin_noise %1d% frequency %2d% amplitude %3d% lacunarity %4d% persistence %5d% store_to %6d%
+			CLEO_RegisterOpcode(0xE29, PERLIN_NOISE_FRACTAL); // 0E29=7,perlin_noise %1d% octaves %2d% frequency %3d% amplitude %4d% lacunarity %5d% persistence %6d% store_to %7d%
 			CLEO_RegisterOpcode(0xEF0, GET_COORD_FROM_ANGLED_DISTANCE); // 0EF0=6,get_coord_from_angled_distance %1d% %2d% angle %3d% dist %4d% store_to %5d% %6d%
-			CLEO_RegisterOpcode(0xEF1, PERLIN_NOISE_FRACTAL_2D); // 0xEF1=7,perlin_noise_fractal_2d %1d% %2d% frequency %3d% amplitude %4d% lacunarity %5d% persistence %6d% store_to %7d%
-			CLEO_RegisterOpcode(0xEF2, PERLIN_NOISE_FRACTAL_3D); // 0xEF2=8,perlin_noise_fractal_3d %1d% %2d% %3d% frequency %4d% amplitude %5d% lacunarity %6d% persistence %7d% store_to %8d%
+			CLEO_RegisterOpcode(0xEF1, PERLIN_NOISE_FRACTAL_2D); // 0EF1=8,perlin_noise_fractal_2d x %1d% y %2d% octaves %3d% frequency %4d% amplitude %5d% lacunarity %6d% persistence %7d% store_to %8d%
+			CLEO_RegisterOpcode(0xEF2, PERLIN_NOISE_FRACTAL_3D); // 0EF2=9,perlin_noise_fractal_3d x %1d% y %2d% z %3d% octaves %4d% frequency %5d% amplitude %6d% lacunarity %7d% persistence %8d% store_to %9d%
 			CLEO_RegisterOpcode(0xEF4, CLAMP_FLOAT); // 0EF4=4,clamp_float %1d% min %2d% max %3d% store_to %4d%
 			CLEO_RegisterOpcode(0xEF7, CLAMP_INT); // 0EF7=4,clamp_int %1d% min %2d% max %3d% store_to %4d%
 			CLEO_RegisterOpcode(0xEB3, CONVERT_DIRECTION_TO_QUAT); // 0xEB3=4,convert_direction_to_quat %1d% dir %2d% %3d% %4d%
