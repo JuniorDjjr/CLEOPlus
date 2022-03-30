@@ -1,5 +1,5 @@
 
-PT: Você também pode usar o "cleo.xml" que veio no download.
+PT: VocÃª tambÃ©m pode usar o "cleo.xml" que veio no download.
 EN: You can also use the "cleo.xml" that came in the download.
 
 
@@ -578,7 +578,7 @@ EN: Within <Constants> (usually at the end) add:
       <Constant Name="WEAPONSTATE_SHOOTING"/>
       <Constant Name="WEAPONSTATE_RELOADING"/>
     </Enum>
-    <Enum Name="WEAPONINFO" Global="true">
+    <Enum Name="WEAPONINFO_FLAGS" Global="true">
       <Constant Name="WEAPONINFO_FLAGS_CANAIM"/>
       <Constant Name="WEAPONINFO_FLAGS_AIMWITHARM"/>
       <Constant Name="WEAPONINFO_FLAGS_1STPERSON"/>
@@ -2610,7 +2610,6 @@ EN: Within <Commands> (usually at the end) add:
       <Args>
         <Arg Type="INT" Desc="Add"/>
         <Arg Type="LABEL"/>
-
         <Arg Type="INT" Desc="VarJustPaused"/>
       </Args>
     </Command>
