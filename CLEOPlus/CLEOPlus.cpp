@@ -18,7 +18,7 @@
 #include "rw/rpworld.h"
 #include <set>
  
-constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01000900;
+constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01010000;
 
 using namespace plugin;
 using namespace std;
@@ -55,6 +55,7 @@ bool disableCamControl = false;
 bool disabledCamControlLastFrame = false;
 bool controllerMode = false;
 bool pausedLastFrame = true;
+bool isBuildingProcessPatched = false;
 CSprite2d *radarBlipSprites;
 bool keysPressedLastFrame[0xFF] = { false };
 bool buttonsPressedLastFrame[2][20] = { false };
@@ -481,7 +482,7 @@ public:
 			}
 			else sampfuncsInstalled = false;
 
-			if (GetModuleHandleA("V_HUD_by_DK22Pac.asi")) {
+			if (GetModuleHandleA("V_HUD_by_DK22Pac.asi") || GetModuleHandleA("VHud.asi")) {
 				gtavhudInstalled = true;
 			}
 			else gtavhudInstalled = false;
@@ -713,7 +714,7 @@ public:
 			CLEO_RegisterOpcode(0xEF8, GET_MODEL_INFO); // 0xEF8=2,get_model_info %1d% store_to %2d%
 			CLEO_RegisterOpcode(0xEF9, GET_CAR_ANIMGROUP); // 0xEF9=2,get_car_animgroup %1d% store_to %2d%
 			CLEO_RegisterOpcode(0xEFA, GET_CHAR_FEAR); // 0xEFA=2,get_char_fear %1d% store_to %2d%
-			CLEO_RegisterOpcode(0xEFB, IS_CAR_CONVERTIBLE); // 0xEFB=1,is_car_double_convertible %1d%
+			CLEO_RegisterOpcode(0xEFB, IS_CAR_CONVERTIBLE); // 0xEFB=1,is_car_convertible %1d%
 			CLEO_RegisterOpcode(0xEFC, GET_CAR_VALUE); // 0xEFC=2,get_car_value %1d% store_to %2d%
 			CLEO_RegisterOpcode(0xEFD, GET_CAR_PEDALS); // 0xEFD=3,get_car_pedals %1d% gas_to %2d% break_to %3d% 
 			CLEO_RegisterOpcode(0xEFE, GET_LOADED_LIBRARY); // 0xEFE=2,get_loaded_library %1d% store_to %2d%
@@ -752,10 +753,10 @@ public:
 			CLEO_RegisterOpcode(0xE1F, EASE); // 0E1F=4,ease %1d% mode %2d% way %3d% to %4d%
 			CLEO_RegisterOpcode(0xE27, GET_ANGLE_FROM_TWO_COORDS); // 0E27=5,get_angle_from_two_coords %1d% %2d% and %3d% %4d% to %5d%
 			CLEO_RegisterOpcode(0xE03, PERLIN_NOISE); // 0E03=2,perlin_noise %1d% store_to %2d%
-			CLEO_RegisterOpcode(0xE29, PERLIN_NOISE_FRACTAL); // 0E29=7,perlin_noise %1d% octaves %2d% frequency %3d% amplitude %4d% lacunarity %5d% persistence %6d% store_to %7d%
+			CLEO_RegisterOpcode(0xE29, PERLIN_NOISE_FRACTAL); // 0E29=6,perlin_noise %1d% frequency %2d% amplitude %3d% lacunarity %4d% persistence %5d% store_to %6d%
 			CLEO_RegisterOpcode(0xEF0, GET_COORD_FROM_ANGLED_DISTANCE); // 0EF0=6,get_coord_from_angled_distance %1d% %2d% angle %3d% dist %4d% store_to %5d% %6d%
-			CLEO_RegisterOpcode(0xEF1, PERLIN_NOISE_FRACTAL_2D); // 0EF1=8,perlin_noise_fractal_2d x %1d% y %2d% octaves %3d% frequency %4d% amplitude %5d% lacunarity %6d% persistence %7d% store_to %8d%
-			CLEO_RegisterOpcode(0xEF2, PERLIN_NOISE_FRACTAL_3D); // 0EF2=9,perlin_noise_fractal_3d x %1d% y %2d% z %3d% octaves %4d% frequency %5d% amplitude %6d% lacunarity %7d% persistence %8d% store_to %9d%
+			CLEO_RegisterOpcode(0xEF1, PERLIN_NOISE_FRACTAL_2D); // 0xEF1=7,perlin_noise_fractal_2d %1d% %2d% frequency %3d% amplitude %4d% lacunarity %5d% persistence %6d% store_to %7d%
+			CLEO_RegisterOpcode(0xEF2, PERLIN_NOISE_FRACTAL_3D); // 0xEF2=8,perlin_noise_fractal_3d %1d% %2d% %3d% frequency %4d% amplitude %5d% lacunarity %6d% persistence %7d% store_to %8d%
 			CLEO_RegisterOpcode(0xEF4, CLAMP_FLOAT); // 0EF4=4,clamp_float %1d% min %2d% max %3d% store_to %4d%
 			CLEO_RegisterOpcode(0xEF7, CLAMP_INT); // 0EF7=4,clamp_int %1d% min %2d% max %3d% store_to %4d%
 			CLEO_RegisterOpcode(0xEB3, CONVERT_DIRECTION_TO_QUAT); // 0xEB3=4,convert_direction_to_quat %1d% dir %2d% %3d% %4d%
@@ -889,7 +890,7 @@ public:
 		{
 			// Reset ped data per frame
 			auto& pedsPool = CPools::ms_pPedPool;
-			for (int index = 0; index < pedsPool->m_nSize; ++index)
+			for (unsigned int index = 0; index < pedsPool->m_nSize; ++index)
 			{
 				if (CPed* ped = pedsPool->GetAt(index))
 				{
@@ -912,7 +913,7 @@ public:
 						if (ped->m_pIntelligence)
 						{
 							CTaskManager* taskMgr = &ped->m_pIntelligence->m_TaskMgr;
-							for (int i = 0; i < 5; i++)
+							for (unsigned int i = 0; i < 5; i++)
 							{
 								CTask* task = taskMgr->m_aPrimaryTasks[i];
 								while (task)
@@ -922,7 +923,7 @@ public:
 								}
 							}
 
-							for (int i = 0; i < 5; i++)
+							for (unsigned int i = 0; i < 5; i++)
 							{
 								CTask* task = taskMgr->m_aSecondaryTasks[i];
 								while (task)
@@ -943,7 +944,7 @@ public:
 		{
 			// Reset ped data per frame
 			auto &pedsPool = CPools::ms_pPedPool;
-			for (int index = 0; index < pedsPool->m_nSize; ++index)
+			for (unsigned int index = 0; index < pedsPool->m_nSize; ++index)
 			{
 				if (CPed* ped = pedsPool->GetAt(index))
 				{
@@ -959,7 +960,7 @@ public:
 			}
 			// Reset vehicle data per frame
 			auto& vehsPool = CPools::ms_pVehiclePool;
-			for (int index = 0; index < vehsPool->m_nSize; ++index)
+			for (unsigned int index = 0; index < vehsPool->m_nSize; ++index)
 			{
 				if (CVehicle* vehicle = vehsPool->GetAt(index))
 				{
@@ -986,7 +987,7 @@ public:
 			if (disableCamControl)
 			{
 				// Disables it each frame to make it compatible with GTA V Hud.
-				for (int i = 0; i < 14; ++i)
+				for (unsigned int i = 0; i < 14; ++i)
 				{
 					patch::SetPointer(disableCamMoveAddresses[i], &fZero);
 				}
@@ -995,7 +996,7 @@ public:
 			else if (disabledCamControlLastFrame)
 			{
 				// Get using address (to make it compatible with other mods)
-				for (int i = 0; i < 14; ++i)
+				for (unsigned int i = 0; i < 14; ++i)
 				{
 					patch::SetInt(disableCamMoveAddresses[i], (i > 4) ? defaultMouseAccelHorizontalAddress : defaultMouseAccelVerticalAddress);
 				}
@@ -1003,29 +1004,8 @@ public:
 			}
 		};
 
-		// EntityPreRender (caution, this is called A LOT)
-		injector::MakeInline<0x535FBE, 0x535FBE + 5>([](injector::reg_pack& regs)
-		{
-			CEntity *entity = (CEntity *)regs.esi;
-			if (entity->m_nType == eEntityType::ENTITY_TYPE_BUILDING)
-			{
-				if (scriptEvents[ScriptEvent::List::BuildingProcess].size() > 0)
-				{
-					for (auto scriptEvent : scriptEvents[ScriptEvent::List::BuildingProcess]) scriptEvent->RunScriptEvent((DWORD)entity);
-				}
-			}
-			else if (entity->m_nType == eEntityType::ENTITY_TYPE_OBJECT)
-			{
-				if (scriptEvents[ScriptEvent::List::ObjectProcess].size() > 0)
-				{
-					CObject *object = reinterpret_cast<CObject*>(entity);
-					int ref = CPools::GetObjectRef(object);
-					for (auto scriptEvent : scriptEvents[ScriptEvent::List::ObjectProcess]) scriptEvent->RunScriptEvent(ref);
-				}
-			}
-			regs.ebx = regs.eax; //mov ebx, eax
-			regs.eax = *(uint8_t*)(regs.edi + 0xD); //mov al, [edi+0Dh]
-		});
+		// EntityPreRender
+		// PATCH MOVED TO: PatchBuildingProcessIfNeeded Events.cpp
 
 		// VehiclePreRender
 		vehiclePreRenderEvent +=[](CVehicle *vehicle)
@@ -1127,7 +1107,7 @@ public:
 		// Fixes corrupted old saves with deleted LOD objects
 		loadingEventAfterPoolsLoaded.before += []
 		{
-			for (int i = 0; i < sizeScriptConnectLodsObjects; ++i)
+			for (unsigned int i = 0; i < sizeScriptConnectLodsObjects; ++i)
 			{
 				if (CTheScripts__ScriptConnectLodsObjects[i] != -1)
 				{
@@ -1164,7 +1144,7 @@ public:
 				CStreaming::RemoveModel(id);
 			}
 			//specialCharacterModelsUsed.clear(); // don't clear it, we use this list to reuse IDs in GET_MODEL_DOESNT_EXIST_IN_RANGE
-			for (int i = 0; i < DrawEvent::TOTAL_DRAW_EVENT; ++i) {
+			for (unsigned int i = 0; i < DrawEvent::TOTAL_DRAW_EVENT; ++i) {
 				ClearMySprites(sprites[i]);
 				textDrawer[i].ClearAll();
 			}
@@ -1228,7 +1208,7 @@ public:
 			if (scriptEvents[ScriptEvent::List::ObjectDelete].size() > 0) {
 				for (auto scriptEvent : scriptEvents[ScriptEvent::List::ObjectDelete]) scriptEvent->RunScriptEvent(ref);
 			}
-			for (int i = 0; i < sizeScriptConnectLodsObjects; ++i)
+			for (unsigned int i = 0; i < sizeScriptConnectLodsObjects; ++i)
 			{
 				if (CTheScripts__ScriptConnectLodsObjects[i] == ref) CTheScripts__ScriptConnectLodsObjects[i] = -1;
 			}
@@ -1446,16 +1426,16 @@ public:
 
 		// Update keys pressed
 		memset(keysPressedLastFrame, 0, sizeof(keysPressedLastFrame));
-		for (int vk = 0x01; vk < 0xFF; ++vk)
+		for (unsigned int vk = 0x01; vk < 0xFF; ++vk)
 		{
 			keysPressedLastFrame[vk] = ((GetKeyState(vk) & 0x8000) != 0);
 		}
 
 		// Update buttons pressed, and control disable
 		memset(buttonsPressedLastFrame, 0, sizeof(buttonsPressedLastFrame));
-		for (int pad = 0; pad < 2; ++pad)
+		for (unsigned int pad = 0; pad < 2; ++pad)
 		{
-			for (int id = 0; id < 20; ++id)
+			for (unsigned int id = 0; id < 20; ++id)
 			{
 				// There is old state, but isn't array, and also this function may be changed by some crazy script
 				buttonsPressedLastFrame[pad][id] = reinterpret_cast<CRunningScript*>(0)->GetPadState(pad, id);

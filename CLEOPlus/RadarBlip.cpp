@@ -38,6 +38,7 @@ namespace RadarBlip
 			color.g = g;
 			color.b = b;
 			color.a = a;
+			angle = 0.0f;
 		}
 	};
 
@@ -137,18 +138,19 @@ using namespace RadarBlip;
 OpcodeResult WINAPI ADD_CLEO_BLIP(CScriptThread* thread)
 {
 	int spriteId = CLEO_GetIntOpcodeParam(thread);
+	unsigned int spriteIdUnsigned = (unsigned int)spriteId;
 	CSprite2d *sprite = new CSprite2d();
-	if (spriteId < 0) {
+	if (spriteId < 0 && spriteId > -10000) {
 		sprite->m_pTexture = (RwTexture*)CLEO_GetScriptTextureById(thread, (spriteId * -1));
 		spriteId = -1;
 	}
 	else {
-		if (spriteId > 0x00100000) {
-			sprite->m_pTexture = (RwTexture*)spriteId;
+		if (spriteIdUnsigned > 0x00010000) {
+			sprite->m_pTexture = (RwTexture*)spriteIdUnsigned;
 			spriteId = -1;
 		}
 		else {
-			sprite->m_pTexture = radarBlipSprites[spriteId].m_pTexture;
+			sprite->m_pTexture = radarBlipSprites[spriteIdUnsigned].m_pTexture;
 		}
 	}
 	float x = CLEO_GetFloatOpcodeParam(thread);

@@ -1,13 +1,15 @@
 #include "OpcodesCommon.h"
 #include "Events.h"
 #include "CMenuManager.h"
+#include "..\injector\assembly.hpp"
 
 vector<ScriptEvent*> scriptEvents[ScriptEvent::TOTAL_SCRIPT_EVENTS];
 extern bool pausedLastFrame;
+extern bool isBuildingProcessPatched;
 
 void ScriptEvent::ClearAllForScript(CRunningScript* script)
 {
-	for (int i = 0; i < ScriptEvent::TOTAL_SCRIPT_EVENTS; ++i)
+	for (unsigned int i = 0; i < ScriptEvent::TOTAL_SCRIPT_EVENTS; ++i)
 	{
 		for (vector<ScriptEvent*>::iterator it = scriptEvents[i].begin(); it != scriptEvents[i].end();)
 		{
@@ -30,7 +32,7 @@ void ScriptEvent::ClearForScriptLabelAndVar(vector<ScriptEvent*> &scriptEvents, 
 		if (scriptEvent->script == script && scriptEvent->eventScriptIP == label)
 		{
 			bool ok = true;
-			for (int i = 0; i < 4; ++i)
+			for (unsigned int i = 0; i < 4; ++i)
 			{
 				if (scriptEvent->varPointer[i] == 0) break;
 				if (scriptEvent->varPointer[i] != varPointer[i])
@@ -51,11 +53,11 @@ void ScriptEvent::ClearForScriptLabelAndVar(vector<ScriptEvent*> &scriptEvents, 
 
 void ScriptEvent::ClearAllScriptEvents()
 {
-	for (int i = 0; i < ScriptEvent::TOTAL_SCRIPT_EVENTS; ++i)
+	for (unsigned int i = 0; i < ScriptEvent::TOTAL_SCRIPT_EVENTS; ++i)
 	{
 		for (auto& scriptEvent : scriptEvents[i]) delete scriptEvent;
 	}
-	for (int i = 0; i < ScriptEvent::TOTAL_SCRIPT_EVENTS; ++i)
+	for (unsigned int i = 0; i < ScriptEvent::TOTAL_SCRIPT_EVENTS; ++i)
 	{
 		scriptEvents[i].clear();
 	}
@@ -108,7 +110,7 @@ void AddEvent(CScriptThread* thread, vector<ScriptEvent*> &scriptEventList, int 
 		eventStruct->script = reinterpret_cast<CRunningScript*>(thread);
 		eventStruct->eventScriptIP = label;
 
-		for (int i = 0; i < 4; ++i)
+		for (unsigned int i = 0; i < 4; ++i)
 		{
 			uintptr_t pointer = 0;
 			if (i < args)
@@ -123,7 +125,7 @@ void AddEvent(CScriptThread* thread, vector<ScriptEvent*> &scriptEventList, int 
 	else
 	{
 		uintptr_t vars[4];
-		for (int i = 0; i < 4; ++i)
+		for (unsigned int i = 0; i < 4; ++i)
 		{
 			uintptr_t pointer = 0;
 			if (i < args)
@@ -136,6 +138,37 @@ void AddEvent(CScriptThread* thread, vector<ScriptEvent*> &scriptEventList, int 
 		ScriptEvent::ClearForScriptLabelAndVar(scriptEventList, reinterpret_cast<CRunningScript *>(thread), label, vars);
 	}
 	return;
+}
+
+// This is called A LOT, so patch if only if needed. Note: this will also be called when turning off the event, it's fine.
+void PatchBuildingProcessIfNeeded()
+{
+	if (!isBuildingProcessPatched)
+	{
+		injector::MakeInline<0x535FBE, 0x535FBE + 5>([](injector::reg_pack& regs)
+		{
+			CEntity* entity = (CEntity*)regs.esi;
+			if (entity->m_nType == eEntityType::ENTITY_TYPE_BUILDING)
+			{
+				if (scriptEvents[ScriptEvent::List::BuildingProcess].size() > 0)
+				{
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::BuildingProcess]) scriptEvent->RunScriptEvent((DWORD)entity);
+				}
+			}
+			else if (entity->m_nType == eEntityType::ENTITY_TYPE_OBJECT)
+			{
+				if (scriptEvents[ScriptEvent::List::ObjectProcess].size() > 0)
+				{
+					CObject* object = reinterpret_cast<CObject*>(entity);
+					int ref = CPools::GetObjectRef(object);
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::ObjectProcess]) scriptEvent->RunScriptEvent(ref);
+				}
+			}
+			regs.ebx = regs.eax; //mov ebx, eax
+			regs.eax = *(uint8_t*)(regs.edi + 0xD); //mov al, [edi+0Dh]
+		});
+		isBuildingProcessPatched = true;
+	}
 }
 
 OpcodeResult WINAPI RETURN_SCRIPT_EVENT(CScriptThread* thread)
@@ -206,12 +239,14 @@ OpcodeResult WINAPI SET_SCRIPT_EVENT_CAR_PROCESS(CScriptThread* thread)
 OpcodeResult WINAPI SET_SCRIPT_EVENT_OBJECT_PROCESS(CScriptThread* thread)
 {
 	AddEvent(thread, scriptEvents[ScriptEvent::List::ObjectProcess]);
+	PatchBuildingProcessIfNeeded();
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_BUILDING_PROCESS(CScriptThread* thread)
 {
 	AddEvent(thread, scriptEvents[ScriptEvent::List::BuildingProcess]);
+	PatchBuildingProcessIfNeeded();
 	return OR_CONTINUE;
 }
 

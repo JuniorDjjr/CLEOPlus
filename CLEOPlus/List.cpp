@@ -143,30 +143,36 @@ OpcodeResult WINAPI LIST_REMOVE_STRING_VALUE(CScriptThread* thread)
 OpcodeResult WINAPI LIST_REMOVE_INDEX(CScriptThread* thread)
 {
 	ScriptList *scriptList = (ScriptList*)CLEO_GetIntOpcodeParam(thread);
-	int index = CLEO_GetIntOpcodeParam(thread);
+	unsigned int index = CLEO_GetIntOpcodeParam(thread);
 	if (scriptList->type == 0) // int
 	{
 		list<int> *l = (list<int>*)scriptList->listPointer;
-		list<int>::iterator it;
-		it = l->begin();
-		advance(it, index);
-		l->erase(it);
+		if (index < l->size()) {
+			list<int>::iterator it;
+			it = l->begin();
+			advance(it, index);
+			l->erase(it);
+		}
 	}
 	else if (scriptList->type == 1) // float
 	{
 		list<float> *l = (list<float>*)scriptList->listPointer;
-		list<float>::iterator it;
-		it = l->begin();
-		advance(it, index);
-		l->erase(it);
+		if (index < l->size()) {
+			list<float>::iterator it;
+			it = l->begin();
+			advance(it, index);
+			l->erase(it);
+		}
 	}
 	else if (scriptList->type == 2) // string
 	{
 		list<string> *l = (list<string>*)scriptList->listPointer;
-		list<string>::iterator it;
-		it = l->begin();
-		advance(it, index);
-		l->erase(it);
+		if (index < l->size()) {
+			list<string>::iterator it;
+			it = l->begin();
+			advance(it, index);
+			l->erase(it);
+		}
 	}
 	return OR_CONTINUE; 
 }
@@ -238,22 +244,32 @@ OpcodeResult WINAPI GET_LIST_SIZE(CScriptThread* thread)
 OpcodeResult WINAPI GET_LIST_VALUE_BY_INDEX(CScriptThread* thread)
 {
 	ScriptList *scriptList = (ScriptList*)CLEO_GetIntOpcodeParam(thread);
-	int index = CLEO_GetIntOpcodeParam(thread);
+	unsigned int index = CLEO_GetIntOpcodeParam(thread);
 	if (scriptList->type == 0) // int
 	{
 		list<int> *l = (list<int>*)scriptList->listPointer;
 		list<int>::iterator it;
 		it = l->begin();
-		advance(it, index);
-		CLEO_SetIntOpcodeParam(thread, *it);
+		if (index >= l->size()) {
+			CLEO_SetIntOpcodeParam(thread, 0);
+		}
+		else {
+			advance(it, index);
+			CLEO_SetIntOpcodeParam(thread, *it);
+		}
 	}
 	else if (scriptList->type == 1) // float
 	{
 		list<float> *l = (list<float>*)scriptList->listPointer;
 		list<float>::iterator it;
 		it = l->begin();
-		advance(it, index);
-		CLEO_SetFloatOpcodeParam(thread, *it);
+		if (index >= l->size()) {
+			CLEO_SetIntOpcodeParam(thread, 0);
+		}
+		else {
+			advance(it, index);
+			CLEO_SetFloatOpcodeParam(thread, *it);
+		}
 	}
 	return OR_CONTINUE;
 }
@@ -261,15 +277,20 @@ OpcodeResult WINAPI GET_LIST_VALUE_BY_INDEX(CScriptThread* thread)
 OpcodeResult WINAPI GET_LIST_STRING_VALUE_BY_INDEX(CScriptThread* thread)
 {
 	ScriptList *scriptList = (ScriptList*)CLEO_GetIntOpcodeParam(thread);
-	int index = CLEO_GetIntOpcodeParam(thread);
+	unsigned int index = CLEO_GetIntOpcodeParam(thread);
 	if (scriptList->type == 2) // string
 	{
 		list<string> *l = (list<string>*)scriptList->listPointer;
 		list<string>::iterator it;
 		it = l->begin();
-		advance(it, index);
-		string str = *it;
-		CLEO_WriteStringOpcodeParam(thread, &str[0]);
+		if (index >= l->size()) {
+			CLEO_WriteStringOpcodeParam(thread, "");
+		}
+		else {
+			advance(it, index);
+			string str = *it;
+			CLEO_WriteStringOpcodeParam(thread, &str[0]);
+		}
 	}
 	return OR_CONTINUE;
 }

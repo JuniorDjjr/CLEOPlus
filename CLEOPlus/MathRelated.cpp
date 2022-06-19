@@ -331,7 +331,7 @@ OpcodeResult WINAPI EASE(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0xE03=2,perlin_noise %1d% store_to %2d%
+// 0E03=2,perlin_noise %1d% store_to %2d%
 OpcodeResult WINAPI PERLIN_NOISE(CScriptThread* thread)
 {
 	float result = SimplexNoise::noise(CLEO_GetFloatOpcodeParam(thread));
@@ -339,7 +339,7 @@ OpcodeResult WINAPI PERLIN_NOISE(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0xE29=7,perlin_noise %1d% octaves %2d% frequency %3d% amplitude %4d% lacunarity %5d% persistence %6d% store_to %7d%
+// 0E29=7,perlin_noise %1d% octaves %2d% frequency %3d% amplitude %4d% lacunarity %5d% persistence %6d% store_to %7d%
 OpcodeResult WINAPI PERLIN_NOISE_FRACTAL(CScriptThread* thread)
 {
 	float f = CLEO_GetFloatOpcodeParam(thread);
@@ -357,7 +357,7 @@ OpcodeResult WINAPI PERLIN_NOISE_FRACTAL(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0xEF1=8,perlin_noise_fractal_2d x %1d% y %2d% octaves %3d% frequency %4d% amplitude %5d% lacunarity %6d% persistence %7d% store_to %8d%
+// 0EF1=8,perlin_noise_fractal_2d x %1d% y %2d% octaves %3d% frequency %4d% amplitude %5d% lacunarity %6d% persistence %7d% store_to %8d%
 OpcodeResult WINAPI PERLIN_NOISE_FRACTAL_2D(CScriptThread* thread)
 {
 	float x = CLEO_GetFloatOpcodeParam(thread);
@@ -376,7 +376,7 @@ OpcodeResult WINAPI PERLIN_NOISE_FRACTAL_2D(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0xEF2=9,perlin_noise_fractal_3d x %1d% y %2d% z %3d% octaves %4d% frequency %5d% amplitude %6d% lacunarity %7d% persistence %8d% store_to %9d%
+// 0EF2=9,perlin_noise_fractal_3d x %1d% y %2d% z %3d% octaves %4d% frequency %5d% amplitude %6d% lacunarity %7d% persistence %8d% store_to %9d%
 OpcodeResult WINAPI PERLIN_NOISE_FRACTAL_3D(CScriptThread* thread)
 {
 	float x = CLEO_GetFloatOpcodeParam(thread);

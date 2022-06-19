@@ -263,17 +263,23 @@ OpcodeResult WINAPI CHANGE_PLAYER_MONEY(CScriptThread* thread)
 	int player = CLEO_GetIntOpcodeParam(thread);
 	int mode = CLEO_GetIntOpcodeParam(thread);
 	int value = CLEO_GetIntOpcodeParam(thread);
-	switch (mode) {
-	case 0:
-		CWorld::Players[player].m_nMoney = value;
-		CWorld::Players[player].m_nDisplayMoney = value;
-		break;
-	case 1:
-		CWorld::Players[player].m_nMoney += value;
-		break;
-	case 2:
-		CWorld::Players[player].m_nMoney -= value;
-		break;
+	CPlayerPed* playerPed = FindPlayerPed(player);
+	if (playerPed) {
+		CPlayerInfo *playerInfo = playerPed->GetPlayerInfoForThisPlayerPed();
+		if (playerInfo) {
+			switch (mode) {
+			case 0:
+				playerInfo->m_nMoney = value;
+				playerInfo->m_nDisplayMoney = value;
+				break;
+			case 1:
+				playerInfo->m_nMoney += value;
+				break;
+			case 2:
+				playerInfo->m_nMoney -= value;
+				break;
+			}
+		}
 	}
 	return OR_CONTINUE;
 }
@@ -282,8 +288,10 @@ OpcodeResult WINAPI CHANGE_PLAYER_MONEY(CScriptThread* thread)
 OpcodeResult WINAPI CAR_HORN(CScriptThread* thread)
 {
 	CVehicle *vehicle = CPools::GetVehicle(CLEO_GetIntOpcodeParam(thread));
-	vehicle->m_nHornCounter = 1;
-	vehicle->PlayCarHorn();
+	if (vehicle) {
+		vehicle->m_nHornCounter = 1;
+		vehicle->PlayCarHorn();
+	}
 	return OR_CONTINUE;
 }
 
@@ -553,11 +561,13 @@ OpcodeResult WINAPI GET_OBJECT_CENTRE_OF_MASS_TO_BASE_OF_MODEL(CScriptThread* th
 OpcodeResult WINAPI GET_MODEL_TYPE(CScriptThread* thread)
 {
 	int modelId = CLEO_GetIntOpcodeParam(thread);
-	CBaseModelInfo *modelInfo = CModelInfo::GetModelInfo(modelId);
+	CBaseModelInfo* modelInfo;
 	int type = -1;
-	if (modelInfo)
-	{
-		type = modelInfo->GetModelType();
+	if (modelId >= 0) {
+		modelInfo = CModelInfo::GetModelInfo(modelId);
+		if (modelInfo) {
+			type = modelInfo->GetModelType();
+		}
 	}
 	CLEO_SetIntOpcodeParam(thread, type);
 	return OR_CONTINUE;
@@ -603,7 +613,7 @@ OpcodeResult WINAPI IS_STRING_COMMENT(CScriptThread* thread)
 	bool bResult = false;
 	LPSTR string = CLEO_ReadStringPointerOpcodeParam(thread, bufferA, 128);
 
-	int i = 0;
+	unsigned int i = 0;
 	while (string[i] == ' ' && i <= 127) ++i;
 
 	if (string[i] == '#' || string[i] == ';' || (string[i] == '/' && string[i + 1] == '/')) bResult = true;
@@ -928,7 +938,7 @@ OpcodeResult WINAPI GET_CLOSEST_COP_NEAR_CHAR(CScriptThread* thread)
 	auto& pool = CPools::ms_pPedPool;
 
 	CPed *closestCop = nullptr;
-	for (int index = 0; index < pool->m_nSize; ++index)
+	for (unsigned int index = 0; index < pool->m_nSize; ++index)
 	{
 		if (auto obj = pool->GetAt(index))
 		{
@@ -993,7 +1003,7 @@ OpcodeResult WINAPI GET_CLOSEST_COP_NEAR_POS(CScriptThread* thread)
 	auto& pool = CPools::ms_pPedPool;
 
 	CPed *closestCop = nullptr;
-	for (int index = 0; index < pool->m_nSize; ++index)
+	for (unsigned int index = 0; index < pool->m_nSize; ++index)
 	{
 		if (auto obj = pool->GetAt(index))
 		{
@@ -1045,7 +1055,7 @@ OpcodeResult WINAPI GET_ANY_CHAR_NO_SAVE_RECURSIVE(CScriptThread* thread)
 	auto& pool = CPools::ms_pPedPool;
 
 	CPed *objFound = nullptr;
-	for (int index = progress; index < pool->m_nSize; ++index)
+	for (unsigned int index = progress; index < pool->m_nSize; ++index)
 	{
 		if (auto obj = pool->GetAt(index))
 		{
@@ -1076,7 +1086,7 @@ OpcodeResult WINAPI GET_ANY_CAR_NO_SAVE_RECURSIVE(CScriptThread* thread)
 	auto& pool = CPools::ms_pVehiclePool;
 
 	CVehicle *objFound = nullptr;
-	for (int index = progress; index < pool->m_nSize; ++index)
+	for (unsigned int index = progress; index < pool->m_nSize; ++index)
 	{
 		if (auto obj = pool->GetAt(index))
 		{
@@ -1107,7 +1117,7 @@ OpcodeResult WINAPI GET_ANY_OBJECT_NO_SAVE_RECURSIVE(CScriptThread* thread)
 	auto& pool = CPools::ms_pObjectPool;
 
 	CObject *objFound = nullptr;
-	for (int index = progress; index < pool->m_nSize; ++index)
+	for (unsigned int index = progress; index < pool->m_nSize; ++index)
 	{
 		if (auto obj = pool->GetAt(index))
 		{
@@ -1789,7 +1799,10 @@ OpcodeResult WINAPI GET_MODEL_INFO(CScriptThread* thread)
 {
 	bool bResult = false;
 	int model = CLEO_GetIntOpcodeParam(thread);
-	CBaseModelInfo *modelInfo = CModelInfo::GetModelInfo(model);
+	CBaseModelInfo* modelInfo = nullptr;
+	if (model >= 0) {
+		modelInfo = CModelInfo::GetModelInfo(model);
+	}
 	if (modelInfo) bResult = true;
 	CLEO_SetIntOpcodeParam(thread, (DWORD)modelInfo);
 	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(bResult);

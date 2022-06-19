@@ -64,9 +64,10 @@ void TextDrawer::DrawPrints()
 }
 
 void TextDrawer::ClearAll() {
-	for (auto print : m_aPrints)
+	unsigned int size = m_aPrints.size();
+	for (unsigned int i = 0; i < size; ++i)
 	{
-		delete print;
+		delete m_aPrints[i];
 	}
 	m_aPrints.clear();
 }

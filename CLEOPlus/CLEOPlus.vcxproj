@@ -96,14 +96,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='GTASA Release|Win32'">
-    <OutDir>G:\GTA SA The Modded Edition\CLEO\</OutDir>
+    <OutDir>G:\GTA SA\cleo\</OutDir>
     <IntDir>$(ProjectDir).obj\GTASA\Release\</IntDir>
     <TargetName>CLEO+</TargetName>
     <TargetExt>.cleo</TargetExt>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);E:\Documents\Para GTA\plugin-sdk-2020\shared;E:\Documents\Para GTA\plugin-sdk-2020\plugin_sa\game_sa</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='GTASA zDebug|Win32'">
-    <OutDir>G:\GTA SA The Modded Edition\CLEO\</OutDir>
+    <OutDir>G:\GTA SA\cleo\</OutDir>
     <IntDir>$(ProjectDir).obj\GTASA\Debug\</IntDir>
     <TargetName>CLEO+</TargetName>
     <TargetExt>.cleo</TargetExt>

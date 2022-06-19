@@ -45,6 +45,27 @@ void ApplyPatches()
 	patch::RedirectCall(0x6AD9E1, GetSimplestActiveTask_CarAnimFix, true);
 	patch::RedirectCall(0x6AD9F9, GetSimplestActiveTask_CarAnimFix, true);
 
+	// Fix IS_CHAR_DEAD returning false even if health is 0.0 (wtf? why? this caused my script and Bullet Physics Ragdoll to not work correctly)
+	struct IsCharDeadFix
+	{
+		void operator()(reg_pack& regs)
+		{
+			CPed* ped = (CPed*)(regs.eax);
+			if (ped->m_fHealth <= 0.0f) {
+				regs.eax = ePedState::PEDSTATE_DEAD;
+			}
+			else {
+				regs.eax = ped->m_nPedState; //original code
+			}
+		}
+	}; 
+	if (GetGameVersion() == GAME_10US_HOODLUM) {
+		MakeInline<IsCharDeadFix>(0x156E7B4, 0x156E7B4 + 6);
+	}
+	else {
+		MakeInline<IsCharDeadFix>(0x464D74, 0x464D74 + 6);
+	}
+
 	if (!coopOpcodesInstalled) PatchCoop();
 	RadarBlip::Patch();
 }

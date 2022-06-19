@@ -115,7 +115,7 @@ OpcodeResult WINAPI INIT_EXTENDED_CHAR_VARS(CScriptThread* thread)
 	if (&xdata != nullptr && totalVars > 0)
 	{
 		if (findId == 2949658545) // "AUTO"
-			findId = (int)thread;
+			findId = (uint32_t)thread;
 
 		ExtendedVars *extVars = FindExtendedVarsFromId(xdata.extendedVarsList, findId);
 		if (extVars)
@@ -146,7 +146,7 @@ OpcodeResult WINAPI SET_EXTENDED_CHAR_VAR(CScriptThread* thread)
 	if (&xdata && varId >= 0)
 	{
 		if (findId == 2949658545) // "AUTO"
-			findId = (int)thread;
+			findId = (uint32_t)thread;
 
 		ExtendedVars *extVars = FindExtendedVarsFromId(xdata.extendedVarsList, findId);
 		if (extVars)
@@ -173,7 +173,7 @@ OpcodeResult WINAPI GET_EXTENDED_CHAR_VAR(CScriptThread* thread)
 	if (&xdata && varId >= 0)
 	{
 		if (findId == 2949658545) // "AUTO"
-			findId = (int)thread;
+			findId = (uint32_t)thread;
 
 		ExtendedVars *extVars = FindExtendedVarsFromId(xdata.extendedVarsList, findId);
 		if (extVars)
@@ -203,7 +203,7 @@ OpcodeResult WINAPI INIT_EXTENDED_CAR_VARS(CScriptThread* thread)
 	if (&xdata != nullptr && totalVars > 0)
 	{
 		if (findId == 2949658545) // "AUTO"
-			findId = (int)thread;
+			findId = (uint32_t)thread;
 
 		ExtendedVars *extVars = FindExtendedVarsFromId(xdata.extendedVarsList, findId);
 		if (extVars)
@@ -234,7 +234,7 @@ OpcodeResult WINAPI SET_EXTENDED_CAR_VAR(CScriptThread* thread)
 	if (&xdata && varId >= 0)
 	{
 		if (findId == 2949658545) // "AUTO"
-			findId = (int)thread;
+			findId = (uint32_t)thread;
 
 		ExtendedVars *extVars = FindExtendedVarsFromId(xdata.extendedVarsList, findId);
 		if (extVars)
@@ -261,7 +261,7 @@ OpcodeResult WINAPI GET_EXTENDED_CAR_VAR(CScriptThread* thread)
 	if (&xdata && varId >= 0)
 	{
 		if (findId == 2949658545) // "AUTO"
-			findId = (int)thread;
+			findId = (uint32_t)thread;
 
 		ExtendedVars *extVars = FindExtendedVarsFromId(xdata.extendedVarsList, findId);
 		if (extVars)
@@ -292,7 +292,7 @@ OpcodeResult WINAPI INIT_EXTENDED_OBJECT_VARS(CScriptThread* thread)
 	if (&xdata != nullptr && totalVars > 0)
 	{
 		if (findId == 2949658545) // "AUTO"
-			findId = (int)thread;
+			findId = (uint32_t)thread;
 
 		ExtendedVars *extVars = FindExtendedVarsFromId(xdata.extendedVarsList, findId);
 		if (extVars)
@@ -323,7 +323,7 @@ OpcodeResult WINAPI SET_EXTENDED_OBJECT_VAR(CScriptThread* thread)
 	if (&xdata && varId >= 0)
 	{
 		if (findId == 2949658545) // "AUTO"
-			findId = (int)thread;
+			findId = (uint32_t)thread;
 
 		ExtendedVars *extVars = FindExtendedVarsFromId(xdata.extendedVarsList, findId);
 		if (extVars)
@@ -351,7 +351,7 @@ OpcodeResult WINAPI GET_EXTENDED_OBJECT_VAR(CScriptThread* thread)
 	if (&xdata && varId >= 0)
 	{
 		if (findId == 2949658545) // "AUTO"
-			findId = (int)thread;
+			findId = (uint32_t)thread;
 
 		ExtendedVars *extVars = FindExtendedVarsFromId(xdata.extendedVarsList, findId);
 		if (extVars)
