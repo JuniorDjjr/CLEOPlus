@@ -51,7 +51,7 @@ void ApplyPatches()
 		void operator()(reg_pack& regs)
 		{
 			CPed* ped = (CPed*)(regs.eax);
-			if (ped->m_fHealth <= 0.0f) {
+			if (ped->m_fHealth <= 0.0f && ped->m_pIntelligence && !ped->m_pIntelligence->GetUsingParachute()) {
 				regs.eax = ePedState::PEDSTATE_DEAD;
 			}
 			else {

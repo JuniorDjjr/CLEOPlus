@@ -18,7 +18,7 @@
 #include "rw/rpworld.h"
 #include <set>
  
-constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01010000;
+constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01010100;
 
 using namespace plugin;
 using namespace std;
@@ -38,6 +38,7 @@ bool coopOpcodesInstalled = false;
 bool clipboardCommandsInstalled = false;
 bool sampfuncsInstalled = false;
 bool gtavhudInstalled = false;
+bool blipsAlwaysRevealed = false;
 float *ARwidthFromWF;
 float *ARheightFromWF;
 float *defaultBlipSize;
@@ -91,6 +92,7 @@ CdeclEvent <AddressList<0x53BF4E, H_CALL>, PRIORITY_BEFORE, ArgPickNone, void()>
 ThiscallEvent <AddressList<0x53E98B, H_CALL>, PRIORITY_BEFORE, ArgPickNone, void(void*)> afterGameProcess;
 CdeclEvent <AddressList<0x53E298, H_CALL>, PRIORITY_AFTER, ArgPickNone, void()> beforeHud;
 ThiscallEvent <AddressList<0x53E52B, H_JUMP>, PRIORITY_AFTER, ArgPickNone, void(void*)> afterHud;
+ThiscallEvent <AddressList<0x5E8A29, H_JUMP>, PRIORITY_BEFORE, ArgPickN<CPed*, 0>, void(CPed*)> pedPreRender;
 void CacheOnePedTask(CPed *ped, PedExtended &xdata, int &activeTaskIndex, CTask *task, bool isSecondary);
 void ClearScriptLists();
 
@@ -854,7 +856,7 @@ public:
 			CLEO_RegisterOpcode(0xE7D, LIST_REMOVE_INDEX_RANGE); // 0xE7D=3,list_remove_index %1d% start %2d% end %3d%
 			CLEO_RegisterOpcode(0xE7E, REVERSE_LIST); // 0xE7E=1,reverse_list %1d%
 
-
+			 
 			// Cache addresses (for better mod compatibility)
 			defaultMouseAccelHorizontalAddress = ReadMemory<uintptr_t>(0x50FB16 + 2, true);
 			defaultMouseAccelVerticalAddress = ReadMemory<uintptr_t>(0x50FB26 + 2, true);
@@ -872,6 +874,8 @@ public:
 			radarBlipSprites = ReadMemory<CSprite2d*>(0x5827EB, true);
 
 			defaultBlipSize = ReadMemory<float*>(0x58605E + 2, true);
+
+			blipsAlwaysRevealed = (inSAMP || ReadMemory<uint8_t>(0x586F17, true) == 0x90);
 
 			startPickups = ReadMemory<uintptr_t>(0x48ADC3, true);
 			endPickups = ReadMemory<uintptr_t>(0x4590E4, true);
@@ -1017,16 +1021,14 @@ public:
 		};
 		
 		// PedRender, but if pedState is 50 isn't called, so we call it in script process
-		injector::MakeInline<0x5E768F, 0x5E768F + 8>([](injector::reg_pack& regs)
+		pedPreRender += [](CPed* ped)
 		{
-			*(uint32_t*)(regs.esp + 0xC) = 1; //mov     dword ptr [esp+0Ch], 1
 			if (scriptEvents[ScriptEvent::List::CharProcess].size() > 0) {
-				CPed *ped = (CPed *)regs.ecx;
 				int ref = CPools::GetPedRef(ped);
 				for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharProcess]) scriptEvent->RunScriptEvent(ref);
 			}
-		});
-		 
+		};
+		
 		Events::pedRenderEvent.after += [](CPed *ped)
 		{
 			PedExtended &xdata = extData.Get(ped);
@@ -1196,7 +1198,7 @@ public:
 		// my objectCtorEvent, called really after
 		injector::MakeInline<0x59FB1E, 0x59FB1E + 6>([](injector::reg_pack& regs)
 		{
-			*(uint32_t*)(regs.esi + 0x534) = regs.ebx; //mov [esi+174h], ebx
+			*(uint32_t*)(regs.esi + 0x174) = regs.ebx; //mov [esi+174h], ebx
 			if (scriptEvents[ScriptEvent::List::ObjectCreate].size() > 0) {
 				int ref = CPools::GetObjectRef(reinterpret_cast<CObject*>(regs.esi));
 				for (auto scriptEvent : scriptEvents[ScriptEvent::List::ObjectCreate]) scriptEvent->RunScriptEvent(ref);
@@ -1246,12 +1248,12 @@ public:
 		});*/
 
 		// Ped damage event
-		injector::MakeInline<0x4B3238, 0x4B3238 + 6>([](injector::reg_pack& regs)
+		injector::MakeInline<0x4B5AF9, 0x4B5AF9 + 7>([](injector::reg_pack& regs)
 		{
-			regs.eax = *(uint32_t*)(regs.esi + 0x540); //mov     eax, [esi+540h]
-			CPedDamageResponseCalculator *damageCalculator = (CPedDamageResponseCalculator *)regs.ebp;
+			*(uint32_t*)(regs.ebp + 0x4) = 0; //mov     dword ptr [ebp+4], 0
+			CPedDamageResponseCalculator *damageCalculator = (CPedDamageResponseCalculator *)regs.esi;
 			//if (damageCalculator-> != 0.0f) {
-				CPed* ped = (CPed*)regs.esi;
+				CPed* ped = (CPed*)regs.edi;
 				PedExtended &data = extData.Get(ped);
 				if (&data != nullptr) {
 					data.lastDamageEntity = damageCalculator->m_pDamager;

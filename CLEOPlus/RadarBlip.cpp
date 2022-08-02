@@ -12,6 +12,7 @@ using namespace injector;
 
 extern bool gtavhudInstalled;
 extern float *defaultBlipSize;
+extern bool blipsAlwaysRevealed;
 
 namespace RadarBlip
 {
@@ -109,7 +110,7 @@ namespace RadarBlip
 					float distance = CRadar::LimitRadarPoint(radarPoint);
 					if (!blip->shortDistance || distance <= 1.0f || FrontEndMenuManager.drawRadarOrMap)
 					{
-						if (MyHasThisBlipBeenRevealed(blip))
+						if (MyHasThisBlipBeenRevealed(blip) || blipsAlwaysRevealed)
 						{
 							CRadar::TransformRadarPointToScreenSpace(screenPos, radarPoint);
 							MyDrawRadarSprite(blip, screenPos.x, screenPos.y);
