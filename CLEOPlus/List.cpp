@@ -6,6 +6,35 @@ class ScriptList {
 public:
 	int type;
 	uintptr_t listPointer;
+
+	ScriptList() {
+		type = 0;
+		listPointer = 0;
+	}
+
+	~ScriptList() {
+		if (listPointer)
+		{
+			if (type == 0) // int
+			{
+				list<int>* l = (list<int>*)listPointer;
+				l->clear(); // useful?
+				delete l;
+			}
+			else if (type == 1) // float
+			{
+				list<float>* l = (list<float>*)listPointer;
+				l->clear();
+				delete l;
+			}
+			else if (type == 2) // string
+			{
+				list<string>* l = (list<string>*)listPointer;
+				l->clear();
+				delete l;
+			}
+		}
+	}
 };
 
 vector<ScriptList*> scriptListList;
@@ -37,6 +66,9 @@ OpcodeResult WINAPI CREATE_LIST(CScriptThread* thread)
 		list<string> *l = new list<string>();
 		scriptList->listPointer = (DWORD)l;
 	}
+	else {
+		MessageBox(HWND_DESKTOP, string("CREATE_LIST failed: list type unknown " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
+	}
 	scriptListList.push_back(scriptList);
 	CLEO_SetIntOpcodeParam(thread, (DWORD)scriptList);
 	return OR_CONTINUE;
@@ -45,36 +77,8 @@ OpcodeResult WINAPI CREATE_LIST(CScriptThread* thread)
 OpcodeResult WINAPI DELETE_LIST(CScriptThread* thread)
 {
 	ScriptList *scriptList = (ScriptList*)CLEO_GetIntOpcodeParam(thread);
-	// prefer safer codes for delete
 	if (scriptList)
 	{
-		if (scriptList->type == 0) // int
-		{
-			list<int> *l = (list<int>*)scriptList->listPointer;
-			if (l)
-			{
-				l->clear(); // useful?
-				delete l;
-			}
-		}
-		else if (scriptList->type == 1) // float
-		{
-			list<float> *l = (list<float>*)scriptList->listPointer;
-			if (l)
-			{
-				l->clear();
-				delete l;
-			}
-		}
-		else if (scriptList->type == 2) // string
-		{
-			list<string> *l = (list<string>*)scriptList->listPointer;
-			if (l)
-			{
-				l->clear();
-				delete l;
-			}
-		}
 		delete scriptList;
 	}
 	return OR_CONTINUE;
@@ -89,11 +93,15 @@ OpcodeResult WINAPI LIST_ADD(CScriptThread* thread)
 		list<int> *l = (list<int>*)scriptList->listPointer;
 		l->push_back(value);
 	}
-	else if(scriptList->type == 1) // float 
+	else if (scriptList->type == 1) // float 
 	{
 		float value = CLEO_GetFloatOpcodeParam(thread);
 		list<float> *l = (list<float>*)scriptList->listPointer;
 		l->push_back(value);
+	}
+	else {
+		MessageBox(HWND_DESKTOP, string("LIST_ADD failed: list type unknown " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
+		int value = CLEO_GetIntOpcodeParam(thread); // fallback
 	}
 	return OR_CONTINUE;
 }
@@ -101,11 +109,14 @@ OpcodeResult WINAPI LIST_ADD(CScriptThread* thread)
 OpcodeResult WINAPI LIST_ADD_STRING(CScriptThread* thread)
 {
 	ScriptList *scriptList = (ScriptList*)CLEO_GetIntOpcodeParam(thread);
+	string value = CLEO_ReadStringPointerOpcodeParam(thread, bufferA, 128);
 	if(scriptList->type == 2) // string
 	{
-		string value = CLEO_ReadStringPointerOpcodeParam(thread, bufferA, 128);
 		list<string> *l = (list<string>*)scriptList->listPointer;
 		l->push_back(value);
+	}
+	else {
+		MessageBox(HWND_DESKTOP, string("LIST_ADD_STRING failed: list type wrong " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
 	}
 	return OR_CONTINUE;
 }
@@ -125,17 +136,24 @@ OpcodeResult WINAPI LIST_REMOVE_VALUE(CScriptThread* thread)
 		list<float> *l = (list<float>*)scriptList->listPointer;
 		l->remove(value);
 	}
+	else {
+		MessageBox(HWND_DESKTOP, string("LIST_REMOVE_VALUE failed: list type unknown " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
+		int value = CLEO_GetIntOpcodeParam(thread); //fallback
+	}
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI LIST_REMOVE_STRING_VALUE(CScriptThread* thread)
 {
 	ScriptList *scriptList = (ScriptList*)CLEO_GetIntOpcodeParam(thread);
+	string value = CLEO_ReadStringPointerOpcodeParam(thread, bufferA, 128);
 	if (scriptList->type == 2) // string
 	{
-		string value = CLEO_ReadStringPointerOpcodeParam(thread, bufferA, 128);
 		list<string> *l = (list<string>*)scriptList->listPointer;
 		l->remove(value);
+	}
+	else {
+		MessageBox(HWND_DESKTOP, string("LIST_REMOVE_STRING_VALUE failed: list type wrong " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
 	}
 	return OR_CONTINUE;
 }
@@ -173,6 +191,9 @@ OpcodeResult WINAPI LIST_REMOVE_INDEX(CScriptThread* thread)
 			advance(it, index);
 			l->erase(it);
 		}
+	}
+	else {
+		MessageBox(HWND_DESKTOP, string("LIST_REMOVE_INDEX failed: list type unknown " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
 	}
 	return OR_CONTINUE; 
 }
@@ -212,6 +233,9 @@ OpcodeResult WINAPI LIST_REMOVE_INDEX_RANGE(CScriptThread* thread)
 		advance(itEnd, indexEnd);
 		l->erase(it, itEnd);
 	}
+	else {
+		MessageBox(HWND_DESKTOP, string("LIST_REMOVE_INDEX_RANGE failed: list type unknown " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
+	}
 	return OR_CONTINUE;
 }
 
@@ -235,6 +259,9 @@ OpcodeResult WINAPI GET_LIST_SIZE(CScriptThread* thread)
 		{
 			list<string> *l = (list<string>*)scriptList->listPointer;
 			size = l->size();
+		}
+		else {
+			MessageBox(HWND_DESKTOP, string("GET_LIST_SIZE failed: list type unknown " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
 		}
 	}
 	CLEO_SetIntOpcodeParam(thread, size);
@@ -271,6 +298,10 @@ OpcodeResult WINAPI GET_LIST_VALUE_BY_INDEX(CScriptThread* thread)
 			CLEO_SetFloatOpcodeParam(thread, *it);
 		}
 	}
+	else {
+		MessageBox(HWND_DESKTOP, string("GET_LIST_VALUE_BY_INDEX failed: list type unknown " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
+		CLEO_SetIntOpcodeParam(thread, 0); //fallback
+	}
 	return OR_CONTINUE;
 }
 
@@ -291,6 +322,10 @@ OpcodeResult WINAPI GET_LIST_STRING_VALUE_BY_INDEX(CScriptThread* thread)
 			string str = *it;
 			CLEO_WriteStringOpcodeParam(thread, &str[0]);
 		}
+	}
+	else {
+		MessageBox(HWND_DESKTOP, string("GET_LIST_VALUE_BY_INDEX failed: list type wrong " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
+		CLEO_WriteStringOpcodeParam(thread, "");//fallback
 	}
 	return OR_CONTINUE;
 }
@@ -313,6 +348,9 @@ OpcodeResult WINAPI RESET_LIST(CScriptThread* thread)
 		list<string> *l = (list<string>*)scriptList->listPointer;
 		l->clear();
 	}
+	else {
+		MessageBox(HWND_DESKTOP, string("RESET_LIST failed: list type unknown " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
+	}
 	return OR_CONTINUE;
 }
 
@@ -333,6 +371,9 @@ OpcodeResult WINAPI REVERSE_LIST(CScriptThread* thread)
 	{
 		list<string> *l = (list<string>*)scriptList->listPointer;
 		l->reverse();
+	}
+	else {
+		MessageBox(HWND_DESKTOP, string("REVERSE_LIST failed: list type unknown " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
 	}
 	return OR_CONTINUE;
 }

@@ -18,7 +18,7 @@
 #include "rw/rpworld.h"
 #include <set>
  
-constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01010100;
+constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01010200;
 
 using namespace plugin;
 using namespace std;
@@ -886,375 +886,370 @@ public:
 			sizeScriptConnectLodsObjects = ReadMemory<uint32_t>(0x5D522A + 1, true) * 2;
 
 			ApplyPatches();
-		};
 
-		// ----------------------------------------------------------------------------------------
+			// ----------------------------------------------------------------------------------------
 
-		beforeGameProcess += []
-		{
-			// Reset ped data per frame
-			auto& pedsPool = CPools::ms_pPedPool;
-			for (unsigned int index = 0; index < pedsPool->m_nSize; ++index)
+			// VehiclePreRender
+			vehiclePreRenderEvent += [](CVehicle* vehicle)
 			{
-				if (CPed* ped = pedsPool->GetAt(index))
+				if (scriptEvents[ScriptEvent::List::CarProcess].size() > 0) {
+					int ref = CPools::GetVehicleRef(vehicle);
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::CarProcess]) scriptEvent->RunScriptEvent(ref);
+				}
+			};
+			beforeGameProcess += []
+			{
+				// Reset ped data per frame
+				auto& pedsPool = CPools::ms_pPedPool;
+				for (unsigned int index = 0; index < pedsPool->m_nSize; ++index)
 				{
-					// Call char process script event if invisible, because our ped render hook will not call it
-					if (ped->m_nPedState == 50) {
-						if (scriptEvents[ScriptEvent::List::CharProcess].size() > 0) {
-							int ref = CPools::GetPedRef(ped);
-							for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharProcess]) scriptEvent->RunScriptEvent(ref);
-						}
-					}
-
-					PedExtended& xdata = extData.Get(ped);
-					if (&xdata != nullptr)
+					if (CPed* ped = pedsPool->GetAt(index))
 					{
-						// Reset AI flags
-						xdata.aiFlagsIntValue = 0;
+						// Call char process script event if invisible, because our ped render hook will not call it
+						if (ped->m_nPedState == 50) {
+							if (scriptEvents[ScriptEvent::List::CharProcess].size() > 0) {
+								int ref = CPools::GetPedRef(ped);
+								for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharProcess]) scriptEvent->RunScriptEvent(ref);
+							}
+						}
 
-						// Cache tasks
-						int activeTaskIndex = 0;
-						if (ped->m_pIntelligence)
+						PedExtended& xdata = extData.Get(ped);
+						if (&xdata != nullptr)
 						{
-							CTaskManager* taskMgr = &ped->m_pIntelligence->m_TaskMgr;
-							for (unsigned int i = 0; i < 5; i++)
+							// Reset AI flags
+							xdata.aiFlagsIntValue = 0;
+
+							// Cache tasks
+							int activeTaskIndex = 0;
+							if (ped->m_pIntelligence)
 							{
-								CTask* task = taskMgr->m_aPrimaryTasks[i];
-								while (task)
+								CTaskManager* taskMgr = &ped->m_pIntelligence->m_TaskMgr;
+								for (unsigned int i = 0; i < 5; i++)
 								{
-									CacheOnePedTask(ped, xdata, activeTaskIndex, task, false);
-									task = task->GetSubTask();
+									CTask* task = taskMgr->m_aPrimaryTasks[i];
+									while (task)
+									{
+										CacheOnePedTask(ped, xdata, activeTaskIndex, task, false);
+										task = task->GetSubTask();
+									}
+								}
+
+								for (unsigned int i = 0; i < 5; i++)
+								{
+									CTask* task = taskMgr->m_aSecondaryTasks[i];
+									while (task)
+									{
+										CacheOnePedTask(ped, xdata, activeTaskIndex, task, true);
+										task = task->GetSubTask();
+									}
 								}
 							}
+							if (activeTaskIndex < 31) xdata.activeTasks[activeTaskIndex] = -1; // set terminator
+						}
+					}
+				}
 
-							for (unsigned int i = 0; i < 5; i++)
+			};
+
+			Events::processScriptsEvent.after += []
+			{
+				// Reset ped data per frame
+				auto& pedsPool = CPools::ms_pPedPool;
+				for (unsigned int index = 0; index < pedsPool->m_nSize; ++index)
+				{
+					if (CPed* ped = pedsPool->GetAt(index))
+					{
+						PedExtended& xdata = extData.Get(ped);
+						if (&xdata != nullptr) {
+							// Reset last damage;
+							xdata.lastDamageEntity = nullptr;
+							xdata.lastDamageWeapon = 0;
+							xdata.lastDamagePart = 0;
+							xdata.lastDamageIntensity = 0.0f;
+						}
+					}
+				}
+				// Reset vehicle data per frame
+				auto& vehsPool = CPools::ms_pVehiclePool;
+				for (unsigned int index = 0; index < vehsPool->m_nSize; ++index)
+				{
+					if (CVehicle* vehicle = vehsPool->GetAt(index))
+					{
+						VehExtended& xdata = vehExtData.Get(vehicle);
+
+						if (&xdata != nullptr) {
+							// Reset last damage;
+							xdata.lastDamagePed = nullptr;
+							xdata.lastDamageType = 0;
+							xdata.lastDamageIntensity = 0.0f;
+						}
+					}
+				}
+				controllerMode = ReadMemory<uint8_t>(0x47F399, false);
+			};
+
+			afterGameProcess += []
+			{
+				if (!CTimer::m_UserPause && !CTimer::m_CodePause) {
+					pausedLastFrame = false;
+				}
+
+				// Update camera rotation disable.
+				if (disableCamControl)
+				{
+					// Disables it each frame to make it compatible with GTA V Hud.
+					for (unsigned int i = 0; i < 14; ++i)
+					{
+						patch::SetPointer(disableCamMoveAddresses[i], &fZero);
+					}
+					disabledCamControlLastFrame = true;
+				}
+				else if (disabledCamControlLastFrame)
+				{
+					// Get using address (to make it compatible with other mods)
+					for (unsigned int i = 0; i < 14; ++i)
+					{
+						patch::SetInt(disableCamMoveAddresses[i], (i > 4) ? defaultMouseAccelHorizontalAddress : defaultMouseAccelVerticalAddress);
+					}
+					disabledCamControlLastFrame = false;
+				}
+			};
+
+			// EntityPreRender
+			// PATCH MOVED TO: PatchBuildingProcessIfNeeded Events.cpp
+
+			// PedRender, but if pedState is 50 isn't called, so we call it in script process
+			pedPreRender += [](CPed* ped)
+			{
+				if (scriptEvents[ScriptEvent::List::CharProcess].size() > 0) {
+					int ref = CPools::GetPedRef(ped);
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharProcess]) scriptEvent->RunScriptEvent(ref);
+				}
+			};
+
+			Events::pedRenderEvent.after += [](CPed* ped)
+			{
+				PedExtended& xdata = extData.Get(ped);
+
+				// -- Render objects
+				if (ped->m_bIsVisible && ped->m_pRwObject)
+				{
+					if (&xdata != nullptr && xdata.renderObjects.size() > 0)
+					{
+						for (RenderObject* renderObject : xdata.renderObjects)
+						{
+							if (renderObject->isVisible)
 							{
-								CTask* task = taskMgr->m_aSecondaryTasks[i];
-								while (task)
+								if (renderObject->hideIfCar && ped->m_nPedFlags.bInVehicle) continue;
+								if (renderObject->hideIfDead && ped->m_fHealth <= 0.0f) continue;
+								if (renderObject->hideIfWeapon && ped->m_nActiveWeaponSlot > 0) continue;
+
+								RwFrame* frame = renderObject->frame;
+								RpAtomic* atomic = renderObject->atomic;
+								RpClump* clump = renderObject->clump;
+
+								if (clump)
 								{
-									CacheOnePedTask(ped, xdata, activeTaskIndex, task, true);
-									task = task->GetSubTask();
+									frame = (RwFrame*)clump->object.parent;
+								}
+
+								RpHAnimHierarchy* hAnimHier = GetAnimHierarchyFromSkinClump(ped->m_pRwClump);
+								RwMatrix* boneMatrix = &RpHAnimHierarchyGetMatrixArray(hAnimHier)[RpHAnimIDGetIndex(hAnimHier, renderObject->boneId)];
+								memcpy(&frame->modelling, boneMatrix, sizeof(frame->modelling));
+								RwV3d pointsIn = { renderObject->offset.x, renderObject->offset.y, renderObject->offset.z };
+								RwV3dTransformPoints(&pointsIn, &pointsIn, 1, boneMatrix);
+								frame->modelling.pos = pointsIn;
+								if (renderObject->rot.x != 0.0f || renderObject->rot.y != 0.0f || renderObject->rot.z != 0.0f)
+								{
+									RwFrameRotate(frame, (RwV3d*)0x008D2E00, renderObject->rot.x, rwCOMBINEPRECONCAT);
+									RwFrameRotate(frame, (RwV3d*)0x008D2E0C, renderObject->rot.y, rwCOMBINEPRECONCAT);
+									RwFrameRotate(frame, (RwV3d*)0x008D2E18, renderObject->rot.z, rwCOMBINEPRECONCAT);
+								}
+								if (renderObject->scale.x != 1.0f || renderObject->scale.y != 1.0f || renderObject->scale.z != 1.0f)
+								{
+									RwV3d sizeVector = { renderObject->scale.x, renderObject->scale.y, renderObject->scale.z };
+									RwFrameScale(frame, &sizeVector, RwOpCombineType::rwCOMBINEPRECONCAT);
+								}
+								if (renderObject->dist.x != 0.0f) frame->modelling.at.x = renderObject->dist.x;
+								if (renderObject->dist.y != 0.0f) frame->modelling.at.z = renderObject->dist.y;
+								if (renderObject->dist.z != 0.0f) frame->modelling.pos.x = renderObject->dist.z; //bug?
+								if (renderObject->dist.w != 0.0f) frame->modelling.pos.y = renderObject->dist.w; //bug?
+								RwFrameUpdateObjects(frame);
+
+								if (clump)
+								{
+									RpClumpRender(clump);
+								}
+								else
+								{
+									if (atomic) atomic->renderCallBack(atomic);
 								}
 							}
 						}
-						if (activeTaskIndex < 31) xdata.activeTasks[activeTaskIndex] = -1; // set terminator
 					}
+
 				}
-			}
+			};
 
-		};
-
-		Events::processScriptsEvent.after += []
-		{
-			// Reset ped data per frame
-			auto &pedsPool = CPools::ms_pPedPool;
-			for (unsigned int index = 0; index < pedsPool->m_nSize; ++index)
+			startSaveGame += []
 			{
-				if (CPed* ped = pedsPool->GetAt(index))
-				{
-					PedExtended &xdata = extData.Get(ped);
-					if (&xdata != nullptr) {
-						// Reset last damage;
-						xdata.lastDamageEntity = nullptr;
-						xdata.lastDamageWeapon = 0;
-						xdata.lastDamagePart = 0;
-						xdata.lastDamageIntensity = 0.0f;
-					}
-				}
-			}
-			// Reset vehicle data per frame
-			auto& vehsPool = CPools::ms_pVehiclePool;
-			for (unsigned int index = 0; index < vehsPool->m_nSize; ++index)
+				currentSaveSlot = FrontEndMenuManager.m_bSelectedSaveGame;
+				for (auto scriptEvent : scriptEvents[ScriptEvent::List::SaveConfirmation]) scriptEvent->RunScriptEvent(currentSaveSlot + 1);
+			};
+
+			loadingEvent += []
 			{
-				if (CVehicle* vehicle = vehsPool->GetAt(index))
-				{
-					VehExtended &xdata = vehExtData.Get(vehicle);
+				currentSaveSlot = FrontEndMenuManager.m_bSelectedSaveGame;
+			};
 
-					if (&xdata != nullptr) {
-						// Reset last damage;
-						xdata.lastDamagePed = nullptr;
-						xdata.lastDamageType = 0;
-						xdata.lastDamageIntensity = 0.0f;
-					}
-				}
-			}
-			controllerMode = ReadMemory<uint8_t>(0x47F399, false);
-		};
-
-		afterGameProcess +=[]
-		{
-			if (!CTimer::m_UserPause && !CTimer::m_CodePause) {
-				pausedLastFrame = false;
-			}
-
-			// Update camera rotation disable.
-			if (disableCamControl)
+			// Fixes corrupted old saves with deleted LOD objects
+			loadingEventAfterPoolsLoaded.before += []
 			{
-				// Disables it each frame to make it compatible with GTA V Hud.
-				for (unsigned int i = 0; i < 14; ++i)
+				for (unsigned int i = 0; i < sizeScriptConnectLodsObjects; ++i)
 				{
-					patch::SetPointer(disableCamMoveAddresses[i], &fZero);
-				}
-				disabledCamControlLastFrame = true;
-			}
-			else if (disabledCamControlLastFrame)
-			{
-				// Get using address (to make it compatible with other mods)
-				for (unsigned int i = 0; i < 14; ++i)
-				{
-					patch::SetInt(disableCamMoveAddresses[i], (i > 4) ? defaultMouseAccelHorizontalAddress : defaultMouseAccelVerticalAddress);
-				}
-				disabledCamControlLastFrame = false;
-			}
-		};
-
-		// EntityPreRender
-		// PATCH MOVED TO: PatchBuildingProcessIfNeeded Events.cpp
-
-		// VehiclePreRender
-		vehiclePreRenderEvent +=[](CVehicle *vehicle)
-		{
-			if (scriptEvents[ScriptEvent::List::CarProcess].size() > 0) {
-				int ref = CPools::GetVehicleRef(vehicle);
-				for (auto scriptEvent : scriptEvents[ScriptEvent::List::CarProcess]) scriptEvent->RunScriptEvent(ref);
-			}
-		};
-		
-		// PedRender, but if pedState is 50 isn't called, so we call it in script process
-		pedPreRender += [](CPed* ped)
-		{
-			if (scriptEvents[ScriptEvent::List::CharProcess].size() > 0) {
-				int ref = CPools::GetPedRef(ped);
-				for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharProcess]) scriptEvent->RunScriptEvent(ref);
-			}
-		};
-		
-		Events::pedRenderEvent.after += [](CPed *ped)
-		{
-			PedExtended &xdata = extData.Get(ped);
-
-			// -- Render objects
-			if (ped->m_bIsVisible && ped->m_pRwObject)
-			{
-				if (&xdata != nullptr && xdata.renderObjects.size() > 0)
-				{
-					for (RenderObject *renderObject : xdata.renderObjects)
+					if (CTheScripts__ScriptConnectLodsObjects[i] != -1)
 					{
-						if (renderObject->isVisible)
+						CObject* obj = CPools::GetObject(CTheScripts__ScriptConnectLodsObjects[i]);
+						if ((uintptr_t)obj < 0x00400000)
 						{
-							if (renderObject->hideIfCar && ped->m_nPedFlags.bInVehicle) continue;
-							if (renderObject->hideIfDead && ped->m_fHealth <= 0.0f) continue;
-							if (renderObject->hideIfWeapon && ped->m_nActiveWeaponSlot > 0) continue;
-
-							RwFrame *frame = renderObject->frame;
-							RpAtomic *atomic = renderObject->atomic;
-							RpClump *clump = renderObject->clump;
-
-							if (clump)
-							{
-								frame = (RwFrame*)clump->object.parent;
-							}
-
-							RpHAnimHierarchy *hAnimHier = GetAnimHierarchyFromSkinClump(ped->m_pRwClump);
-							RwMatrix *boneMatrix = &RpHAnimHierarchyGetMatrixArray(hAnimHier)[RpHAnimIDGetIndex(hAnimHier, renderObject->boneId)];
-							memcpy(&frame->modelling, boneMatrix, sizeof(frame->modelling));
-							RwV3d pointsIn = { renderObject->offset.x, renderObject->offset.y, renderObject->offset.z };
-							RwV3dTransformPoints(&pointsIn, &pointsIn, 1, boneMatrix);
-							frame->modelling.pos = pointsIn;
-							if (renderObject->rot.x != 0.0f || renderObject->rot.y != 0.0f || renderObject->rot.z != 0.0f)
-							{
-								RwFrameRotate(frame, (RwV3d*)0x008D2E00, renderObject->rot.x, rwCOMBINEPRECONCAT);
-								RwFrameRotate(frame, (RwV3d*)0x008D2E0C, renderObject->rot.y, rwCOMBINEPRECONCAT);
-								RwFrameRotate(frame, (RwV3d*)0x008D2E18, renderObject->rot.z, rwCOMBINEPRECONCAT);
-							}
-							if (renderObject->scale.x != 1.0f || renderObject->scale.y != 1.0f || renderObject->scale.z != 1.0f)
-							{
-								RwV3d sizeVector = { renderObject->scale.x, renderObject->scale.y, renderObject->scale.z };
-								RwFrameScale(frame, &sizeVector, RwOpCombineType::rwCOMBINEPRECONCAT);
-							}
-							if (renderObject->dist.x != 0.0f) frame->modelling.at.x = renderObject->dist.x;
-							if (renderObject->dist.y != 0.0f) frame->modelling.at.z = renderObject->dist.y;
-							if (renderObject->dist.z != 0.0f) frame->modelling.pos.x = renderObject->dist.z; //bug?
-							if (renderObject->dist.w != 0.0f) frame->modelling.pos.y = renderObject->dist.w; //bug?
-							RwFrameUpdateObjects(frame);
-
-							if (clump)
-							{
-								RpClumpRender(clump);
-							}
-							else
-							{
-								if (atomic) atomic->renderCallBack(atomic);
-							}
+							CTheScripts__ScriptConnectLodsObjects[i] = -1;
 						}
 					}
 				}
+			};
 
-			}
-		};
-		  
-		// ----------------------------------------------------------------------------------------
-
-		startSaveGame += []
-		{
-			currentSaveSlot = FrontEndMenuManager.m_bSelectedSaveGame;
-			for (auto scriptEvent : scriptEvents[ScriptEvent::List::SaveConfirmation]) scriptEvent->RunScriptEvent(currentSaveSlot + 1);
-		};
-
-		loadingEvent += []
-		{
-			currentSaveSlot = FrontEndMenuManager.m_bSelectedSaveGame;
-		};
-
-		// Fixes corrupted old saves with deleted LOD objects
-		loadingEventAfterPoolsLoaded.before += []
-		{
-			for (unsigned int i = 0; i < sizeScriptConnectLodsObjects; ++i)
+			newGameFirstStartEvent += []
 			{
-				if (CTheScripts__ScriptConnectLodsObjects[i] != -1)
-				{
-					CObject* obj = CPools::GetObject(CTheScripts__ScriptConnectLodsObjects[i]);
-					if ((uintptr_t)obj < 0x00400000)
-					{
-						CTheScripts__ScriptConnectLodsObjects[i] = -1;
-					}
+				currentSaveSlot = -1; // new game (loadingEvent may change it)
+			};
+
+			restartEvent.before += []
+			{
+				if (currentSaveSlot > -2) { // Fixes a improved fastloader bug
+					timesGameRestarted++;
 				}
-			}
-		};
+				// Scripts are executed once before restart, so we need to re-execute some events
+				for (auto scriptEvent : scriptEvents[ScriptEvent::List::OnMenu]) scriptEvent->RunScriptEvent(true);
+				disablePadControl[0] = false;
+				disablePadControl[1] = false;
+				disablePadControlMovement[0] = false;
+				disablePadControlMovement[1] = false;
+				RadarBlip::Clear();
+				ClearScriptLists();
+				ScriptEvent::ClearAllScriptEvents();
+				for (auto id : specialCharacterModelsUsed) {
+					CStreaming::SetMissionDoesntRequireModel(id);
+					CStreaming::RemoveModel(id);
+				}
+				//specialCharacterModelsUsed.clear(); // don't clear it, we use this list to reuse IDs in GET_MODEL_DOESNT_EXIST_IN_RANGE
+				for (unsigned int i = 0; i < DrawEvent::TOTAL_DRAW_EVENT; ++i) {
+					ClearMySprites(sprites[i]);
+					textDrawer[i].ClearAll();
+				}
+				currentSaveSlot = -1; // new game (loadingEvent may change it now)
+			};
 
-		newGameFirstStartEvent += []
-		{
-			currentSaveSlot = -1; // new game (loadingEvent may change it)
-		};
-
-		restartEvent.before += []
-		{
-			if (currentSaveSlot > -2) { // Fixes a improved fastloader bug
-				timesGameRestarted++;
-			}
-			// Scripts are executed once before restart, so we need to re-execute some events
-			for (auto scriptEvent : scriptEvents[ScriptEvent::List::OnMenu]) scriptEvent->RunScriptEvent(true);
-			disablePadControl[0] = false;
-			disablePadControl[1] = false;
-			disablePadControlMovement[0] = false;
-			disablePadControlMovement[1] = false;
-			RadarBlip::Clear();
-			ClearScriptLists();
-			ScriptEvent::ClearAllScriptEvents();
-			for (auto id : specialCharacterModelsUsed) {
-				CStreaming::SetMissionDoesntRequireModel(id);
-				CStreaming::RemoveModel(id);
-			}
-			//specialCharacterModelsUsed.clear(); // don't clear it, we use this list to reuse IDs in GET_MODEL_DOESNT_EXIST_IN_RANGE
-			for (unsigned int i = 0; i < DrawEvent::TOTAL_DRAW_EVENT; ++i) {
-				ClearMySprites(sprites[i]);
-				textDrawer[i].ClearAll();
-			}
-			currentSaveSlot = -1; // new game (loadingEvent may change it now)
-		};
-
-		// Ped creator (audio initialization)
-		injector::MakeInline<0x4E6916, 0x4E6916 + 6>([](injector::reg_pack& regs)
-		{
-			*(uint8_t*)(regs.esi + 0x99) = 0; //mov [esi+99h], bl
-			if (scriptEvents[ScriptEvent::List::CharCreate].size() > 0) {
-				CPed *ped = *(CPed**)(regs.esp + 0xC + 0x4);
-				int ref = CPools::GetPedRef(ped);
-				for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharCreate]) scriptEvent->RunScriptEvent(ref);
-			}
-		});
-		 
-		Events::pedDtorEvent.before += [](CPed *ped)
-		{
-			PedExtended &data = extData.Get(ped);
-			if (&data != nullptr && data.renderObjects.size() > 0)
+			Events::pedDtorEvent.before += [](CPed* ped)
 			{
-				DeleteAllRenderObjectsFromChar(data);
-			}
-			if (scriptEvents[ScriptEvent::List::CharDelete].size() > 0) {
-				int ref = CPools::GetPedRef(ped);
-				for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharDelete]) scriptEvent->RunScriptEvent(ref);
-			}
-		};
+				PedExtended& data = extData.Get(ped);
+				if (&data != nullptr && data.renderObjects.size() > 0)
+				{
+					DeleteAllRenderObjectsFromChar(data);
+				}
+				if (scriptEvents[ScriptEvent::List::CharDelete].size() > 0) {
+					int ref = CPools::GetPedRef(ped);
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharDelete]) scriptEvent->RunScriptEvent(ref);
+				}
+			};
 
-		// Vehicle creator (audio initialization; somewhere in random place because I don't trust other mods to hook at calls, like UsesSiren)
-		injector::MakeInline<0x4F7798, 0x4F7798 + 6>([](injector::reg_pack& regs)
-		{
-			*(uint32_t*)(regs.ebp + 0x180) = regs.ebx; //mov [ebp+180h], ebx
-			if (scriptEvents[ScriptEvent::List::CarCreate].size() > 0) {
-				CVehicle *vehicle = (CVehicle*)(regs.edx);
-				int ref = CPools::GetVehicleRef(vehicle);
-				for (auto scriptEvent : scriptEvents[ScriptEvent::List::CarCreate]) scriptEvent->RunScriptEvent(ref);
-			}
-		});
+			Events::vehicleDtorEvent.before += [](CVehicle* vehicle) {
+				if (scriptEvents[ScriptEvent::List::CarDelete].size() > 0) {
+					int ref = CPools::GetVehicleRef(vehicle);
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::CarDelete]) scriptEvent->RunScriptEvent(ref);
+				}
+			};
 
-		Events::vehicleDtorEvent.before += [](CVehicle *vehicle) {
-			if (scriptEvents[ScriptEvent::List::CarDelete].size() > 0) {
-				int ref = CPools::GetVehicleRef(vehicle);
-				for (auto scriptEvent : scriptEvents[ScriptEvent::List::CarDelete]) scriptEvent->RunScriptEvent(ref);
-			}
-		};
+			Events::objectDtorEvent.before += [](CObject* object) {
+				int ref = CPools::GetObjectRef(object);
+				if (scriptEvents[ScriptEvent::List::ObjectDelete].size() > 0) {
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::ObjectDelete]) scriptEvent->RunScriptEvent(ref);
+				}
+				for (unsigned int i = 0; i < sizeScriptConnectLodsObjects; ++i)
+				{
+					if (CTheScripts__ScriptConnectLodsObjects[i] == ref) CTheScripts__ScriptConnectLodsObjects[i] = -1;
+				}
+			};
 
-		// my objectCtorEvent, called really after
-		injector::MakeInline<0x59FB1E, 0x59FB1E + 6>([](injector::reg_pack& regs)
-		{
-			*(uint32_t*)(regs.esi + 0x174) = regs.ebx; //mov [esi+174h], ebx
-			if (scriptEvents[ScriptEvent::List::ObjectCreate].size() > 0) {
-				int ref = CPools::GetObjectRef(reinterpret_cast<CObject*>(regs.esi));
-				for (auto scriptEvent : scriptEvents[ScriptEvent::List::ObjectCreate]) scriptEvent->RunScriptEvent(ref);
-			}
-		});
+			// Called before menu draw, because drawMenuBackgroundEvent isn't compatible with RenderHook
+			onMenu.after += [] {
+				for (auto scriptEvent : scriptEvents[ScriptEvent::List::OnMenu]) scriptEvent->RunScriptEvent(!pausedLastFrame);
+				if (!pausedLastFrame) {
+					pausedLastFrame = true;
+				}
+				UpdateKeyPresses();
+			};
 
-		Events::objectDtorEvent.before += [](CObject *object) {
-			int ref = CPools::GetObjectRef(object);
-			if (scriptEvents[ScriptEvent::List::ObjectDelete].size() > 0) {
-				for (auto scriptEvent : scriptEvents[ScriptEvent::List::ObjectDelete]) scriptEvent->RunScriptEvent(ref);
-			}
-			for (unsigned int i = 0; i < sizeScriptConnectLodsObjects; ++i)
+			// Bullet impact event
+			patch::RedirectCall(0x73CD92, MyDoBulletImpact);
+			patch::RedirectCall(0x741199, MyDoBulletImpact);
+			patch::RedirectCall(0x7411DF, MyDoBulletImpact);
+			patch::RedirectCall(0x7412DF, MyDoBulletImpact);
+			patch::RedirectCall(0x741E30, MyDoBulletImpact);
+			/*injector::MakeInline<0x73B57C, 0x73B57C + 7>([](injector::reg_pack& regs)
 			{
-				if (CTheScripts__ScriptConnectLodsObjects[i] == ref) CTheScripts__ScriptConnectLodsObjects[i] = -1;
-			}
-		};
+				// not compatible with Bullet Mod and
+				regs.ebx = *(uint32_t*)(regs.esp + 0x90 + 0x4); //mov     ebx, [esp+90h+owner]
+				CWeapon *weapon = (CWeapon *)regs.edi;
+				CPed *owner = (CPed *)regs.ebx;
+				CEntity *victim = *(CEntity**)(regs.esp + 0x90 + 0x8);
+				CColPoint *colPoint = *(CColPoint**)(regs.esp + 0x90 + 0x14);
 
-		// Called before menu draw, because drawMenuBackgroundEvent isn't compatible with RenderHook
-		onMenu.after += [] {
-			for (auto scriptEvent : scriptEvents[ScriptEvent::List::OnMenu]) scriptEvent->RunScriptEvent(!pausedLastFrame);
-			if (!pausedLastFrame) {
-				pausedLastFrame = true;
-			}
-			UpdateKeyPresses();
-		};
+				if (scriptEvents[ScriptEvent::List::BulletImpact].size() > 0) {
+					int ownerRef = -1;
+					if (owner) ownerRef = CPools::GetPedRef(owner);
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::BulletImpact]) scriptEvent->RunScriptEvent((DWORD)ownerRef, (DWORD)victim, (DWORD)weapon->m_nType, (DWORD)colPoint);
+				}
+			});*/
+			// Ped creator (audio initialization)
+			injector::MakeInline<0x4E6916, 0x4E6916 + 6>([](injector::reg_pack& regs)
+			{
+				*(uint8_t*)(regs.esi + 0x99) = 0; //mov [esi+99h], bl
+				if (scriptEvents[ScriptEvent::List::CharCreate].size() > 0) {
+					CPed* ped = *(CPed**)(regs.esp + 0xC + 0x4);
+					int ref = CPools::GetPedRef(ped);
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharCreate]) scriptEvent->RunScriptEvent(ref);
+				}
+			});
 
-		// Bullet impact event
-		patch::RedirectCall(0x73CD92, MyDoBulletImpact);
-		patch::RedirectCall(0x741199, MyDoBulletImpact);
-		patch::RedirectCall(0x7411DF, MyDoBulletImpact);
-		patch::RedirectCall(0x7412DF, MyDoBulletImpact);
-		patch::RedirectCall(0x741E30, MyDoBulletImpact);
-		/*injector::MakeInline<0x73B57C, 0x73B57C + 7>([](injector::reg_pack& regs)
-		{
-			// not compatible with Bullet Mod and 
-			regs.ebx = *(uint32_t*)(regs.esp + 0x90 + 0x4); //mov     ebx, [esp+90h+owner]
-			CWeapon *weapon = (CWeapon *)regs.edi;
-			CPed *owner = (CPed *)regs.ebx;
-			CEntity *victim = *(CEntity**)(regs.esp + 0x90 + 0x8);
-			CColPoint *colPoint = *(CColPoint**)(regs.esp + 0x90 + 0x14);
+			// Vehicle creator (audio initialization; somewhere in random place because I don't trust other mods to hook at calls, like UsesSiren)
+			injector::MakeInline<0x4F7798, 0x4F7798 + 6>([](injector::reg_pack& regs)
+			{
+				*(uint32_t*)(regs.ebp + 0x180) = regs.ebx; //mov [ebp+180h], ebx
+				if (scriptEvents[ScriptEvent::List::CarCreate].size() > 0) {
+					CVehicle* vehicle = (CVehicle*)(regs.edx);
+					int ref = CPools::GetVehicleRef(vehicle);
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::CarCreate]) scriptEvent->RunScriptEvent(ref);
+				}
+			});
 
-			if (scriptEvents[ScriptEvent::List::BulletImpact].size() > 0) {
-				int ownerRef = -1;
-				if (owner) ownerRef = CPools::GetPedRef(owner);
-				for (auto scriptEvent : scriptEvents[ScriptEvent::List::BulletImpact]) scriptEvent->RunScriptEvent((DWORD)ownerRef, (DWORD)victim, (DWORD)weapon->m_nType, (DWORD)colPoint);
-			}
-		});*/
+			// my objectCtorEvent, called really after
+			injector::MakeInline<0x59FB1E, 0x59FB1E + 6>([](injector::reg_pack& regs)
+			{
+				*(uint32_t*)(regs.esi + 0x174) = regs.ebx; //mov [esi+174h], ebx
+				if (scriptEvents[ScriptEvent::List::ObjectCreate].size() > 0) {
+					int ref = CPools::GetObjectRef(reinterpret_cast<CObject*>(regs.esi));
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::ObjectCreate]) scriptEvent->RunScriptEvent(ref);
+				}
+			});
 
-		// Ped damage event
-		injector::MakeInline<0x4B5AF9, 0x4B5AF9 + 7>([](injector::reg_pack& regs)
-		{
-			*(uint32_t*)(regs.ebp + 0x4) = 0; //mov     dword ptr [ebp+4], 0
-			CPedDamageResponseCalculator *damageCalculator = (CPedDamageResponseCalculator *)regs.esi;
-			//if (damageCalculator-> != 0.0f) {
+			// Ped damage event
+			injector::MakeInline<0x4B5AF9, 0x4B5AF9 + 7>([](injector::reg_pack& regs)
+			{
+				*(uint32_t*)(regs.ebp + 0x4) = 0; //mov     dword ptr [ebp+4], 0
+				CPedDamageResponseCalculator* damageCalculator = (CPedDamageResponseCalculator*)regs.esi;
+				//if (damageCalculator-> != 0.0f) {
 				CPed* ped = (CPed*)regs.edi;
-				PedExtended &data = extData.Get(ped);
+				PedExtended& data = extData.Get(ped);
 				if (&data != nullptr) {
 					data.lastDamageEntity = damageCalculator->m_pDamager;
 					data.lastDamageIntensity = damageCalculator->m_fDamageFactor;
@@ -1266,69 +1261,51 @@ public:
 					int ref = CPools::GetPedRef(ped);
 					for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharDamage]) scriptEvent->RunScriptEvent(ref);
 				}
-			//}
-		});
+				//}
+			});
 
-		// Vehicle weapon damage event
-		injector::MakeInline<0x6D804F, 0x6D804F + 6>([](injector::reg_pack& regs)
-		{
-			float intensity = *(float*)(regs.esp + 0x90);
-			if (intensity != 0.0f) {
-				CVehicle *vehicle = (CVehicle *)regs.esi;
-				VehExtended &data = vehExtData.Get(vehicle);
-				if (&data != nullptr) {
-					data.lastDamagePed = (CEntity*)regs.edi;
-					data.lastDamageType = regs.ebx;
-					data.lastDamageIntensity = intensity;
-				}
-
-				if (scriptEvents[ScriptEvent::List::CarWeaponDamage].size() > 0) {
-					int ref = CPools::GetVehicleRef(vehicle);
-					for (auto scriptEvent : scriptEvents[ScriptEvent::List::CarWeaponDamage]) scriptEvent->RunScriptEvent(ref);
-				}
-			}
-			float f = *(float*)(regs.esi + 0x4C0); //fld esi+4C0
-			asm_fld(f);
-		});
-
-		// Ped ignore anims
-		injector::MakeInline<0x4B4029, 0x4B4029 + 6>([](injector::reg_pack& regs)
-		{
-			regs.ecx = *(uint32_t*)(regs.ebx + 0x534); //mov     ecx, [ebx+534h]
-			CPed *ped = (CPed *)regs.ebx;
-			PedExtended &data = extData.Get(ped);
-			if (&data != nullptr && data.ignoreDamageAnims) {
-				*(uintptr_t*)(regs.esp - 0x4) = 0x4B4019; // ret
-			}
-		});
-
-		/*if (gameVersion == GAME_10US_HOODLUM)
-		{
-			// Avoid deleted script LOD crash (Hoodlum)
-			injector::MakeInline<0x156DA35, 0x156DA35 + 6>([](injector::reg_pack& regs)
+			// Vehicle weapon damage event
+			injector::MakeInline<0x6D804F, 0x6D804F + 6>([](injector::reg_pack& regs)
 			{
-				//mov     [eax+30h], esi ; mov     al, [esi+34h]
-				if (regs.eax < 0x00400000)
-				{
-					*(uint32_t*)(regs.esp - 0x4) = 0x156DA59;
+				float intensity = *(float*)(regs.esp + 0x90);
+				if (intensity != 0.0f) {
+					CVehicle* vehicle = (CVehicle*)regs.esi;
+					VehExtended& data = vehExtData.Get(vehicle);
+					if (&data != nullptr) {
+						data.lastDamagePed = (CEntity*)regs.edi;
+						data.lastDamageType = regs.ebx;
+						data.lastDamageIntensity = intensity;
+					}
+
+					if (scriptEvents[ScriptEvent::List::CarWeaponDamage].size() > 0) {
+						int ref = CPools::GetVehicleRef(vehicle);
+						for (auto scriptEvent : scriptEvents[ScriptEvent::List::CarWeaponDamage]) scriptEvent->RunScriptEvent(ref);
+					}
 				}
-				else
-				{
-					*(uint32_t*)(regs.eax + 0x30) = regs.esi;
-					regs.eax = *(uint8_t*)(regs.esi + 0x34);
+				float f = *(float*)(regs.esi + 0x4C0); //fld esi+4C0
+				asm_fld(f);
+			});
+
+			// Ped ignore anims
+			injector::MakeInline<0x4B4029, 0x4B4029 + 6>([](injector::reg_pack& regs)
+			{
+				regs.ecx = *(uint32_t*)(regs.ebx + 0x534); //mov     ecx, [ebx+534h]
+				CPed* ped = (CPed*)regs.ebx;
+				PedExtended& data = extData.Get(ped);
+				if (&data != nullptr && data.ignoreDamageAnims) {
+					*(uintptr_t*)(regs.esp - 0x4) = 0x4B4019; // ret
 				}
 			});
-		}
-		else
-		{
-			if (gameVersion == GAME_10US_COMPACT)
+
+			/*if (gameVersion == GAME_10US_HOODLUM)
 			{
-				// Avoid deleted script LOD crash (Compact)
-				injector::MakeInline<0x470A65, 0x470A65 + 6>([](injector::reg_pack& regs)
+				// Avoid deleted script LOD crash (Hoodlum)
+				injector::MakeInline<0x156DA35, 0x156DA35 + 6>([](injector::reg_pack& regs)
 				{
+					//mov     [eax+30h], esi ; mov     al, [esi+34h]
 					if (regs.eax < 0x00400000)
 					{
-						*(uint32_t*)(regs.esp - 0x4) = 0x470A89;
+						*(uint32_t*)(regs.esp - 0x4) = 0x156DA59;
 					}
 					else
 					{
@@ -1337,79 +1314,100 @@ public:
 					}
 				});
 			}
-		}*/
+			else
+			{
+				if (gameVersion == GAME_10US_COMPACT)
+				{
+					// Avoid deleted script LOD crash (Compact)
+					injector::MakeInline<0x470A65, 0x470A65 + 6>([](injector::reg_pack& regs)
+					{
+						if (regs.eax < 0x00400000)
+						{
+							*(uint32_t*)(regs.esp - 0x4) = 0x470A89;
+						}
+						else
+						{
+							*(uint32_t*)(regs.eax + 0x30) = regs.esi;
+							regs.eax = *(uint8_t*)(regs.esi + 0x34);
+						}
+					});
+				}
+			}*/
 
-		//-----------------------------------------------------------------------------------------
+			//-----------------------------------------------------------------------------------------
 
-		Events::drawingEvent.before += [] {
-			DrawMySprites(sprites[DrawEvent::BeforeDrawing]);
-			ClearMySprites(sprites[DrawEvent::BeforeDrawing]);
-			textDrawer[DrawEvent::BeforeDrawing].DrawPrints();
+			Events::drawingEvent.before += [] {
+				DrawMySprites(sprites[DrawEvent::BeforeDrawing]);
+				ClearMySprites(sprites[DrawEvent::BeforeDrawing]);
+				textDrawer[DrawEvent::BeforeDrawing].DrawPrints();
+			};
+
+			Events::drawingEvent.after += [] {
+				DrawMySprites(sprites[DrawEvent::AfterDrawing]);
+				ClearMySprites(sprites[DrawEvent::AfterDrawing]);
+				textDrawer[DrawEvent::AfterDrawing].DrawPrints();
+			};
+
+			beforeHud += [] {
+				DrawMySprites(sprites[DrawEvent::BeforeHud]);
+				ClearMySprites(sprites[DrawEvent::BeforeHud]);
+				textDrawer[DrawEvent::BeforeHud].DrawPrints();
+			};
+
+			afterHud += [] {
+				DrawMySprites(sprites[DrawEvent::AfterHud]);
+				ClearMySprites(sprites[DrawEvent::AfterHud]);
+				textDrawer[DrawEvent::AfterHud].DrawPrints();
+			};
+
+			Events::drawRadarEvent.before += [] {
+				DrawMySprites(sprites[DrawEvent::BeforeRadar]);
+				ClearMySprites(sprites[DrawEvent::BeforeRadar]);
+				textDrawer[DrawEvent::BeforeRadar].DrawPrints();
+			};
+
+			Events::drawRadarEvent.after += [] {
+				DrawMySprites(sprites[DrawEvent::AfterRadar]);
+				ClearMySprites(sprites[DrawEvent::AfterRadar]);
+				textDrawer[DrawEvent::AfterRadar].DrawPrints();
+			};
+
+			Events::drawRadarOverlayEvent.before += [] {
+				DrawMySprites(sprites[DrawEvent::BeforeRadarOverlay]);
+				ClearMySprites(sprites[DrawEvent::BeforeRadarOverlay]);
+				textDrawer[DrawEvent::BeforeRadarOverlay].DrawPrints();
+			};
+
+			Events::drawRadarOverlayEvent.after += [] {
+				DrawMySprites(sprites[DrawEvent::AfterRadarOverlay]);
+				ClearMySprites(sprites[DrawEvent::AfterRadarOverlay]);
+				textDrawer[DrawEvent::AfterRadarOverlay].DrawPrints();
+			};
+
+			Events::drawBlipsEvent.before += [] {
+				DrawMySprites(sprites[DrawEvent::BeforeBlips]);
+				ClearMySprites(sprites[DrawEvent::BeforeBlips]);
+				textDrawer[DrawEvent::BeforeBlips].DrawPrints();
+			};
+
+			Events::drawBlipsEvent.after += [] {
+				DrawMySprites(sprites[DrawEvent::AfterBlips]);
+				ClearMySprites(sprites[DrawEvent::AfterBlips]);
+				textDrawer[DrawEvent::AfterBlips].DrawPrints();
+			};
+
+			drawAfterFade.after += [] {
+				DrawMySprites(sprites[DrawEvent::AfterFade]);
+				ClearMySprites(sprites[DrawEvent::AfterFade]);
+				textDrawer[DrawEvent::AfterFade].DrawPrints();
+
+				// It's better to update all keys and buttons after all game processing, to make it compatible with script events
+				UpdateKeyPresses();
+			};
+
 		};
 
-		Events::drawingEvent.after += [] {
-			DrawMySprites(sprites[DrawEvent::AfterDrawing]);
-			ClearMySprites(sprites[DrawEvent::AfterDrawing]);
-			textDrawer[DrawEvent::AfterDrawing].DrawPrints();
-		};
-
-		beforeHud += [] {
-			DrawMySprites(sprites[DrawEvent::BeforeHud]);
-			ClearMySprites(sprites[DrawEvent::BeforeHud]);
-			textDrawer[DrawEvent::BeforeHud].DrawPrints();
-		};
-
-		afterHud += [] {
-			DrawMySprites(sprites[DrawEvent::AfterHud]);
-			ClearMySprites(sprites[DrawEvent::AfterHud]);
-			textDrawer[DrawEvent::AfterHud].DrawPrints();
-		};
-
-		Events::drawRadarEvent.before += [] {
-			DrawMySprites(sprites[DrawEvent::BeforeRadar]);
-			ClearMySprites(sprites[DrawEvent::BeforeRadar]);
-			textDrawer[DrawEvent::BeforeRadar].DrawPrints();
-		};
-
-		Events::drawRadarEvent.after += [] {
-			DrawMySprites(sprites[DrawEvent::AfterRadar]);
-			ClearMySprites(sprites[DrawEvent::AfterRadar]);
-			textDrawer[DrawEvent::AfterRadar].DrawPrints();
-		};
-
-		Events::drawRadarOverlayEvent.before += [] {
-			DrawMySprites(sprites[DrawEvent::BeforeRadarOverlay]);
-			ClearMySprites(sprites[DrawEvent::BeforeRadarOverlay]);
-			textDrawer[DrawEvent::BeforeRadarOverlay].DrawPrints();
-		};
-
-		Events::drawRadarOverlayEvent.after += [] {
-			DrawMySprites(sprites[DrawEvent::AfterRadarOverlay]);
-			ClearMySprites(sprites[DrawEvent::AfterRadarOverlay]);
-			textDrawer[DrawEvent::AfterRadarOverlay].DrawPrints();
-		};
-
-		Events::drawBlipsEvent.before += [] {
-			DrawMySprites(sprites[DrawEvent::BeforeBlips]);
-			ClearMySprites(sprites[DrawEvent::BeforeBlips]);
-			textDrawer[DrawEvent::BeforeBlips].DrawPrints();
-		};
-
-		Events::drawBlipsEvent.after += [] {
-			DrawMySprites(sprites[DrawEvent::AfterBlips]);
-			ClearMySprites(sprites[DrawEvent::AfterBlips]);
-			textDrawer[DrawEvent::AfterBlips].DrawPrints();
-		};
-
-		drawAfterFade.after += [] {
-			DrawMySprites(sprites[DrawEvent::AfterFade]);
-			ClearMySprites(sprites[DrawEvent::AfterFade]);
-			textDrawer[DrawEvent::AfterFade].DrawPrints();
-
-			// It's better to update all keys and buttons after all game processing, to make it compatible with script events
-			UpdateKeyPresses(); 
-		};
-
+		// ----------------------------------------------------------------------------------------
 
 		CLEO_AddScriptDeleteDelegate(ScriptDeleteEvent);
     }
