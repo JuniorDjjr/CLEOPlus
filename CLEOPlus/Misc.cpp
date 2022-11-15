@@ -104,17 +104,19 @@ OpcodeResult WINAPI FIX_CHAR_GROUND_BRIGHTNESS_AND_FADE_IN(CScriptThread* thread
 				else
 					pedPos = &ped->m_placement.m_vPosn;
 			}
-			    
+			
 			CEntity *outEntity;
 			CColPoint outColPoint;
 
-			if (CWorld::ProcessVerticalLine(*pedPos, -1000.0, outColPoint, outEntity, 1, 0, 0, 0, 1, 0, 0))
+			if (CWorld::ProcessVerticalLine(*pedPos, -1000.0, outColPoint, outEntity, 1, 0, 0, 0, 0, 0, 0))
 			{
-				ped->m_fContactSurfaceBrightness = (1.0f - *(float*)0x8D12C0)
-					* ((outColPoint.m_nLightingB.night)
-					   * 0.033333f)
-					+ *(float*)0x8D12C0 * (outColPoint.m_nLightingB.day * 0.033333f)
-					* 0.7f; // a bit darker, because colPoint for some reason is always returning 12 even in dark places
+				char lighting = *(char*)(reinterpret_cast<char*>(&outColPoint) + 0x25); //lightingB (current plugin-sdk is bugged)
+				ped->m_fContactSurfaceBrightness = (float)(lighting & 0xF)
+					* 0.033333334f
+					* (1.0f - *(float*)0x8D12C0)
+					+ (float)(lighting >> 4)
+					* 0.033333334f
+					* *(float*)0x8D12C0;
 			}
 		}
 	}
@@ -183,7 +185,7 @@ OpcodeResult WINAPI GET_TRAILER_FROM_CAR(CScriptThread* thread)
 	int trailerRef = -1;
 	if (vehicle) {
 		trailer = vehicle->m_pTrailer;
-		if (trailer > 0) {
+		if (trailer != nullptr) {
 			trailerRef = CPools::GetVehicleRef(trailer);
 		}
 	}
@@ -200,7 +202,7 @@ OpcodeResult WINAPI GET_CAR_FROM_TRAILER(CScriptThread* thread)
 	int vehicleRef = -1;
 	if (trailer) {
 		vehicle = trailer->m_pTractor;
-		if (vehicle > 0) {
+		if (vehicle != nullptr) {
 			vehicleRef = CPools::GetVehicleRef(vehicle);
 		}
 	}
@@ -309,9 +311,17 @@ OpcodeResult WINAPI GET_STRING_LENGTH(CScriptThread* thread)
 OpcodeResult WINAPI COPY_STRING(CScriptThread* thread)
 {
 	LPSTR string = CLEO_ReadStringPointerOpcodeParam(thread, bufferA, 128);
-	unsigned int pointer = CLEO_GetIntOpcodeParam(thread);
-	unsigned int size = strnlen_s(string, 128);
-	memcpy_s((void*)pointer, size, string, size);
+	int size = strnlen_s(string, 128);
+	char* pointer;
+	auto paramType = *reinterpret_cast<CRunningScript*>(thread)->m_pCurrentIP;
+	if (paramType >= 1 && paramType <= 8) {
+		pointer = (char*)CLEO_GetIntOpcodeParam(thread);
+	}
+	else {
+		pointer = (char*)CLEO_GetPointerToScriptVariable(thread);
+	}
+	memcpy_s(pointer, size, string, size);
+	*(char*)(pointer + size) = 0;
 	return OR_CONTINUE;
 }
 
@@ -627,7 +637,7 @@ OpcodeResult WINAPI DOES_CAR_HAVE_PART_NODE(CScriptThread* thread)
 {
 	CVehicle *vehicle = CPools::GetVehicle(CLEO_GetIntOpcodeParam(thread));
 	int nodeId = CLEO_GetIntOpcodeParam(thread);
-	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(reinterpret_cast<CAutomobile*>(vehicle)->m_aCarNodes[nodeId] > 0);
+	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(reinterpret_cast<CAutomobile*>(vehicle)->m_aCarNodes[nodeId] != nullptr);
 	return OR_CONTINUE;
 }
 
@@ -635,10 +645,10 @@ OpcodeResult WINAPI DOES_CAR_HAVE_PART_NODE(CScriptThread* thread)
 OpcodeResult WINAPI GET_CURRENT_CHAR_WEAPONINFO(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
-	eWeaponType weaponType = ped->m_aWeapons[ped->m_nActiveWeaponSlot].m_nType;
+	eWeaponType weaponType = ped->m_aWeapons[ped->m_nActiveWeaponSlot].m_eWeaponType;
 	CWeaponInfo *weaponInfo = CWeaponInfo::GetWeaponInfo(weaponType, ped->GetWeaponSkill(weaponType));
 	CLEO_SetIntOpcodeParam(thread, (DWORD)weaponInfo);
-	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(weaponInfo > 0);
+	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(weaponInfo != nullptr);
 	return OR_CONTINUE;
 }
 
@@ -649,7 +659,7 @@ OpcodeResult WINAPI GET_WEAPONINFO(CScriptThread* thread)
 	int skill = CLEO_GetIntOpcodeParam(thread);
 	CWeaponInfo *weaponInfo = CWeaponInfo::GetWeaponInfo((eWeaponType)weaponId, skill);
 	CLEO_SetIntOpcodeParam(thread, (DWORD)weaponInfo);
-	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(weaponInfo > 0);
+	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(weaponInfo != nullptr);
 	return OR_CONTINUE;
 }
 
@@ -676,7 +686,7 @@ OpcodeResult WINAPI GET_WEAPONINFO_FLAGS(CScriptThread* thread)
 OpcodeResult WINAPI GET_WEAPONINFO_ANIMGROUP(CScriptThread* thread)
 {
 	CWeaponInfo *weaponInfo = (CWeaponInfo *)CLEO_GetIntOpcodeParam(thread);
-	CLEO_SetIntOpcodeParam(thread, (DWORD)weaponInfo->m_dwAnimGroup);
+	CLEO_SetIntOpcodeParam(thread, (DWORD)weaponInfo->m_nAnimToPlay);
 	return OR_CONTINUE;
 }
 
@@ -834,6 +844,7 @@ OpcodeResult WINAPI LOAD_SPECIAL_CHARACTER_FOR_ID(CScriptThread* thread)
 	specialCharacterModelsUsed.insert(id);
 	LPSTR name = CLEO_ReadStringPointerOpcodeParam(thread, bufferA, 128);
 	CStreaming::RequestSpecialModel(id, name, eStreamingFlags::KEEP_IN_MEMORY | eStreamingFlags::MISSION_REQUIRED);
+	CTheScripts::ScriptResourceManager.AddToResourceManager(id, 2, reinterpret_cast<CRunningScript*>(thread));
 	return OR_CONTINUE;
 }
 
@@ -919,7 +930,7 @@ OpcodeResult WINAPI REMOVE_MODEL_IF_UNUSED(CScriptThread* thread)
 OpcodeResult WINAPI IS_CHAR_ON_FIRE(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
-	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(ped->m_pFire > 0);
+	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(ped->m_pFire != nullptr);
 	return OR_CONTINUE;
 }
 
@@ -938,7 +949,7 @@ OpcodeResult WINAPI GET_CLOSEST_COP_NEAR_CHAR(CScriptThread* thread)
 	auto& pool = CPools::ms_pPedPool;
 
 	CPed *closestCop = nullptr;
-	for (unsigned int index = 0; index < pool->m_nSize; ++index)
+	for (int index = 0; index < pool->m_nSize; ++index)
 	{
 		if (auto obj = pool->GetAt(index))
 		{
@@ -1003,7 +1014,7 @@ OpcodeResult WINAPI GET_CLOSEST_COP_NEAR_POS(CScriptThread* thread)
 	auto& pool = CPools::ms_pPedPool;
 
 	CPed *closestCop = nullptr;
-	for (unsigned int index = 0; index < pool->m_nSize; ++index)
+	for (int index = 0; index < pool->m_nSize; ++index)
 	{
 		if (auto obj = pool->GetAt(index))
 		{
@@ -1055,7 +1066,7 @@ OpcodeResult WINAPI GET_ANY_CHAR_NO_SAVE_RECURSIVE(CScriptThread* thread)
 	auto& pool = CPools::ms_pPedPool;
 
 	CPed *objFound = nullptr;
-	for (unsigned int index = progress; index < pool->m_nSize; ++index)
+	for (int index = progress; index < pool->m_nSize; ++index)
 	{
 		if (auto obj = pool->GetAt(index))
 		{
@@ -1086,7 +1097,7 @@ OpcodeResult WINAPI GET_ANY_CAR_NO_SAVE_RECURSIVE(CScriptThread* thread)
 	auto& pool = CPools::ms_pVehiclePool;
 
 	CVehicle *objFound = nullptr;
-	for (unsigned int index = progress; index < pool->m_nSize; ++index)
+	for (int index = progress; index < pool->m_nSize; ++index)
 	{
 		if (auto obj = pool->GetAt(index))
 		{
@@ -1117,7 +1128,7 @@ OpcodeResult WINAPI GET_ANY_OBJECT_NO_SAVE_RECURSIVE(CScriptThread* thread)
 	auto& pool = CPools::ms_pObjectPool;
 
 	CObject *objFound = nullptr;
-	for (unsigned int index = progress; index < pool->m_nSize; ++index)
+	for (int index = progress; index < pool->m_nSize; ++index)
 	{
 		if (auto obj = pool->GetAt(index))
 		{
@@ -1163,7 +1174,7 @@ OpcodeResult WINAPI GET_CHAR_PROOFS(CScriptThread* thread)
 	CLEO_SetIntOpcodeParam(thread, (DWORD)ped->m_nPhysicalFlags.bFireProof);
 	CLEO_SetIntOpcodeParam(thread, (DWORD)ped->m_nPhysicalFlags.bExplosionProof);
 	CLEO_SetIntOpcodeParam(thread, (DWORD)ped->m_nPhysicalFlags.bCollisionProof);
-	CLEO_SetIntOpcodeParam(thread, (DWORD)ped->m_nPhysicalFlags.bMeeleProof);
+	CLEO_SetIntOpcodeParam(thread, (DWORD)ped->m_nPhysicalFlags.bMeleeProof);
 	return OR_CONTINUE;
 }
 
@@ -1175,7 +1186,7 @@ OpcodeResult WINAPI GET_CAR_PROOFS(CScriptThread* thread)
 	CLEO_SetIntOpcodeParam(thread, (DWORD)vehicle->m_nPhysicalFlags.bFireProof);
 	CLEO_SetIntOpcodeParam(thread, (DWORD)vehicle->m_nPhysicalFlags.bExplosionProof);
 	CLEO_SetIntOpcodeParam(thread, (DWORD)vehicle->m_nPhysicalFlags.bCollisionProof);
-	CLEO_SetIntOpcodeParam(thread, (DWORD)vehicle->m_nPhysicalFlags.bMeeleProof);
+	CLEO_SetIntOpcodeParam(thread, (DWORD)vehicle->m_nPhysicalFlags.bMeleeProof);
 	return OR_CONTINUE;
 }
 
@@ -1187,7 +1198,7 @@ OpcodeResult WINAPI GET_OBJECT_PROOFS(CScriptThread* thread)
 	CLEO_SetIntOpcodeParam(thread, (DWORD)object->m_nPhysicalFlags.bFireProof);
 	CLEO_SetIntOpcodeParam(thread, (DWORD)object->m_nPhysicalFlags.bExplosionProof);
 	CLEO_SetIntOpcodeParam(thread, (DWORD)object->m_nPhysicalFlags.bCollisionProof);
-	CLEO_SetIntOpcodeParam(thread, (DWORD)object->m_nPhysicalFlags.bMeeleProof);
+	CLEO_SetIntOpcodeParam(thread, (DWORD)object->m_nPhysicalFlags.bMeleeProof);
 	return OR_CONTINUE;
 }
 
@@ -1857,7 +1868,7 @@ OpcodeResult WINAPI GET_LOADED_LIBRARY(CScriptThread* thread)
 	LPSTR name = CLEO_ReadStringPointerOpcodeParam(thread, bufferA, 128);
 	HMODULE module = GetModuleHandleA(name);
 	CLEO_SetIntOpcodeParam(thread, (DWORD)module);
-	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(module > 0);
+	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(module != nullptr);
 	return OR_CONTINUE;
 }
 

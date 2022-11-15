@@ -1,6 +1,50 @@
 #include "OpcodesCommon.h"
 #include "PedExtendedData.h"
 #include "CModelInfo.h"
+#include "SpecialModels.h"
+
+RenderObject* CreateRenderObject(CPed* ped, int model, SpecialModel* specialModel, int boneId, float x, float y, float z, float rx, float ry, float rz)
+{
+	RenderObject* renderObject = nullptr;
+
+	if (specialModel) {
+		renderObject = new RenderObject(ped, specialModel->clump, 0, 0, model, boneId, x, y, z, rx, ry, rz, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+	}
+	else {
+		CBaseModelInfo* modelInfo = (CBaseModelInfo*)CModelInfo::GetModelInfo(model);
+		int rwModelType = modelInfo->GetRwModelType();
+		if (rwModelType == 1) {
+			RpAtomic* atomic = (RpAtomic*)modelInfo->m_pRwObject;
+			if (atomic) {
+				modelInfo->AddRef();
+
+				RwFrame* rwFrame = RwFrameCreate();
+				RpAtomic* rpAtomic = RpAtomicClone(atomic);
+				RpAtomicSetFrame(rpAtomic, rwFrame);
+
+				renderObject = new RenderObject(ped, 0, rwFrame, rpAtomic, model, boneId, x, y, z, rx, ry, rz, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+			}
+		}
+		else
+		{
+			RpClump* clump = (RpClump*)modelInfo->m_pRwObject;
+			if (clump) {
+				modelInfo->AddRef();
+
+				RpClump* rpClump = (RpClump*)reinterpret_cast<CClumpModelInfo*>(modelInfo)->CreateInstance();
+
+				renderObject = new RenderObject(ped, rpClump, 0, 0, model, boneId, x, y, z, rx, ry, rz, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+			}
+		}
+	}
+	if (renderObject) {
+		PedExtended& data = extData.Get(ped);
+		if (&data != nullptr) {
+			data.renderObjects.push_back(renderObject);
+		}
+	}
+	return renderObject;
+}
 
 void DeleteAllRenderObjectsFromChar(PedExtended &data)
 {
@@ -30,45 +74,25 @@ OpcodeResult WINAPI CREATE_RENDER_OBJECT_TO_CHAR_BONE(CScriptThread* thread)
 	float rx = CLEO_GetFloatOpcodeParam(thread);
 	float ry = CLEO_GetFloatOpcodeParam(thread);
 	float rz = CLEO_GetFloatOpcodeParam(thread);
+	RenderObject *renderObject = CreateRenderObject(ped, model, nullptr, boneId, x, y, z, rx, ry, rz);
+	CLEO_SetIntOpcodeParam(thread, (DWORD)renderObject);
+	return OR_CONTINUE;
+}
 
-	RenderObject *renderObject = nullptr;
-
-	CBaseModelInfo *modelInfo = (CBaseModelInfo *)CModelInfo::GetModelInfo(model);
-	int rwModelType = modelInfo->GetRwModelType();
-	if (rwModelType == 1) {
-		RpAtomic *atomic = (RpAtomic *)modelInfo->m_pRwObject;
-		if (atomic) {
-			modelInfo->AddRef();
-
-			RwFrame *rwFrame = RwFrameCreate();
-			RpAtomic *rpAtomic = RpAtomicClone(atomic);
-			RpAtomicSetFrame(rpAtomic, rwFrame);
-
-			renderObject = new RenderObject(ped, 0, rwFrame, rpAtomic, model, boneId, x, y, z, rx, ry, rz, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-
-			PedExtended &data = extData.Get(ped);
-			if (&data != nullptr) {
-				data.renderObjects.push_back(renderObject);
-			}
-		}
-	}
-	else
-	{
-		RpClump *clump = (RpClump *)modelInfo->m_pRwObject;
-		if (clump) {
-			modelInfo->AddRef();
-
-			RpClump *rpClump = (RpClump *)reinterpret_cast<CClumpModelInfo*>(modelInfo)->CreateInstance();
-
-			renderObject = new RenderObject(ped, rpClump, 0, 0, model, boneId, x, y, z, rx, ry, rz, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-
-			PedExtended &data = extData.Get(ped);
-			if (&data != nullptr) {
-				data.renderObjects.push_back(renderObject);
-			}
-		}
-	}
-
+//CREATE_RENDER_OBJECT_TO_CHAR_BONE_FROM_SPECIAL scplayer hSpecialModel 5 0.0 0.0 0.0 0.0 0.0 0.0 (renderObject)
+// 0F02=10,create_render_object_to_char_bone_from_special %1d% special_model %2d% bone %3d% offset %4d% %5d% %6d% rotation %7d% %8d% %9d% scale %10d% %11d% %12d% store_to %13d%
+OpcodeResult WINAPI CREATE_RENDER_OBJECT_TO_CHAR_BONE_FROM_SPECIAL(CScriptThread* thread)
+{
+	CPed* ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
+	SpecialModel* specialModel = (SpecialModel*)CLEO_GetIntOpcodeParam(thread);
+	int boneId = CLEO_GetIntOpcodeParam(thread);
+	float x = CLEO_GetFloatOpcodeParam(thread);
+	float y = CLEO_GetFloatOpcodeParam(thread);
+	float z = CLEO_GetFloatOpcodeParam(thread);
+	float rx = CLEO_GetFloatOpcodeParam(thread);
+	float ry = CLEO_GetFloatOpcodeParam(thread);
+	float rz = CLEO_GetFloatOpcodeParam(thread);
+	RenderObject* renderObject = CreateRenderObject(ped, -1, specialModel, boneId, x, y, z, rx, ry, rz);
 	CLEO_SetIntOpcodeParam(thread, (DWORD)renderObject);
 	return OR_CONTINUE;
 }

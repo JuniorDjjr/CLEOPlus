@@ -80,6 +80,9 @@
     <ClCompile Include="VehExtendedData.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="SpecialModels.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="TextDrawer">
@@ -134,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="game_sa\CarGeneratorsEx.h">
       <Filter>game_sa</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecialModels.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

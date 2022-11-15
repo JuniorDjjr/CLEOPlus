@@ -18,7 +18,7 @@
 #include "rw/rpworld.h"
 #include <set>
  
-constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01010200;
+constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01010300;
 
 using namespace plugin;
 using namespace std;
@@ -371,6 +371,7 @@ OpcodeResult WINAPI REMOVE_CLEO_BLIP(CScriptThread* thread);
 
 //Render object
 OpcodeResult WINAPI CREATE_RENDER_OBJECT_TO_CHAR_BONE(CScriptThread* thread);
+OpcodeResult WINAPI CREATE_RENDER_OBJECT_TO_CHAR_BONE_FROM_SPECIAL(CScriptThread* thread);
 OpcodeResult WINAPI DELETE_RENDER_OBJECT(CScriptThread* thread);
 OpcodeResult WINAPI SET_RENDER_OBJECT_AUTO_HIDE(CScriptThread* thread);
 OpcodeResult WINAPI SET_RENDER_OBJECT_VISIBLE(CScriptThread* thread);
@@ -435,6 +436,9 @@ OpcodeResult WINAPI LIST_ADD_STRING(CScriptThread* thread);
 OpcodeResult WINAPI LIST_REMOVE_STRING_VALUE(CScriptThread* thread);
 OpcodeResult WINAPI LIST_REMOVE_INDEX_RANGE(CScriptThread* thread);
 OpcodeResult WINAPI REVERSE_LIST(CScriptThread* thread);
+
+// Special models
+OpcodeResult WINAPI LOAD_SPECIAL_MODEL(CScriptThread* thread);
 
 
 
@@ -788,6 +792,7 @@ public:
 
 			// Render object
 			CLEO_RegisterOpcode(0xE2E, CREATE_RENDER_OBJECT_TO_CHAR_BONE); // 0xE2E=10,create_render_object_to_char_bone %1d% model %2d% bone %3d% offset %4d% %5d% %6d% rotation %7d% %8d% %9d% store_to %10d%
+			CLEO_RegisterOpcode(0xF02, CREATE_RENDER_OBJECT_TO_CHAR_BONE_FROM_SPECIAL); // 0F02=10,create_render_object_to_char_bone_from_special %1d% special_model %2d% bone %3d% offset %4d% %5d% %6d% rotation %7d% %8d% %9d% scale %10d% %11d% %12d% store_to %13d%
 			CLEO_RegisterOpcode(0xE2F, DELETE_RENDER_OBJECT); // 0xE2F=1,delete_render_object %1d%
 			CLEO_RegisterOpcode(0xE30, SET_RENDER_OBJECT_AUTO_HIDE); // 0xE30=4,set_render_object_auto_hide %1d% dead %2d% weapon %3d% car %4d%
 			CLEO_RegisterOpcode(0xE31, SET_RENDER_OBJECT_VISIBLE); // 0xE31=2,set_render_object_visible %1d% %2d%
@@ -856,6 +861,9 @@ public:
 			CLEO_RegisterOpcode(0xE7D, LIST_REMOVE_INDEX_RANGE); // 0xE7D=3,list_remove_index %1d% start %2d% end %3d%
 			CLEO_RegisterOpcode(0xE7E, REVERSE_LIST); // 0xE7E=1,reverse_list %1d%
 
+			// Special Models
+			//CLEO_RegisterOpcode(0xF00, LOAD_SPECIAL_MODEL); // 
+
 			 
 			// Cache addresses (for better mod compatibility)
 			defaultMouseAccelHorizontalAddress = ReadMemory<uintptr_t>(0x50FB16 + 2, true);
@@ -901,7 +909,7 @@ public:
 			{
 				// Reset ped data per frame
 				auto& pedsPool = CPools::ms_pPedPool;
-				for (unsigned int index = 0; index < pedsPool->m_nSize; ++index)
+				for (int index = 0; index < pedsPool->m_nSize; ++index)
 				{
 					if (CPed* ped = pedsPool->GetAt(index))
 					{
@@ -948,14 +956,18 @@ public:
 						}
 					}
 				}
-
+				// clear stuff that failed to be drawn
+				for (unsigned int i = 0; i < DrawEvent::TOTAL_DRAW_EVENT; ++i) {
+					ClearMySprites(sprites[i]);
+					textDrawer[i].ClearAll();
+				}
 			};
 
 			Events::processScriptsEvent.after += []
 			{
 				// Reset ped data per frame
 				auto& pedsPool = CPools::ms_pPedPool;
-				for (unsigned int index = 0; index < pedsPool->m_nSize; ++index)
+				for (int index = 0; index < pedsPool->m_nSize; ++index)
 				{
 					if (CPed* ped = pedsPool->GetAt(index))
 					{
@@ -971,7 +983,7 @@ public:
 				}
 				// Reset vehicle data per frame
 				auto& vehsPool = CPools::ms_pVehiclePool;
-				for (unsigned int index = 0; index < vehsPool->m_nSize; ++index)
+				for (int index = 0; index < vehsPool->m_nSize; ++index)
 				{
 					if (CVehicle* vehicle = vehsPool->GetAt(index))
 					{
@@ -1093,13 +1105,13 @@ public:
 
 			startSaveGame += []
 			{
-				currentSaveSlot = FrontEndMenuManager.m_bSelectedSaveGame;
+				currentSaveSlot = FrontEndMenuManager.m_nSelectedSaveGame;
 				for (auto scriptEvent : scriptEvents[ScriptEvent::List::SaveConfirmation]) scriptEvent->RunScriptEvent(currentSaveSlot + 1);
 			};
 
 			loadingEvent += []
 			{
-				currentSaveSlot = FrontEndMenuManager.m_bSelectedSaveGame;
+				currentSaveSlot = FrontEndMenuManager.m_nSelectedSaveGame;
 			};
 
 			// Fixes corrupted old saves with deleted LOD objects
@@ -1134,6 +1146,7 @@ public:
 				disablePadControl[1] = false;
 				disablePadControlMovement[0] = false;
 				disablePadControlMovement[1] = false;
+				disableCamControl = false;
 				RadarBlip::Clear();
 				ClearScriptLists();
 				ScriptEvent::ClearAllScriptEvents();
@@ -1415,7 +1428,7 @@ public:
 	static void __fastcall MyDoBulletImpact(CWeapon* weapon, int i, CEntity* owner, CEntity* victim, CVector* startPoint, CVector* endPoint, CColPoint* colPoint, int a7)
 	{
 		if (scriptEvents[ScriptEvent::List::BulletImpact].size() > 0) {
-			for (auto scriptEvent : scriptEvents[ScriptEvent::List::BulletImpact]) scriptEvent->RunScriptEvent((DWORD)owner, (DWORD)victim, (DWORD)weapon->m_nType, (DWORD)colPoint);
+			for (auto scriptEvent : scriptEvents[ScriptEvent::List::BulletImpact]) scriptEvent->RunScriptEvent((DWORD)owner, (DWORD)victim, (DWORD)weapon->m_eWeaponType, (DWORD)colPoint);
 		}
 		weapon->DoBulletImpact(owner, victim, startPoint, endPoint, colPoint, a7);
 		return;

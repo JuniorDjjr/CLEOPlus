@@ -48,7 +48,7 @@ namespace RadarBlip
 	void MyDrawRadarSprite(CRadarBlipCLEO *blip, float x, float y)
 	{
 		float blipSize = *defaultBlipSize;
-		if (FrontEndMenuManager.drawRadarOrMap)
+		if (FrontEndMenuManager.m_bDrawRadarOrMap)
 		{
 			x = RsGlobal.maximumWidth * 0.0015625f * x;
 			y = RsGlobal.maximumHeight * 0.002232143f * y;
@@ -79,7 +79,7 @@ namespace RadarBlip
 	bool MyHasThisBlipBeenRevealed(CRadarBlipCLEO *blip)
 	{
 		if (
-			!FrontEndMenuManager.drawRadarOrMap ||
+			!FrontEndMenuManager.m_bDrawRadarOrMap ||
 			*(int*)0xBA372C >= totalZonesToReveal ||
 			CTheZones::GetCurrentZoneLockedOrUnlocked(blip->worldPos.x, blip->worldPos.y) != 0
 			)
@@ -108,7 +108,7 @@ namespace RadarBlip
 					CVector2D screenPos;
 					CRadar::TransformRealWorldPointToRadarSpace(radarPoint, blip->worldPos);
 					float distance = CRadar::LimitRadarPoint(radarPoint);
-					if (!blip->shortDistance || distance <= 1.0f || FrontEndMenuManager.drawRadarOrMap)
+					if (!blip->shortDistance || distance <= 1.0f || FrontEndMenuManager.m_bDrawRadarOrMap)
 					{
 						if (MyHasThisBlipBeenRevealed(blip) || blipsAlwaysRevealed)
 						{

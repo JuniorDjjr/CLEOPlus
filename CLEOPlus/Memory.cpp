@@ -68,7 +68,7 @@ OpcodeResult WINAPI READ_STRUCT_OFFSET_MULTI(CScriptThread* thread)
 	for (unsigned int i = 0; i < (count * size); i += size)
 	{
 		SCRIPT_VAR *pointer = CLEO_GetPointerToScriptVariable(thread);
-		if (pointer > 0) {
+		if (pointer != nullptr) {
 			*(DWORD*)pointer = 0;
 			memcpy(pointer, (void*)(struc + i), size);
 		}

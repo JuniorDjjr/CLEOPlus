@@ -100,7 +100,7 @@ void ScriptDeleteEvent(CScriptThread* script)
 	ScriptEvent::ClearAllForScript(reinterpret_cast<CRunningScript *>(script));
 }
 
-void AddEvent(CScriptThread* thread, vector<ScriptEvent*> &scriptEventList, int args = 1)
+void AddEvent(CScriptThread* thread, vector<ScriptEvent*> &scriptEventList, unsigned int args = 1)
 {
 	int toggle = CLEO_GetIntOpcodeParam(thread);
 	int label = CLEO_GetIntOpcodeParam(thread);

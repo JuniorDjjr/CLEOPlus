@@ -244,8 +244,8 @@ OpcodeResult WINAPI DRAW_TEXTURE_PLUS(CScriptThread* thread)
 		int i = 0;
 		int j = 1;
 		while (i < (maskTrisCount * 2)) {
-			finalMaskTrisArray[i] = maskTrisArray[i] * magicResolutionWidth;
-			finalMaskTrisArray[j] = maskTrisArray[j] * magicResolutionHeight;
+			finalMaskTrisArray[i] = (maskTrisArray[i] * magicResolutionWidth);
+			finalMaskTrisArray[j] = (maskTrisArray[j] * magicResolutionHeight);
 			i += 2;
 			j += 2;
 		}
