@@ -42,7 +42,7 @@ EN: Open the "data/sa/SASCM.INI" located in the Sanny Builder folder, and add it
 0E23=1,get_mouse_sensibility_to %1d%
 0E3D=1,is_key_just_pressed %1d%
 0E3E=2,is_button_just_pressed %1d% button %2d%
-0E60=2,set_camera_control %1d% %2d% 
+0E60=1,set_camera_control %1d%
 0E67=1,is_aim_button_pressed %1d%
 0E68=2,set_player_control_pad %1d% %2d% 
 0E69=2,set_player_control_pad_movement %1d% %2d% 

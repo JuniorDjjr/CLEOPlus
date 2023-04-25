@@ -42,7 +42,7 @@ EN: Open the "data/sa/opcodes.txt" located in the Sanny Builder folder, and add 
 0E23: get_mouse_sensibility_to 1@
 0E3D: is_key_just_pressed 1@
 0E3E: is_button_just_pressed 1@ button 2@
-0E60: set_camera_control 1@ 2@ 
+0E60: set_camera_control 1@
 0E67: is_aim_button_pressed 1@
 0E68: set_player_control_pad 1@ 2@ 
 0E69: set_player_control_pad_movement 1@ 2@ 
