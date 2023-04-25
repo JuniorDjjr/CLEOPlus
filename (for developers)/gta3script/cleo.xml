@@ -760,7 +760,7 @@
       <Constant Name="WEAPONSTATE_SHOOTING"/>
       <Constant Name="WEAPONSTATE_RELOADING"/>
     </Enum>
-    <Enum Name="WEAPONINFO" Global="true">
+    <Enum Name="WEAPONINFO_FLAGS" Global="true">
       <Constant Name="WEAPONINFO_FLAGS_CANAIM"/>
       <Constant Name="WEAPONINFO_FLAGS_AIMWITHARM"/>
       <Constant Name="WEAPONINFO_FLAGS_1STPERSON"/>
@@ -1051,6 +1051,7 @@
     <Command ID="0xa94" Name="LOAD_AND_LAUNCH_CUSTOM_MISSION" Hash="0xbc6ac801">
       <Args>
         <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+        <Arg Type="PARAM" Optional="true"/>
       </Args>
     </Command>
     <Command ID="0xa95" Name="SAVE_THIS_CUSTOM_SCRIPT" Hash="0x9dbb8e4d"/>
