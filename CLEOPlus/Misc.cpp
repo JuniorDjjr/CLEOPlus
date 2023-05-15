@@ -55,9 +55,17 @@ OpcodeResult WINAPI IS_ON_CUTSCENE(CScriptThread* thread)
 OpcodeResult WINAPI IS_WEAPON_FIRE_TYPE(CScriptThread* thread)
 {
 	eWeaponType weaponType = (eWeaponType)CLEO_GetIntOpcodeParam(thread);
-	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(
-		CWeaponInfo::GetWeaponInfo(weaponType, 1)->m_nWeaponFire == CLEO_GetIntOpcodeParam(thread)
-	);
+	int fireType = CLEO_GetIntOpcodeParam(thread);
+
+	bool ok = false;
+	auto weaponInfo = CWeaponInfo::GetWeaponInfo(weaponType, 1); // they used 1 in vanilla game code, idkw but lets do the same
+	if (!weaponInfo) weaponInfo = CWeaponInfo::GetWeaponInfo(weaponType, 0);
+
+	if (weaponInfo) {
+		ok = weaponInfo->m_nWeaponFire == fireType;
+	}
+
+	reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(ok);
 	return OR_CONTINUE;
 }
 

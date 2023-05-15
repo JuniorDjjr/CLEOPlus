@@ -18,7 +18,7 @@
 #include "rw/rpworld.h"
 #include <set>
  
-constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01010300;
+constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01010400;
 
 using namespace plugin;
 using namespace std;
@@ -63,6 +63,7 @@ bool buttonsPressedLastFrame[2][20] = { false };
 float fZero = 0.0f;
 uintptr_t defaultMouseAccelHorizontalAddress;
 uintptr_t defaultMouseAccelVerticalAddress;
+uintptr_t defaultCameraMove00125;
 CStreamingInfo *streamingInfoForModel;
 uintptr_t addPedModelAddress;
 bool disablePadControl[2] = { false };
@@ -70,8 +71,14 @@ bool disabledPadControlLastFrame[2] = { false };
 bool disablePadControlMovement[2] = { false };
 bool disabledPadControlMovementLastFrame[2] = { false };
 
-uintptr_t disableCamMoveAddresses[14] = { 0x510C28, 0x50FB28, 0x50F048, 0x511E0A, 0x52228E, 0x510C1C,
+const unsigned int disableCamMoveAddressesCount = 14;
+uintptr_t disableCamMoveAddresses[disableCamMoveAddressesCount] = { 0x510C28, 0x50FB28, 0x50F048, 0x511E0A, 0x52228E, 0x510C1C,
 	0x50F03C, 0x50FB18, 0x511DFE, 0x5222A0, 0x523F71, 0x524069, 0x525705, 0x525715 };
+
+const unsigned int disableCamMoveAddresses00125Count = 19;
+uintptr_t disableCamMoveAddresses00125[disableCamMoveAddresses00125Count] = { 0x50EF84, 0x50F032, 0x50FB10, 0x50FB7A, 0x510B5D, 0x510C12, 0x510C83, 0x511D46, 0x511DF4,
+	0x5199EB, 0x522265, 0x522329, 0x523DE1, 0x523F69, 0x524061, 0x52546C, 0x5255CC, 0x5256F9, 0x5263B8 };
+
 void asm_fld(float f) { _asm {fld  dword ptr[f]} }
 
 typedef CVector*(__cdecl *VehFuncs_Ext_GetVehicleDummyPosAdapted)(CVehicle * vehicle, int dummyId);
@@ -792,7 +799,7 @@ public:
 
 			// Render object
 			CLEO_RegisterOpcode(0xE2E, CREATE_RENDER_OBJECT_TO_CHAR_BONE); // 0xE2E=10,create_render_object_to_char_bone %1d% model %2d% bone %3d% offset %4d% %5d% %6d% rotation %7d% %8d% %9d% store_to %10d%
-			CLEO_RegisterOpcode(0xF02, CREATE_RENDER_OBJECT_TO_CHAR_BONE_FROM_SPECIAL); // 0F02=10,create_render_object_to_char_bone_from_special %1d% special_model %2d% bone %3d% offset %4d% %5d% %6d% rotation %7d% %8d% %9d% scale %10d% %11d% %12d% store_to %13d%
+			//CLEO_RegisterOpcode(0xF02, CREATE_RENDER_OBJECT_TO_CHAR_BONE_FROM_SPECIAL); // 0F02=10,create_render_object_to_char_bone_from_special %1d% special_model %2d% bone %3d% offset %4d% %5d% %6d% rotation %7d% %8d% %9d% scale %10d% %11d% %12d% store_to %13d%
 			CLEO_RegisterOpcode(0xE2F, DELETE_RENDER_OBJECT); // 0xE2F=1,delete_render_object %1d%
 			CLEO_RegisterOpcode(0xE30, SET_RENDER_OBJECT_AUTO_HIDE); // 0xE30=4,set_render_object_auto_hide %1d% dead %2d% weapon %3d% car %4d%
 			CLEO_RegisterOpcode(0xE31, SET_RENDER_OBJECT_VISIBLE); // 0xE31=2,set_render_object_visible %1d% %2d%
@@ -868,6 +875,7 @@ public:
 			// Cache addresses (for better mod compatibility)
 			defaultMouseAccelHorizontalAddress = ReadMemory<uintptr_t>(0x50FB16 + 2, true);
 			defaultMouseAccelVerticalAddress = ReadMemory<uintptr_t>(0x50FB26 + 2, true);
+			defaultCameraMove00125 = ReadMemory<uintptr_t>(0x50FB10 + 2, true);
 			streamingInfoForModel = ReadMemory<CStreamingInfo*>(0x409D42 + 3, true);
 			addPedModelAddress = ReadMemory<uintptr_t>(0x5B74A7 + 1, true) + (0x5B74A7 + 5);
 			ScriptEffectSystemArray = ReadMemory<tScriptEffectSystem*>(0x483A07 + 3, true);
@@ -1010,18 +1018,26 @@ public:
 				if (disableCamControl)
 				{
 					// Disables it each frame to make it compatible with GTA V Hud.
-					for (unsigned int i = 0; i < 14; ++i)
+					for (unsigned int i = 0; i < disableCamMoveAddressesCount; ++i)
 					{
 						patch::SetPointer(disableCamMoveAddresses[i], &fZero);
+					}
+					for (unsigned int i = 0; i < disableCamMoveAddresses00125Count; ++i)
+					{
+						patch::SetPointer(disableCamMoveAddresses00125[i], &fZero);
 					}
 					disabledCamControlLastFrame = true;
 				}
 				else if (disabledCamControlLastFrame)
 				{
 					// Get using address (to make it compatible with other mods)
-					for (unsigned int i = 0; i < 14; ++i)
+					for (unsigned int i = 0; i < disableCamMoveAddressesCount; ++i)
 					{
 						patch::SetInt(disableCamMoveAddresses[i], (i > 4) ? defaultMouseAccelHorizontalAddress : defaultMouseAccelVerticalAddress);
+					}
+					for (unsigned int i = 0; i < disableCamMoveAddresses00125Count; ++i)
+					{
+						patch::SetInt(disableCamMoveAddresses00125[i], defaultCameraMove00125);
 					}
 					disabledCamControlLastFrame = false;
 				}
