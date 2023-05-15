@@ -22,7 +22,7 @@ OpcodeResult WINAPI GET_PICKUP_THIS_COORD(CScriptThread* thread)
 		if (DistanceBetweenPoints(pickupCoord, coord) < 0.5f)
 		{
 			int pickupRef = i | (pickup->m_nReferenceIndex << 16);
-			if (!onlyAvailable || !CPickups::IsPickUpPickedUp(pickupRef))
+			if (!onlyAvailable || pickup->m_nPickupType)
 			{
 				pickupRefResult = pickupRef;
 				result = true;
