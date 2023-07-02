@@ -129,7 +129,7 @@ EN: Open the "data/sa/SASCM.INI" located in the Sanny Builder folder, and add it
 0E99=0,load_all_priority_models_now
 0E9A=2,load_special_character_for_id %1d% name %2d%
 0E9B=1,unload_special_character_from_id %1d%
-0E9C=1,get_model_by_name %1d% store_id %2d%
+0E9C=2,get_model_by_name %1d% store_id %2d%
 0E9D=1,get_model_available_by_name %1d%
 0E9E=3,get_model_available_by_name %1d% to %2d% store_to %3d%
 0E9F=0,remove_all_unused_models
@@ -284,7 +284,7 @@ EN: Open the "data/sa/SASCM.INI" located in the Sanny Builder folder, and add it
 0D3B=4,get_colpoint_normal_vector %1d% store_to %2d% %3d% %4d%
 0D3E=2,get_colpoint_depth %1d% store_to %2d%
 0D3C=2,get_colpoint_surface %1d% store_to %2d%
-0E6B=2,get_colpoint_lighting %1d% from_night %2d% store_to %3d%
+0E6B=3,get_colpoint_lighting %1d% from_night %2d% store_to %3d%
 0EE1=4,get_colpoint_coordinates %1d% store_to %2d% %3d% %4d%
 0E72=2,create_list %1d% store_to %2d%
 0E73=1,delete_list %1d%
