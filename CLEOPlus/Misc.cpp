@@ -116,13 +116,24 @@ OpcodeResult WINAPI FIX_CHAR_GROUND_BRIGHTNESS_AND_FADE_IN(CScriptThread* thread
 			CEntity *outEntity;
 			CColPoint outColPoint;
 
-			if (CWorld::ProcessVerticalLine(*pedPos, -1000.0, outColPoint, outEntity, 1, 0, 0, 0, 0, 0, 0))
+			if (CWorld::ProcessVerticalLine(*pedPos, -100.0, outColPoint, outEntity, 1, 0, 0, 1, 0, 0, 0))
 			{
 				char lighting = *(char*)(reinterpret_cast<char*>(&outColPoint) + 0x25); //lightingB (current plugin-sdk is bugged)
-				ped->m_fContactSurfaceBrightness = (float)(lighting & 0xF)
+				float dayLighting = (float)(lighting & 0xF);
+				float nightLighting = (float)(lighting >> 4);
+				if (nightLighting < 0.001f) { //workaround for bugging some locations, generally LV at night, I don't know why but maybe there is no night lighting information
+					nightLighting = dayLighting * 0.9f;
+				}
+				else {
+					if (dayLighting < 0.001f) { //maybe not required
+						dayLighting = nightLighting * 1.1f;
+						if (dayLighting > 1.0f) dayLighting = 1.0f;
+					}
+				}
+				ped->m_fContactSurfaceBrightness = dayLighting
 					* 0.033333334f
 					* (1.0f - *(float*)0x8D12C0)
-					+ (float)(lighting >> 4)
+					+ (float)nightLighting
 					* 0.033333334f
 					* *(float*)0x8D12C0;
 			}

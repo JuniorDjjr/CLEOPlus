@@ -97,14 +97,15 @@ OpcodeResult WINAPI GET_COLPOINT_SURFACE(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// This one ISN'T retrocompatible with 0D3E's NewOpcodes, because DK forgot to separate day and night values. There is some problem with plugin-sdk too.
+// This one ISN'T retrocompatible with 0D3E's NewOpcodes, because DK forgot to separate day and night values.
 // 0xE6B=2,get_colpoint_lighting %1d% from_night %2d% store_to %3d%
 OpcodeResult WINAPI GET_COLPOINT_LIGHTING(CScriptThread* thread)
 {
 	uintptr_t colPoint = CLEO_GetIntOpcodeParam(thread);
 	bool night = CLEO_GetIntOpcodeParam(thread);
 
-	uint8_t lightingFull = injector::ReadMemory<uint8_t>(colPoint + 0x25, false);
+	//uint8_t lightingFull = injector::ReadMemory<uint8_t>(colPoint + 0x25, false);
+	uint8_t lightingFull = *(char*)(reinterpret_cast<char*>(colPoint) + 0x25); //lightingB (current plugin-sdk is bugged)
 
 	unsigned int lighting = 0;
 	if (night)
