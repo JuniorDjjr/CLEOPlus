@@ -14,7 +14,7 @@ EN: Open the "data/sa/opcodes.txt" located in the Sanny Builder folder, and add 
 0B20: read_clipboard_data_to 1@ size 2@
 0B21: write_clipboard_data_from 1@ size 2@
 0E01: create_object_no_save 1@ at 2@ 3@ 4@ offset 5@ ground 6@ to 7@
-0E02: set_car_generator 1@ no_save
+0E02: set_car_generator_no_save 1@
 0D59: get_current_weather_to 1@
 0E04: get_next_weather_to 1@
 0E05: set_next_weather_to 1@
@@ -48,22 +48,25 @@ EN: Open the "data/sa/opcodes.txt" located in the Sanny Builder folder, and add 
 0E69: set_player_control_pad_movement 1@ 2@ 
 0E8D: is_any_fire_button_pressed 1@
 0E6E: is_select_menu_just_pressed
+0F13: get_time_not_touching_pad 1@ store_to 2@
 0ED0: return_script_event
-0ED1: set_script_event_save_confirmation 1@ label 2@ var_slot 3@
-0ED2: set_script_event_char_delete 1@ label 2@ var_char 3@
-0ED3: set_script_event_char_create 1@ label 2@ var_char 3@
-0ED4: set_script_event_car_delete 1@ label 2@ var_car 3@
-0ED5: set_script_event_car_create 1@ label 2@ var_car 3@
-0ED6: set_script_event_object_delete 1@ label 2@ var_object 3@
-0ED7: set_script_event_object_create 1@ label 2@ var_object 3@
-0ED8: set_script_event_on_menu 1@ label 2@ var_just_paused 3@
-0EDA: set_script_event_char_process 1@ label 2@ var_char 3@
-0EDB: set_script_event_car_process 1@ label 2@ var_car 3@
-0EDC: set_script_event_object_process 1@ label 2@ var_object 3@
-0EDD: set_script_event_building_process 1@ label 2@ var_building 3@
-0EDE: set_script_event_char_damage 1@ label 2@ var_char 3@
-0EDF: set_script_event_car_weapon_damage 1@ label 2@ var_car 3@
-0EE0: set_script_event_bullet_impact 1@ label 2@ args var_owner 3@ var_victim 4@ var_weapon 5@ var_colpoint 6@
+0ED1: set_script_event_save_confirmation 1@ label @label var_slot 3@
+0ED2: set_script_event_char_delete 1@ label @label var_char 3@
+0ED3: set_script_event_char_create 1@ label @label var_char 3@
+0ED4: set_script_event_car_delete 1@ label @label var_car 3@
+0ED5: set_script_event_car_create 1@ label @label var_car 3@
+0ED6: set_script_event_object_delete 1@ label @label var_object 3@
+0ED7: set_script_event_object_create 1@ label @label var_object 3@
+0ED8: set_script_event_on_menu 1@ label @label var_just_paused 3@
+0EDA: set_script_event_char_process 1@ label @label var_char 3@
+0EDB: set_script_event_car_process 1@ label @label var_car 3@
+0EDC: set_script_event_object_process 1@ label @label var_object 3@
+0EDD: set_script_event_building_process 1@ label @label var_building 3@
+0EDE: set_script_event_char_damage 1@ label @label var_char 3@
+0EDF: set_script_event_car_weapon_damage 1@ label @label var_car 3@
+0EE0: set_script_event_bullet_impact 1@ label @label var_owner 3@ var_victim 4@ var_weapon 5@ var_colpoint 6@
+0F0B: set_script_event_before_game_process 1@ label @label
+0F0C: set_script_event_after_game_process 1@ label @label
 0E12: get_vehicle 1@ subclass_to 2@
 0E13: get_entity 1@ type_to 2@
 0E14: init_extended_char_vars 1@ id 2@ new_vars 3@
@@ -87,25 +90,25 @@ EN: Open the "data/sa/opcodes.txt" located in the Sanny Builder folder, and add 
 0E4D: random_percent 1@
 0E59: get_trailer_from_car 1@ trailer 2@
 0E5A: get_car_from_trailer 1@ store_to 2@
-0E5B: get_car_dummy_coord 1@ dummy 2@ world_coords 3@ invert_x 4@ store_to 5@ 6@ 7@ // same as NewOpcodes but this is adapted to VehFuncs
+0E5B: get_car_dummy_coord 1@ dummy 2@ world_coords 3@ invert_x 4@ store_to 5@ 6@ 7@ 
 0E5D: is_cheat_active 1@
 0E5E: change_player_money 1@ mode 2@ value 3@
 0E5F: car_horn 1@
-0D4C: 2@ = string 1@ length // keep NewOpcodes order
-0D4D: copy_string 1@ to 2@
+0D4C: 2@ = string 1@v length 
+0D4D: copy_string 1@v to 2@
 0E00: get_car_alarm 1@ mode_to 2@
 0E61: set_car_alarm 1@ mode 2@
-0D39: 2@ = get_char_max_health 1@ // keep NewOpcodes order
+0D39: 2@ = get_char_max_health 1@ 
 0E5C: get_player_health_percent 1@ store_to 2@
 0E64: get_camera_mode 1@
 0E65: get_car_collision_intensity 1@ store_to 2@
 0E66: get_car_collision_coordinates 1@ store_to 2@ 3@ 4@
-0E6F: stream_custom_script_from_label 1@
+0E6F: stream_custom_script_from_label @label
 0E70: get_last_created_custom_script 1@
 0E71: get_object_centre_of_mass_to_base_of_model 1@ 2@
 0E7F: get_model_type 1@ store_to 2@
-0E80: is_string_equal 1@ 2@ max_size 3@ case_sensitive 4@ ignore_charactere 5@
-0E81: is_string_comment 1@
+0E80: is_string_equal 1@v 2@v max_size 3@ case_sensitive 4@ ignore_charactere 5@v
+0E81: is_string_comment 1@v
 0E82: does_car_have_part_node 1@ 2@
 0E83: get_current_char_weaponinfo 1@ store_to 2@
 0E84: get_weaponinfo 1@ skill 2@ store_to 3@
@@ -130,7 +133,7 @@ EN: Open the "data/sa/opcodes.txt" located in the Sanny Builder folder, and add 
 0E9A: load_special_character_for_id 1@ name 2@
 0E9B: unload_special_character_from_id 1@
 0E9C: get_model_by_name 1@ store_id 2@
-0E9D: get_model_available_by_name 1@
+0E9D: is_model_available_by_name 1@
 0E9E: get_model_doesnt_exist_in_range 1@ to 2@ store_to 3@
 0E9F: remove_all_unused_models
 0EA3: remove_model_if_unused 1@
@@ -148,7 +151,7 @@ EN: Open the "data/sa/opcodes.txt" located in the Sanny Builder folder, and add 
 0EAF: is_char_weapon_visible_set 1@
 0EB1: get_char_stat_id 1@ store_to 2@
 0EB2: get_offset_from_camera_in_world_coords 1@ 2@ 3@ store_to 4@ 5@ 6@
-0D0A: store_coords_to 5@ 6@ 7@ from_matrix 1@ with_offsets 2@ 3@ 4@ // keep NewOpcodes order
+0D0A: store_coords_to 5@ 6@ 7@ from_matrix 1@ with_offsets 2@ 3@ 4@ 
 0EB4: set_car_coordinates_simple 1@ position 2@ 3@ 4@
 0EB5: get_char_damage_last_frame 1@ damager 2@ type 3@ part 4@ intensity 5@
 0EB6: get_car_weapon_damage_last_frame 1@ char 2@ type 3@ intensity 4@
@@ -160,12 +163,12 @@ EN: Open the "data/sa/opcodes.txt" located in the Sanny Builder folder, and add 
 0EBE: locate_camera_distance_to_coordinates 1@ 2@ 3@ radius 4@
 0EBF: get_fx_system_pointer 1@ store_to 2@
 0EC0: add_fx_system_particle 1@ coord 2@ 3@ 4@ vel 5@ 6@ 7@ size 8@ brightness 9@ rgba 10@ 11@ 12@ 13@ lastFactor 14@
-0EC1: is_fx_system_available_with_name 1@
-0EC2: set_string_upper 1@
-0EC3: set_string_lower 1@
-0EC4: string_find 1@ 2@ 3@ store_to 4@
+0EC1: is_fx_system_available_with_name 1@v
+0EC2: set_string_upper 1@v
+0EC3: set_string_lower 1@v
+0EC4: string_find 1@ 2@v 3@v store_to 4@
 0EC5: cut_string_at 1@ 2@
-0EC6: is_string_character_at 1@ 2@
+0EC6: is_string_character_at 1@v character 2@v index 3@
 0EC8: get_char_random_seed 1@ store_to 2@
 0EC9: get_car_random_seed 1@ store_to 2@
 0ECA: get_object_random_seed 1@ store_to 2@
@@ -184,7 +187,7 @@ EN: Open the "data/sa/opcodes.txt" located in the Sanny Builder folder, and add 
 0EEA: locate_char_distance_to_coordinates 1@ pos 2@ 3@ 4@ radius 5@
 0EEB: locate_car_distance_to_coordinates 1@ pos 2@ 3@ 4@ radius 5@
 0EEC: locate_object_distance_to_coordinates 1@ pos 2@ 3@ 4@ radius 5@
-0EED: locate_object_distance_to_coordinates 1@ pos 2@ 3@ 4@ radius 5@
+0EED: locate_entity_distance_to_entity 1@ 2@ radius 5@
 0EEE: get_entity_coordinates 1@ store_to 2@ 3@ 4@
 0EEF: get_entity_heading 1@ store_to 2@
 0EF5: is_car_owned_by_player 1@
@@ -192,59 +195,76 @@ EN: Open the "data/sa/opcodes.txt" located in the Sanny Builder folder, and add 
 0EF8: get_model_info 1@ store_to 2@
 0EF9: get_car_animgroup 1@ store_to 2@
 0EFA: get_char_fear 1@ store_to 2@
-0EFB: is_car_double_convertible 1@
+0EFB: is_car_convertible 1@
 0EFC: get_car_value 1@ store_to 2@
 0EFD: get_car_pedals 1@ gas_to 2@ break_to 3@ 
 0EFE: get_loaded_library 1@ store_to 2@
+0F0A: return_times 1@
+0F0E: get_third_person_camera_target 1@ from 2@ 3@ 4@ start_to 5@ 6@ 7@ end_to 8@ 9@ 10@
+0F0F: get_distance_multiplier 1@ 2@
+0F10: get_active_camera_rotation 1@ 2@ 3@
+0F11: get_closest_water_distance 1@ 2@
+0F12: get_camera_struct 1@ 2@
+0F14: get_camera_rotation_input_values 1@ 2@
+0F15: set_camera_rotation_input_values 1@ 2@
+0F16: set_on_mission 1@
+0F17: get_model_name_pointer 1@ to 2@v
 0D0F: set_car_model_alpha 1@ alpha 2@
 0D10: set_char_model_alpha 1@ alpha 2@
 0D11: set_object_model_alpha 1@ alpha 2@
 0D2D: get_local_time_year_to 1@ month_to 2@ day_of_week_to 3@ day_to 4@ hour_to 5@ minute_to 6@ second_to 7@ milliseconds_to 8@
 0D2E: set_script 1@ var 2@ value 3@
-0D2F: 3@ = get_script 1@ var 2@ // keep NewOpcodes order
+0D2F: 3@ = get_script 1@ var 2@ 
 0D33: set_car 1@ door 2@ window_state 3@
 0E1E: draw_texture_plus 1@ event 2@ pos 3@ 4@ size 5@ 6@ angle 7@ depth 8@ fix_aspect_ratio 9@ maskTrisCount 10@ maskTrisArray 11@ rgba 12@ 13@ 14@ 15@ 
 0E3C: get_texture_from_sprite 1@ store_to 2@
-0E62: print 1@ event 2@ at 3@ 4@ scale 5@ 6@ fixAR 7@ style 8@
-0E63: print 1@ event 2@ at 3@ 4@ scale 5@ 6@ fixAR 7@ style 8@ prop 9@ align 10@ wrap 11@ justify 12@ color 13@ 14@ 15@ 16@ outline 17@ shadow 18@ dropColor 19@ 20@ 21@ 22@ background 23@ backColor 24@ 25@ 26@ 27@
+0E62: print 1@v event 2@ at 3@ 4@ scale 5@ 6@ fixAR 7@ style 8@
+0E63: print 1@v event 2@ at 3@ 4@ scale 5@ 6@ fixAR 7@ style 8@ prop 9@ align 10@ wrap 11@ justify 12@ color 13@ 14@ 15@ 16@ outline 17@ shadow 18@ dropColor 19@ 20@ 21@ 22@ background 23@ backColor 24@ 25@ 26@ 27@
 0D1E: quat_slerp 1@ to 2@ lambda 3@ result 4@
 0D16: set_matrix_rotation_from_quat 1@ rotation_from_quat 2@
 0D17: set_quat_from_matrix 1@ to_quat 2@
 0D18: rotate_quat_on_axis 1@ axis_vector 2@ 3@ 4@ angle 5@ combine_op 6@
 0D19: get_normalised_quat 1@ to_quat 2@
-0D1A: multiply_quats 3@ = quat 1@ * quat 2@ // keep NewOpcodes order
+0D1A: multiply_quats 3@ = quat 1@ * quat 2@ 
 0D24: set_quat 1@ elements 2@ 3@ 4@ 5@
 0D29: get_quat 1@ elements_to 2@ 3@ 4@ 5@
 0D01: rotate_matrix 1@ on_axis 2@ 3@ 4@ angle 5@ combine_op 6@
-0D02: 2@ = matrix 1@ x_angle // keep NewOpcodes order
-0D03: 2@ = matrix 1@ y_angle // keep NewOpcodes order
-0D04: 2@ = matrix 1@ z_angle // keep NewOpcodes order
+0D02: 2@ = matrix 1@ x_angle 
+0D03: 2@ = matrix 1@ y_angle 
+0D04: 2@ = matrix 1@ z_angle 
 0E1F: ease 1@ mode 2@ way 3@ to 4@
 0E27: get_angle_from_two_coords 1@ 2@ and 3@ 4@ to 5@
 0E03: perlin_noise 1@ store_to 2@
 0E29: perlin_noise 1@ octaves 2@ frequency 3@ amplitude 4@ lacunarity 5@ persistence 6@ store_to 7@
 0EF0: get_coord_from_angled_distance 1@ 2@ angle 3@ dist 4@ store_to 5@ 6@
-0EF1: perlin_noise_fractal_2d 1@ 2@ octaves 3@ frequency 4@ amplitude 5@ lacunarity 6@ persistence 7@ store_to 8@
-0EF2: perlin_noise_fractal_3d 1@ 2@ 3@ octaves 4@ frequency 5@ amplitude 6@ lacunarity 7@ persistence 8@ store_to 9@
+0EF1: perlin_noise_fractal_2d x 1@ y 2@ octaves 3@ frequency 4@ amplitude 5@ lacunarity 6@ persistence 7@ store_to 8@
+0EF2: perlin_noise_fractal_3d x 1@ y 2@ z 3@ octaves 4@ frequency 5@ amplitude 6@ lacunarity 7@ persistence 8@ store_to 9@
 0EF4: clamp_float 1@ min 2@ max 3@ store_to 4@
 0EF7: clamp_int 1@ min 2@ max 3@ store_to 4@
 0EB3: convert_direction_to_quat 1@ dir 2@ 3@ 4@
 0EF3: lerp 1@ 2@ 3@ store_to 4@
+0F0D: set_matrix_look_direction 1@ origin 2@ 3@ 4@ dir 5@ 6@ 7@
+0D0B: get_actor 1@ bone 2@ matrix_to 3@ 
+0D30: 3@ = actor 1@ bone 2@ 
+0D31: 2@ = bone 1@ offset_vector     
+0D32: 2@ = bone 1@ quat
 0E21: get_audio_sfx_volume 1@
 0E22: get_audio_radio_volume 1@
 0E3B: get_audiostream_internal 1@ store_to 2@
 0E28: write_struct 1@ offset 2@ size 3@ value 4@
-0D4E: 4@ = read_struct 1@ offset 2@ size 3@ // keep newOpcodes ordering for SB
-0D4F: write_struct 1@ offset 2@ size 3@ value 4@ // newOpcodes version of 0E28, the original one doesn't work, this is a fall off 
+0D4E: 4@ = read_struct 1@ offset 2@ size 3@ 
 0D27: copy_memory 1@ to 2@ size 3@
 0D37: write_struct_param 1@ param 2@ value 3@
-0D38: 3@ = read_struct_param 1@ param 2@ // keep newOpcodes ordering for SB
+0D38: 3@ = read_struct_param 1@ param 2@ 
 0E6A: make_nop 1@ size 2@
 0EE2: read_struct_offset_multi 1@ offset 2@ total 3@ size 4@
 0EE3: write_struct_offset_multi 1@ offset 2@ count 3@ size 4@
 0E2A: add_cleo_blip 1@ position 2@ 3@ is_short 4@ RGBA 5@ 6@ 7@ 8@ store_to 9@
 0E2B: remove_cleo_blip 1@
 0E2E: create_render_object_to_char_bone 1@ model 2@ bone 3@ offset 4@ 5@ 6@ rotation 7@ 8@ 9@ store_to 10@
+0F02: create_render_object_to_char_bone_from_special 1@ special_model 2@ bone 3@ offset 4@ 5@ 6@ rotation 7@ 8@ 9@ scale 10@ 11@ 12@ store_to 13@
+0F03: create_render_object_to_object 1@ model 2@ offset 3@ 4@ 5@ rotation 6@ 7@ 8@ store_to 9@
+0F04: create_render_object_to_object_from_special 1@ special_model 2@ offset 3@ 4@ 5@ rotation 6@ 7@ 8@ store_to 9@
 0E2F: delete_render_object 1@
 0E30: set_render_object_auto_hide 1@ dead 2@ weapon 3@ car 4@
 0E31: set_render_object_visible 1@ 2@
@@ -280,10 +300,10 @@ EN: Open the "data/sa/opcodes.txt" located in the Sanny Builder folder, and add 
 0E96: clear_char_primary_tasks 1@
 0E97: clear_char_secondary_tasks 1@
 0EFF: get_char_simplest_active_task 1@ id_to 2@ pointer_to 3@
-0D3A: get_collision_between_points 1@ 2@ 3@ and 4@ 5@ 6@ flags 7@ 8@ 9@ 10@ 11@ 12@ 13@ 14@ ignore_entity 15@ store_point_to 17@ 18@ 19@ entity_to 20@ colpoint_data_to 16@ // keep NewOpcodes order
+0D3A: get_collision_between_points 1@ 2@ 3@ and 4@ 5@ 6@ flags 7@ 8@ 9@ 10@ 11@ 12@ 13@ 14@ ignore_entity 15@ store_point_to 17@ 18@ 19@ entity_to 20@ colpoint_data_to 16@ 
 0D3B: get_colpoint_normal_vector 1@ store_to 2@ 3@ 4@
-0D3C: get_colpoint_depth 1@ store_to 2@
-0D3D: get_colpoint_surface 1@ store_to 2@
+0D3C: get_colpoint_surface 1@ store_to 2@
+0D3E: get_colpoint_depth 1@ store_to 2@
 0E6B: get_colpoint_lighting 1@ from_night 2@ store_to 3@
 0EE1: get_colpoint_coordinates 1@ store_to 2@ 3@ 4@
 0E72: create_list 1@ store_to 2@
@@ -299,3 +319,10 @@ EN: Open the "data/sa/opcodes.txt" located in the Sanny Builder folder, and add 
 0E7C: list_remove_string_value 1@ value 2@
 0E7D: list_remove_index 1@ start 2@ end 3@
 0E7E: reverse_list 1@
+0F06: replace_list_value_by_index 1@ index 2@ value 3@
+0F07: replace_list_string_value_by_index 1@ index 2@ value 3@
+0F08: insert_list_value_by_index 1@ index 2@ value 3@
+0F09: insert_list_string_value_by_index 1@ index 2@ value 3@
+0F00: load_special_model_dff 1@v txd 2@v store_to 3@
+0F01: remove_special_model 1@
+0F05: get_special_model_data 1@ clump_to 2@ atomic_to 3@ txd_index_to 4@

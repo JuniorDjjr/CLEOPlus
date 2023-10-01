@@ -4,7 +4,6 @@
 #include "Fx_c.h"
 #include <algorithm>
 
-// 0E27=5,get_angle_from_two_coords %1d% %2d% and %3d% %4d% to %5d%
 OpcodeResult WINAPI GET_ANGLE_FROM_TWO_COORDS(CScriptThread* thread)
 {
 	float cx = CLEO_GetFloatOpcodeParam(thread);
@@ -40,7 +39,6 @@ OpcodeResult WINAPI GET_ANGLE_FROM_TWO_COORDS(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0D1E=4,quat_slerp_from %1d% to %2d% lambda %3d% result %4d%
 OpcodeResult WINAPI QUAT_SLERP(CScriptThread* thread)
 {
 	CQuaternion *from = (CQuaternion *)CLEO_GetIntOpcodeParam(thread);
@@ -331,7 +329,6 @@ OpcodeResult WINAPI EASE(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E03=2,perlin_noise %1d% store_to %2d%
 OpcodeResult WINAPI PERLIN_NOISE(CScriptThread* thread)
 {
 	float result = SimplexNoise::noise(CLEO_GetFloatOpcodeParam(thread));
@@ -339,7 +336,6 @@ OpcodeResult WINAPI PERLIN_NOISE(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E29=7,perlin_noise %1d% octaves %2d% frequency %3d% amplitude %4d% lacunarity %5d% persistence %6d% store_to %7d%
 OpcodeResult WINAPI PERLIN_NOISE_FRACTAL(CScriptThread* thread)
 {
 	float f = CLEO_GetFloatOpcodeParam(thread);
@@ -357,7 +353,6 @@ OpcodeResult WINAPI PERLIN_NOISE_FRACTAL(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0EF1=8,perlin_noise_fractal_2d x %1d% y %2d% octaves %3d% frequency %4d% amplitude %5d% lacunarity %6d% persistence %7d% store_to %8d%
 OpcodeResult WINAPI PERLIN_NOISE_FRACTAL_2D(CScriptThread* thread)
 {
 	float x = CLEO_GetFloatOpcodeParam(thread);
@@ -376,7 +371,6 @@ OpcodeResult WINAPI PERLIN_NOISE_FRACTAL_2D(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0EF2=9,perlin_noise_fractal_3d x %1d% y %2d% z %3d% octaves %4d% frequency %5d% amplitude %6d% lacunarity %7d% persistence %8d% store_to %9d%
 OpcodeResult WINAPI PERLIN_NOISE_FRACTAL_3D(CScriptThread* thread)
 {
 	float x = CLEO_GetFloatOpcodeParam(thread);
@@ -396,7 +390,6 @@ OpcodeResult WINAPI PERLIN_NOISE_FRACTAL_3D(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0EF0=5,get_coord_from_angled_distance %1d% %2d% angle %3d% dist %4d% store_to %5d% %6d%
 OpcodeResult WINAPI GET_COORD_FROM_ANGLED_DISTANCE(CScriptThread* thread)
 {
 	float x = CLEO_GetFloatOpcodeParam(thread);
@@ -420,7 +413,6 @@ OpcodeResult WINAPI GET_COORD_FROM_ANGLED_DISTANCE(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0EF4=4,clamp_float %1d% min %2d% max %3d% store_to %4d%
 OpcodeResult WINAPI CLAMP_FLOAT(CScriptThread* thread)
 {
 	float f = CLEO_GetFloatOpcodeParam(thread);
@@ -434,7 +426,6 @@ OpcodeResult WINAPI CLAMP_FLOAT(CScriptThread* thread)
 	return OR_CONTINUE;
 }
  
-// 0EF7=4,clamp_int %1d% min %2d% max %3d% store_to %4d%
 OpcodeResult WINAPI CLAMP_INT(CScriptThread* thread)
 {
 	int i = CLEO_GetIntOpcodeParam(thread);
@@ -444,9 +435,6 @@ OpcodeResult WINAPI CLAMP_INT(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0D16=2,set_matrix %1d% rotation_from_quat %2d%
-// 0D16: set_matrix 0@ rotation_from_quat 1@
-// SCR: SET_MATRIX_ROTATION_FROM_QUAT
 OpcodeResult WINAPI SET_MATRIX_ROTATION_FROM_QUAT(CScriptThread* thread)
 {
 	CMatrix *matrix = (CMatrix *)CLEO_GetIntOpcodeParam(thread);
@@ -455,9 +443,6 @@ OpcodeResult WINAPI SET_MATRIX_ROTATION_FROM_QUAT(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0D17=2,convert_matrix %1d% to_quat %2d%
-// 0D17: convert_matrix 0@ to_quat 1@
-// SCR: SET_QUAT_FROM_MATRIX
 OpcodeResult WINAPI SET_QUAT_FROM_MATRIX(CScriptThread* thread)
 {
 	RwMatrix *matrix = (RwMatrix *)CLEO_GetIntOpcodeParam(thread);
@@ -466,9 +451,6 @@ OpcodeResult WINAPI SET_QUAT_FROM_MATRIX(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0D18=6,rotate_quat %1d% axis_vector %2d% %3d% %4d% angle %5d% combine_op %6d%
-// 0D18: rotate_quat 0@ axis_vector 1.0 0.0 0.0 angle 45.0 combine_op 2
-// SCR: ROTATE_QUAT_ON_AXIS
 OpcodeResult WINAPI ROTATE_QUAT_ON_AXIS(CScriptThread* thread)
 {
 	RtQuat *quat;
@@ -487,9 +469,6 @@ OpcodeResult WINAPI ROTATE_QUAT_ON_AXIS(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0D19=2,get_normalised_quat %1d% to_quat %2d%
-// 0D19: get_normalised_quat 0@ to_quat 1@
-// SCR: GET_NORMALISED_QUAT
 OpcodeResult WINAPI GET_NORMALISED_QUAT(CScriptThread* thread)
 {
 	CQuaternion *dst, *src; CQuaternion quat;
@@ -503,9 +482,6 @@ OpcodeResult WINAPI GET_NORMALISED_QUAT(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0D1A=3,quat %3d% = quat %1d% * quat %2d%
-// 0D1A: quat 2@ = quat 0@ * quat 1@
-// SCR: MULTIPLY_QUATS
 OpcodeResult WINAPI MULTIPLY_QUATS(CScriptThread* thread)
 {
 	CQuaternion *result, *quat1, *quat2;
@@ -518,9 +494,6 @@ OpcodeResult WINAPI MULTIPLY_QUATS(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0D24=5,set_quat %1d% elements %2d% %3d% %4d% %5d%
-// 0D24: set_quat 0@ elements 1.0 0.0 0.0 45.0
-// SCR: INITIALISE_QUAT
 OpcodeResult WINAPI INITIALISE_QUAT(CScriptThread* thread)
 {
 	CQuaternion *quat = (CQuaternion *)CLEO_GetIntOpcodeParam(thread);
@@ -531,9 +504,6 @@ OpcodeResult WINAPI INITIALISE_QUAT(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0D29=5,get_quat %1d% elements_to %2d% %3d% %4d% %5d%
-// 0D29: get_quat 0@ elements_to 1@ 2@ 3@ 4@
-// SCR: GET_QUAT_ELEMENTS
 OpcodeResult WINAPI GET_QUAT_ELEMENTS(CScriptThread* thread)
 {
 	CQuaternion *quat = (CQuaternion *)CLEO_GetIntOpcodeParam(thread);
@@ -548,7 +518,6 @@ float dotProduct(CVector *v1, CVector *v2) {
 	return v1->z * v2->z + v1->y * v2->y + v1->x * v2->x;
 }
 
-// 0xEB3=4,convert_direction_to_quat %1d% dir %2d% %3d% %4d%
 OpcodeResult WINAPI CONVERT_DIRECTION_TO_QUAT(CScriptThread* thread)
 {
 	CVector dir;
@@ -635,9 +604,6 @@ OpcodeResult WINAPI CONVERT_DIRECTION_TO_QUAT(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0D01=6,rotate_matrix %1d% on_axis %2d% %3d% %4d% angle %5d% combine_op %6d%
-// 0D01: rotate_matrix 0@ on_axis 1.0 0.0 0.0 angle 45.0 combine_op 2
-// SCR: ROTATE_MATRIX_ON_AXIS
 OpcodeResult WINAPI ROTATE_MATRIX_ON_AXIS(CScriptThread* thread)
 {
 	RwMatrix *matrix; RwV3d axis; float angle; unsigned int combineOp;
@@ -653,9 +619,6 @@ OpcodeResult WINAPI ROTATE_MATRIX_ON_AXIS(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0D02=2,%2d% = matrix %1d% x_angle
-// 0D02: 1@ = matrix 0@ x_angle
-// SCR: GET_MATRIX_X_ANGLE
 OpcodeResult WINAPI GET_MATRIX_X_ANGLE(CScriptThread* thread)
 {
 	RwMatrix *matrix = (RwMatrix *)CLEO_GetIntOpcodeParam(thread);
@@ -669,9 +632,6 @@ OpcodeResult WINAPI GET_MATRIX_X_ANGLE(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0D03=2,%2d% = matrix %1d% y_angle
-// 0D03: 1@ = matrix 0@ y_angle
-// SCR: GET_MATRIX_Y_ANGLE
 OpcodeResult WINAPI GET_MATRIX_Y_ANGLE(CScriptThread* thread)
 {
 	RwMatrix *matrix = (RwMatrix *)CLEO_GetIntOpcodeParam(thread);
@@ -685,9 +645,6 @@ OpcodeResult WINAPI GET_MATRIX_Y_ANGLE(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0D04=2,%2d% = matrix %1d% z_angle
-// 0D04: 1@ = matrix 0@ z_angle
-// SCR: GET_MATRIX_Z_ANGLE
 OpcodeResult WINAPI GET_MATRIX_Z_ANGLE(CScriptThread* thread)
 {
 	RwMatrix *matrix = (RwMatrix *)CLEO_GetIntOpcodeParam(thread);
@@ -698,7 +655,6 @@ OpcodeResult WINAPI GET_MATRIX_Z_ANGLE(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0EF3=3,lerp %1d% %2d% %3d% store_to %4d%
 OpcodeResult WINAPI LERP(CScriptThread* thread)
 {
 	float a = CLEO_GetFloatOpcodeParam(thread);
@@ -707,3 +663,19 @@ OpcodeResult WINAPI LERP(CScriptThread* thread)
 	CLEO_SetFloatOpcodeParam(thread, (a * (1 - t) + b * t));
 	return OR_CONTINUE;
 }
+
+OpcodeResult WINAPI SET_MATRIX_LOOK_DIRECTION(CScriptThread* thread)
+{
+	RwMatrixTag* matrix = (RwMatrixTag*)CLEO_GetIntOpcodeParam(thread);
+	CVector origin;
+	CVector direction;
+	origin.x = CLEO_GetFloatOpcodeParam(thread);
+	origin.y = CLEO_GetFloatOpcodeParam(thread);
+	origin.z = CLEO_GetFloatOpcodeParam(thread);
+	direction.x = CLEO_GetFloatOpcodeParam(thread);
+	direction.y = CLEO_GetFloatOpcodeParam(thread);
+	direction.z = CLEO_GetFloatOpcodeParam(thread);
+	g_fx.CreateMatFromVec(matrix, &origin, &direction);
+	return OR_CONTINUE;
+}
+

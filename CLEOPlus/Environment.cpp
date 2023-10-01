@@ -32,35 +32,30 @@ OpcodeResult WINAPI SET_RAIN_INTENSITY(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E40=1,get_current_hour %1d%
 OpcodeResult WINAPI GET_CURRENT_HOUR(CScriptThread* thread)
 {
 	CLEO_SetIntOpcodeParam(thread, CClock::ms_nGameClockHours);
 	return OR_CONTINUE;
 }
 
-// 0E41=1,get_current_minute %1d%
 OpcodeResult WINAPI GET_CURRENT_MINUTE(CScriptThread* thread)
 {
 	CLEO_SetIntOpcodeParam(thread, CClock::ms_nGameClockMinutes);
 	return OR_CONTINUE;
 }
 
-// 0xE6C=1,get_day_night_balance %1d%
 OpcodeResult WINAPI GET_DAY_NIGHT_BALANCE(CScriptThread* thread)
 {
 	CLEO_SetFloatOpcodeParam(thread, *(float*)0x8D12C0);
 	return OR_CONTINUE;
 }
 
-// 0xE6D=1,get_underwaterness %1d%
 OpcodeResult WINAPI GET_UNDERWATERNESS(CScriptThread* thread)
 {
 	CLEO_SetFloatOpcodeParam(thread, CWeather::UnderWaterness);
 	return OR_CONTINUE;
 }
 
-// 0xE6E=1,get_forced_weather %1d%
 OpcodeResult WINAPI GET_FORCED_WEATHER(CScriptThread* thread)
 {
 	bool bResult = true;

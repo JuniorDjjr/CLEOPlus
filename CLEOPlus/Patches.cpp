@@ -4,6 +4,7 @@
 #include "CPickup.h"
 #include "PedExtendedData.h"
 #include "VehExtendedData.h"
+#include "CModelInfo.h"
 #include "..\injector\assembly.hpp"
 
 using namespace plugin;
@@ -11,6 +12,8 @@ using namespace injector;
 
 extern bool coopOpcodesInstalled;
 extern float weatherInterpolationMult;
+extern char* modelNames;
+extern uint32_t maxDffFiles;
 void PatchCoop();
 
 CTask *__fastcall GetSimplestActiveTask_CarAnimFix(CTaskManager *_this)
@@ -34,6 +37,22 @@ CTask *__fastcall GetSimplestActiveTask_CarAnimFix(CTaskManager *_this)
 	return task;
 }
 
+CBaseModelInfo* __cdecl StoreModelNames(char* modelName, int* pIndex)
+{
+	CBaseModelInfo* modelInfo = CModelInfo::GetModelInfo(modelName, pIndex);
+	if (modelInfo) {
+		int index = *pIndex;
+		int len = strnlen_s(modelName, 32);
+		if (len > 0) {
+			strcpy_s(&modelNames[index * 32], 32, modelName);
+		}
+		/*if (index == 1000) {
+			MessageBox(HWND_DESKTOP, &modelNames[index * 32], "CLEO+.cleo", MB_ICONERROR);
+		}*/
+	}
+	return modelInfo;
+}
+
 void ApplyPatches()
 {
 	// Fix sitting in car condition to return correctly if is doing named animation inside car
@@ -45,17 +64,29 @@ void ApplyPatches()
 	patch::RedirectCall(0x6AD9E1, GetSimplestActiveTask_CarAnimFix, true);
 	patch::RedirectCall(0x6AD9F9, GetSimplestActiveTask_CarAnimFix, true);
 
+	// Store model names
+	modelNames = (char*)malloc(maxDffFiles * 32);
+	if (modelNames) {
+		memset(modelNames, 0, maxDffFiles * 32);
+		patch::RedirectCall(0x5B624E, StoreModelNames);
+	}
+	else {
+		MessageBox(HWND_DESKTOP, "Unable to allocate memory for dff names array.", "CLEO+.cleo", MB_ICONERROR);
+	}
+
 	// Fix IS_CHAR_DEAD returning false even if health is 0.0 (wtf? why? this caused my script and Bullet Physics Ragdoll to not work correctly)
 	struct IsCharDeadFix
 	{
 		void operator()(reg_pack& regs)
 		{
 			CPed* ped = (CPed*)(regs.eax);
-			if (ped->m_fHealth <= 0.0f && ped->m_aWeapons[ped->m_nActiveWeaponSlot].m_eWeaponType != eWeaponType::WEAPON_PARACHUTE) {
-				regs.eax = ePedState::PEDSTATE_DEAD;
-			}
-			else {
-				regs.eax = ped->m_nPedState; //original code
+			regs.eax = ePedState::PEDSTATE_DEAD;
+			if (ped) {
+				if (ped->m_fHealth <= 0.0f && ped->m_aWeapons[ped->m_nActiveWeaponSlot].m_eWeaponType != eWeaponType::WEAPON_PARACHUTE) {
+				}
+				else {
+					regs.eax = ped->m_nPedState; //original code
+				}
 			}
 		}
 	}; 

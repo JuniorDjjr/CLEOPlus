@@ -15,7 +15,7 @@ SCRIPT_START
     IF LOAD_DYNAMIC_LIBRARY "CLEO+.cleo" (i)
         IF GET_DYNAMIC_LIBRARY_PROCEDURE "GetCleoPlusVersion" i (j)
             CALL_FUNCTION_RETURN j 0 0 ()(j)
-            IF j < 0x01000600 // 01 00 06 00 = v1.0.6.0
+            IF j < 0x01020000 // 01 20 00 00 = v1.2.0.0
                 PRINT_STRING_NOW "~r~Outdated CLEO+ version. Update it." 5000
                 FREE_DYNAMIC_LIBRARY i
                 TERMINATE_THIS_CUSTOM_SCRIPT
@@ -26,12 +26,12 @@ SCRIPT_START
         PRINT_STRING_NOW "~r~CLEO+ not installed." 5000
         TERMINATE_THIS_CUSTOM_SCRIPT
     ENDIF
-    
+
     GET_PLAYER_CHAR 0 scplayer
 
     WHILE TRUE
         WAIT 0
-
+        
         IF TEST_CHEAT "P1"
             GOSUB Test74
         ENDIF
@@ -64,8 +64,66 @@ SCRIPT_START
         IF TEST_CHEAT "P8"
             GOSUB Test66
         ENDIF
+        IF TEST_CHEAT "P9"
+            GOSUB Test62
+        ENDIF
+        IF TEST_CHEAT "P0"
+            GOSUB Test77
+        ENDIF
 
     ENDWHILE
+
+    Test77:
+    i = 0
+    WHILE NOT IS_KEY_JUST_PRESSED VK_RETURN
+        WAIT 0
+        IF IS_KEY_JUST_PRESSED 107
+            IF IS_KEY_PRESSED VK_LSHIFT
+                i += 100
+            ELSE
+                i += 1
+            ENDIF
+        ENDIF
+        IF IS_KEY_JUST_PRESSED 109
+            IF IS_KEY_PRESSED VK_LSHIFT
+                i -= 100
+            ELSE
+                i -= 1
+            ENDIF
+        ENDIF
+        GET_MODEL_NAME_POINTER i j
+        PRINT_FORMATTED_NOW "model id %i = '%s'" 3000 i $j
+    ENDWHILE
+    RETURN
+
+    Test76:
+    IF LOAD_SPECIAL_MODEL "HikerBackpack1" "HikerBackpack1" (i) // for testing, got files from SAMP, dff and txd need to be on game root folder for this test, note that wrong .txd will freeze the game
+        CREATE_RENDER_OBJECT_TO_CHAR_BONE_FROM_SPECIAL scplayer i 3 (0.13 -0.04 0.0) (0.0 90.0 0.0) k
+        WAIT 1000
+        REMOVE_SPECIAL_MODEL i
+        WAIT 1000 // don't need, just testing the referencing system
+        DELETE_RENDER_OBJECT k
+    ENDIF
+    RETURN
+
+    Test75:
+    IF LOAD_SPECIAL_MODEL "BriquettesBag1" "cj_ss_1" (i) // for testing, got files from SAMP, dff and txd need to be on game root folder for this test, note that wrong .txd will freeze the game
+        // this will create a new object using dff+txd (that is, you can now create map object without using any ID, it will use data from the object used, like rendering flags and col)
+        GET_OFFSET_FROM_CHAR_IN_WORLD_COORDS scplayer 0.0 2.0 0.0 (x y z)
+        REQUEST_MODEL 1000
+        LOAD_ALL_MODELS_NOW
+        CREATE_OBJECT_NO_SAVE 1000 x y z FALSE FALSE (obj)
+        SET_OBJECT_SCALE obj 0.0 // make it invisible but still rendering (it also keeps collider)
+        CREATE_RENDER_OBJECT_TO_OBJECT_FROM_SPECIAL obj i (0.0 0.0 0.0) (0.0 0.0 0.0) k
+        GET_SPECIAL_MODEL_DATA i l m n
+        PRINT_FORMATTED_NOW "clump %x atomic %x txdindex %i" 4000 l m n
+        WAIT 1000 // don't need, just testing the referencing system
+        REMOVE_SPECIAL_MODEL i
+        WAIT 1000 // don't need, just testing the referencing system
+        DELETE_RENDER_OBJECT k
+        DELETE_OBJECT obj // it also automatically deletes any render object associated
+    ENDIF
+    RETURN
 
     Test74:
     WHILE NOT TEST_CHEAT "EXIT"
@@ -203,7 +261,7 @@ SCRIPT_START
 
             IF IS_KEY_PRESSED VK_LCONTROL
             AND IS_KEY_PRESSED VK_KEY_C
-                COPY_STRING "Test 1" i
+                COPY_STRING "Test 1" $i
                 GET_STRING_LENGTH $i (j)
                 j++ // null terminator
                 IF WRITE_CLIPBOARD_DATA_FROM i j
@@ -430,6 +488,8 @@ SCRIPT_START
     SET_SCRIPT_EVENT_CHAR_DAMAGE ON EventCharDamage eventArgVar
     SET_SCRIPT_EVENT_CAR_WEAPON_DAMAGE ON EventCarDamage eventArgVar
     SET_SCRIPT_EVENT_BULLET_IMPACT ON EventBulletImpact i j k l
+    SET_SCRIPT_EVENT_BEFORE_GAME_PROCESS ON EventBeforeGameProcess
+    SET_SCRIPT_EVENT_AFTER_GAME_PROCESS ON EventAfterGameProcess
     timera = 0
     WHILE timera < 1500
         WAIT 0
@@ -448,6 +508,8 @@ SCRIPT_START
     SET_SCRIPT_EVENT_CHAR_DAMAGE OFF EventCharDamage eventArgVar
     SET_SCRIPT_EVENT_CAR_WEAPON_DAMAGE OFF EventCarDamage eventArgVar
     SET_SCRIPT_EVENT_BULLET_IMPACT OFF EventBulletImpact i j k l
+    SET_SCRIPT_EVENT_BEFORE_GAME_PROCESS OFF EventBeforeGameProcess
+    SET_SCRIPT_EVENT_AFTER_GAME_PROCESS OFF EventAfterGameProcess
     PRINT_STRING_NOW "Events removed" 1000
     RETURN
     
@@ -643,13 +705,15 @@ SCRIPT_START
     REPEAT 10 i
         LIST_ADD l i
     ENDREPEAT
+    INSERT_LIST_VALUE_BY_INDEX l 3 999
+    REPLACE_LIST_VALUE_BY_INDEX l 3 888
     // Iterate
     GET_LIST_SIZE l k
     i = 0
     WHILE i < k
         GET_LIST_VALUE_BY_INDEX l i (j)
-        PRINT_FORMATTED_NOW "List value: %i" 200 j
-        WAIT 200
+        PRINT_FORMATTED_NOW "List value: %i" 300 j
+        WAIT 300
         ++i
     ENDWHILE
     // Clear
@@ -659,14 +723,22 @@ SCRIPT_START
     i = 0
     WHILE i < k
         GET_LIST_VALUE_BY_INDEX l i (j)
-        PRINT_FORMATTED_NOW "List value: %i" 200 j
-        WAIT 200
+        PRINT_FORMATTED_NOW "List value: %i" 300 j
+        WAIT 300
         ++i
     ENDWHILE
     // Delete
     DELETE_LIST l
+    GOSUB Test48a
     PRINT_STRING_NOW "List deleted" 1000
     RETURN
+
+    Test48a:
+    GOSUB Test48b
+    RETURN
+
+    Test48b:
+    RETURN_TIMES 99999
 
     Test47:
     WHILE TRUE
@@ -953,7 +1025,7 @@ SCRIPT_START
     RETURN
 
     Test23:
-    k = 1000
+    k = 330 //model
     x = 0.0
     y = 0.0
     z = 0.0
@@ -1766,6 +1838,14 @@ SCRIPT_START
 
     EventCarCreate_StartInternalThread:
     STREAM_CUSTOM_SCRIPT_FROM_LABEL CarInternalThread eventArgVar
+    RETURN_SCRIPT_EVENT
+
+    EventBeforeGameProcess:
+    PRINT_STRING_NOW "BEFORE GAME PROCESS" 1000
+    RETURN_SCRIPT_EVENT
+
+    EventAfterGameProcess:
+    PRINT_STRING_NOW "AFTER GAME PROCESS" 1000
     RETURN_SCRIPT_EVENT
 
     // We need to do it during ped process because during script process doesn't work correctly

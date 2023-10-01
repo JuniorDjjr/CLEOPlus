@@ -62,7 +62,7 @@
     <ClCompile Include="RadarBlip.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="RenderObjectOnChar.cpp">
+    <ClCompile Include="RenderObjectOnEntity.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Screen.cpp">
@@ -81,6 +81,15 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="SpecialModels.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjExtendedData.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Bones.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderObject.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -126,7 +135,7 @@
     <ClInclude Include="RadarBlip.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="RenderObjectOnChar.h">
+    <ClInclude Include="RenderObjectOnEntity.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Screen.h">
@@ -139,6 +148,9 @@
       <Filter>game_sa</Filter>
     </ClInclude>
     <ClInclude Include="SpecialModels.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjExtendedData.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

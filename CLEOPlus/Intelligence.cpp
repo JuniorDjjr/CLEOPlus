@@ -144,7 +144,6 @@ void CacheOnePedTask(CPed *ped, PedExtended &xdata, int &activeTaskIndex, CTask 
 
 // ------------------------------------------------------------------------------------------------
 
-// 0E42=2,is_char_doing_task_id %1d% %2d%
 OpcodeResult WINAPI IS_CHAR_DOING_TASK_ID(CScriptThread* thread)
 {
 	bool bResult = false;
@@ -168,7 +167,6 @@ OpcodeResult WINAPI IS_CHAR_DOING_TASK_ID(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E43=3,get_char_task_pointer_by_id %1d% %2d% store_to %3d%
 OpcodeResult WINAPI GET_CHAR_TASK_POINTER_BY_ID(CScriptThread* thread)
 {
 	bool bResult = false;
@@ -216,7 +214,6 @@ OpcodeResult WINAPI GET_CHAR_TASK_POINTER_BY_ID(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E44=2,get_char_kill_target_char %1d% store_to %2d%
 OpcodeResult WINAPI GET_CHAR_KILL_TARGET_CHAR(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
@@ -235,7 +232,6 @@ OpcodeResult WINAPI GET_CHAR_KILL_TARGET_CHAR(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E46=1,is_char_using_gun %1d%
 OpcodeResult WINAPI IS_CHAR_USING_GUN(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
@@ -244,7 +240,6 @@ OpcodeResult WINAPI IS_CHAR_USING_GUN(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E47=1,is_char_fighting %1d%
 OpcodeResult WINAPI IS_CHAR_FIGHTING(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
@@ -253,7 +248,6 @@ OpcodeResult WINAPI IS_CHAR_FIGHTING(CScriptThread* thread)
 	return OR_CONTINUE;
 }
  
-// 0E48=1,is_char_fallen_on_ground %1d%
 OpcodeResult WINAPI IS_CHAR_FALLEN_ON_GROUND(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
@@ -262,7 +256,6 @@ OpcodeResult WINAPI IS_CHAR_FALLEN_ON_GROUND(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E49=1,is_char_entering_any_car %1d%
 OpcodeResult WINAPI IS_CHAR_ENTERING_ANY_CAR(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
@@ -271,7 +264,6 @@ OpcodeResult WINAPI IS_CHAR_ENTERING_ANY_CAR(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E4A=1,is_char_exiting_any_car %1d%
 OpcodeResult WINAPI IS_CHAR_EXITING_ANY_CAR(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
@@ -280,7 +272,6 @@ OpcodeResult WINAPI IS_CHAR_EXITING_ANY_CAR(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E4B=2,is_char_playing_any_script_animation %1d% include_anims %2d%
 OpcodeResult WINAPI IS_CHAR_PLAYING_ANY_SCRIPT_ANIMATION(CScriptThread* thread)
 {
 	bool bResult = true;
@@ -291,7 +282,6 @@ OpcodeResult WINAPI IS_CHAR_PLAYING_ANY_SCRIPT_ANIMATION(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E4C=2,is_char_doing_any_important_task %1d% include_anims %2d%
 OpcodeResult WINAPI IS_CHAR_DOING_ANY_IMPORTANT_TASK(CScriptThread* thread)
 {
 	bool bResult = true;
@@ -305,7 +295,6 @@ OpcodeResult WINAPI IS_CHAR_DOING_ANY_IMPORTANT_TASK(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-//0E96=1,clear_char_primary_tasks %1d%
 OpcodeResult WINAPI CLEAR_CHAR_PRIMARY_TASKS(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
@@ -313,7 +302,6 @@ OpcodeResult WINAPI CLEAR_CHAR_PRIMARY_TASKS(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E97=1,clear_char_secondary_tasks %1d%
 OpcodeResult WINAPI CLEAR_CHAR_SECONDARY_TASKS(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));
@@ -321,7 +309,6 @@ OpcodeResult WINAPI CLEAR_CHAR_SECONDARY_TASKS(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0EFF=3,get_char_simplest_active_task %1d% id_to %2d% pointer_to %3d%
 OpcodeResult WINAPI GET_CHAR_SIMPLEST_ACTIVE_TASK(CScriptThread* thread)
 {
 	CPed *ped = CPools::GetPed(CLEO_GetIntOpcodeParam(thread));

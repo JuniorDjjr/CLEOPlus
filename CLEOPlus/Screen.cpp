@@ -22,7 +22,6 @@ void FixAspectRatio(float *x, float *y)
 
 /////////////////////////////////////////////////
 
-//0E0E=2,get_current_resolution_to %1d% %2d%
 OpcodeResult WINAPI GET_CURRENT_RESOLUTION(CScriptThread* thread)
 {
 	CLEO_SetIntOpcodeParam(thread, RsGlobal.maximumWidth);
@@ -30,7 +29,6 @@ OpcodeResult WINAPI GET_CURRENT_RESOLUTION(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-//0E0F=4,get_fixed_xy_aspect_ratio %1d% %2d% to %3d% %4d%
 OpcodeResult WINAPI GET_FIXED_XY_ASPECT_RATIO(CScriptThread* thread)
 {
 	float x = CLEO_GetFloatOpcodeParam(thread);
@@ -41,7 +39,6 @@ OpcodeResult WINAPI GET_FIXED_XY_ASPECT_RATIO(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-//0E3F=4,convert_3d_to_screen_2d %1d% %2d% %3d% checkNearClip %4d% checkFarClip %5d% store_2d_to %6d% %7d% size_to %8d% %9d%
 OpcodeResult WINAPI CONVERT_3D_TO_SCREEN_2D(CScriptThread* thread)
 {
 	bool bResult = false;
@@ -70,7 +67,6 @@ OpcodeResult WINAPI CONVERT_3D_TO_SCREEN_2D(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0xEB8=0,is_radar_visible
 OpcodeResult WINAPI IS_RADAR_VISIBLE(CScriptThread* thread)
 {
 	bool bResult = false;
@@ -89,7 +85,6 @@ OpcodeResult WINAPI IS_RADAR_VISIBLE(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0xEB9=0,is_hud_visible
 OpcodeResult WINAPI IS_HUD_VISIBLE(CScriptThread* thread)
 {
 	bool bResult = false;
@@ -106,7 +101,6 @@ OpcodeResult WINAPI IS_HUD_VISIBLE(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0xEC7=1,get_fade_alpha %1d%
 OpcodeResult WINAPI GET_FADE_ALPHA(CScriptThread* thread)
 {
 	float fadeAlpha = TheCamera.m_fFadeAlpha;

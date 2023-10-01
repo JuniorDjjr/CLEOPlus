@@ -1,6 +1,8 @@
 #include "OpcodesCommon.h"
 #include "Events.h"
 #include "CMenuManager.h"
+#include "RenderObject.h"
+#include "ObjExtendedData.h"
 #include "..\injector\assembly.hpp"
 
 vector<ScriptEvent*> scriptEvents[ScriptEvent::TOTAL_SCRIPT_EVENTS];
@@ -90,6 +92,11 @@ void ScriptEvent::RunScriptEvent(DWORD arg1, DWORD arg2, DWORD arg3, DWORD arg4)
 	script->m_nWakeTime = wakeTimeBackup;
 }
 
+void ScriptEvent::RunScriptEvent()
+{
+	ScriptEvent::RunScriptEvent(0, 0, 0, 0);
+}
+
 void ScriptEvent::RunScriptEvent(DWORD arg)
 {
 	ScriptEvent::RunScriptEvent(arg, 0, 0, 0);
@@ -100,7 +107,7 @@ void ScriptDeleteEvent(CScriptThread* script)
 	ScriptEvent::ClearAllForScript(reinterpret_cast<CRunningScript *>(script));
 }
 
-void AddEvent(CScriptThread* thread, vector<ScriptEvent*> &scriptEventList, unsigned int args = 1)
+void AddEvent(CScriptThread* thread, vector<ScriptEvent*> &scriptEventList, unsigned int args)
 {
 	int toggle = CLEO_GetIntOpcodeParam(thread);
 	int label = CLEO_GetIntOpcodeParam(thread);
@@ -157,12 +164,14 @@ void PatchBuildingProcessIfNeeded()
 			}
 			else if (entity->m_nType == eEntityType::ENTITY_TYPE_OBJECT)
 			{
+				CObject* object = reinterpret_cast<CObject*>(entity);
 				if (scriptEvents[ScriptEvent::List::ObjectProcess].size() > 0)
 				{
-					CObject* object = reinterpret_cast<CObject*>(entity);
 					int ref = CPools::GetObjectRef(object);
 					for (auto scriptEvent : scriptEvents[ScriptEvent::List::ObjectProcess]) scriptEvent->RunScriptEvent(ref);
 				}
+				ObjExtended& xdata = objExtData.Get(object);
+
 			}
 			regs.ebx = regs.eax; //mov ebx, eax
 			regs.eax = *(uint8_t*)(regs.edi + 0xD); //mov al, [edi+0Dh]
@@ -178,92 +187,104 @@ OpcodeResult WINAPI RETURN_SCRIPT_EVENT(CScriptThread* thread)
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_SAVE_CONFIRMATION(CScriptThread* thread)
 {
-	AddEvent(thread, scriptEvents[ScriptEvent::List::SaveConfirmation]);
+	AddEvent(thread, scriptEvents[ScriptEvent::List::SaveConfirmation], 1);
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_CHAR_DELETE(CScriptThread* thread)
 {
-	AddEvent(thread, scriptEvents[ScriptEvent::List::CharDelete]);
+	AddEvent(thread, scriptEvents[ScriptEvent::List::CharDelete], 1);
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_CHAR_CREATE(CScriptThread* thread)
 {
-	AddEvent(thread, scriptEvents[ScriptEvent::List::CharCreate]);
+	AddEvent(thread, scriptEvents[ScriptEvent::List::CharCreate], 1);
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_CAR_DELETE(CScriptThread* thread)
 {
-	AddEvent(thread, scriptEvents[ScriptEvent::List::CarDelete]);
+	AddEvent(thread, scriptEvents[ScriptEvent::List::CarDelete], 1);
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_CAR_CREATE(CScriptThread* thread)
 {
-	AddEvent(thread, scriptEvents[ScriptEvent::List::CarCreate]);
+	AddEvent(thread, scriptEvents[ScriptEvent::List::CarCreate], 1);
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_OBJECT_DELETE(CScriptThread* thread)
 {
-	AddEvent(thread, scriptEvents[ScriptEvent::List::ObjectDelete]);
+	AddEvent(thread, scriptEvents[ScriptEvent::List::ObjectDelete], 1);
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_OBJECT_CREATE(CScriptThread* thread)
 {
-	AddEvent(thread, scriptEvents[ScriptEvent::List::ObjectCreate]);
+	AddEvent(thread, scriptEvents[ScriptEvent::List::ObjectCreate], 1);
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_ON_MENU(CScriptThread* thread)
 {
-	AddEvent(thread, scriptEvents[ScriptEvent::List::OnMenu]);
+	AddEvent(thread, scriptEvents[ScriptEvent::List::OnMenu], 1);
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_CHAR_PROCESS(CScriptThread* thread)
 {
-	AddEvent(thread, scriptEvents[ScriptEvent::List::CharProcess]);
+	AddEvent(thread, scriptEvents[ScriptEvent::List::CharProcess], 1);
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_CAR_PROCESS(CScriptThread* thread)
 {
-	AddEvent(thread, scriptEvents[ScriptEvent::List::CarProcess]);
+	AddEvent(thread, scriptEvents[ScriptEvent::List::CarProcess], 1);
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_OBJECT_PROCESS(CScriptThread* thread)
 {
-	AddEvent(thread, scriptEvents[ScriptEvent::List::ObjectProcess]);
+	AddEvent(thread, scriptEvents[ScriptEvent::List::ObjectProcess], 1);
 	PatchBuildingProcessIfNeeded();
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_BUILDING_PROCESS(CScriptThread* thread)
 {
-	AddEvent(thread, scriptEvents[ScriptEvent::List::BuildingProcess]);
+	AddEvent(thread, scriptEvents[ScriptEvent::List::BuildingProcess], 1);
 	PatchBuildingProcessIfNeeded();
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_CHAR_DAMAGE(CScriptThread* thread)
 {
-	AddEvent(thread, scriptEvents[ScriptEvent::List::CharDamage]);
+	AddEvent(thread, scriptEvents[ScriptEvent::List::CharDamage], 1);
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_CAR_WEAPON_DAMAGE(CScriptThread* thread)
 {
-	AddEvent(thread, scriptEvents[ScriptEvent::List::CarWeaponDamage]);
+	AddEvent(thread, scriptEvents[ScriptEvent::List::CarWeaponDamage], 1);
 	return OR_CONTINUE;
 }
 
 OpcodeResult WINAPI SET_SCRIPT_EVENT_BULLET_IMPACT(CScriptThread* thread)
 {
 	AddEvent(thread, scriptEvents[ScriptEvent::List::BulletImpact], 4);
+	return OR_CONTINUE;
+}
+
+OpcodeResult WINAPI SET_SCRIPT_EVENT_BEFORE_GAME_PROCESS(CScriptThread* thread)
+{
+	AddEvent(thread, scriptEvents[ScriptEvent::List::BeforeGameProcess], 0);
+	return OR_CONTINUE;
+}
+
+OpcodeResult WINAPI SET_SCRIPT_EVENT_AFTER_GAME_PROCESS(CScriptThread* thread)
+{
+	AddEvent(thread, scriptEvents[ScriptEvent::List::AfterGameProcess], 0);
 	return OR_CONTINUE;
 }

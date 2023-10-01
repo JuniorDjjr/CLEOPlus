@@ -206,8 +206,6 @@ void DrawMySprites(vector<MySprite*> &spritesList)
 }
 
 
-//DRAW_TEXTURE_PLUS 0 0 100.0 100.0 50.0 50.0 90.0 TRUE 0 0 255 255 255 255
-// // 0E1E=15,draw_texture_plus %1d% event %2d% pos %3d% %4d% size %5d% %6d% angle %7d% depth %8d% fix_aspect_ratio %9d% maskTrisCount %10d% maskTrisArray %11d% rgba %12d% %13d% %14d% %15d% 
 OpcodeResult WINAPI DRAW_TEXTURE_PLUS(CScriptThread* thread)
 {
 	RwTexture *texture = (RwTexture*)CLEO_GetIntOpcodeParam(thread);
@@ -282,7 +280,6 @@ OpcodeResult WINAPI DRAW_TEXTURE_PLUS(CScriptThread* thread)
 #pragma warning( push )
 #pragma warning( disable : 4244 ) // possible loss of data
 
-// 0E62=8,print %1s% event %2d% at %3d% %4d% scale %5d% %6d% fixAR %7d% style %8d%
 OpcodeResult WINAPI DRAW_STRING(CScriptThread* thread)
 {
 	tFontPrint *fontPrint = new tFontPrint();
@@ -319,8 +316,6 @@ OpcodeResult WINAPI DRAW_STRING(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E63=27,print %1s% event %2d% at %3d% %4d% scale %5d% %6d% fixAR %7d% style %8d% prop %9d% align %10d% wrap %11d% justify %12d% color %13d% %14d% %15d% %16d% outline %17d% shadow %18d%
-// dropColor %19d% %20d% %21d% %22d% background %23d% backColor %24d% %25d% %26d% %27d%
 OpcodeResult WINAPI DRAW_STRING_EXT(CScriptThread* thread)
 {
 	tFontPrint *fontPrint = new tFontPrint();

@@ -262,6 +262,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="Bones.cpp" />
     <ClCompile Include="CLEOPlus.cpp" />
     <ClCompile Include="Colpoint.cpp" />
     <ClCompile Include="Coop.cpp" />
@@ -276,12 +277,14 @@
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="NoSave.cpp" />
+    <ClCompile Include="ObjExtendedData.cpp" />
     <ClCompile Include="Patches.cpp" />
     <ClCompile Include="PedExtendedData.cpp" />
     <ClCompile Include="PerlinNoise\SimplexNoise.cpp" />
     <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="RadarBlip.cpp" />
-    <ClCompile Include="RenderObjectOnChar.cpp" />
+    <ClCompile Include="RenderObject.cpp" />
+    <ClCompile Include="RenderObjectOnEntity.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScriptEntities.cpp" />
     <ClCompile Include="SpecialModels.cpp" />
@@ -295,12 +298,13 @@
     <ClInclude Include="Drawing.h" />
     <ClInclude Include="Events.h" />
     <ClInclude Include="game_sa\CarGeneratorsEx.h" />
+    <ClInclude Include="ObjExtendedData.h" />
     <ClInclude Include="OpcodesCommon.h" />
     <ClInclude Include="Patches.h" />
     <ClInclude Include="PedExtendedData.h" />
     <ClInclude Include="PerlinNoise\SimplexNoise.h" />
     <ClInclude Include="RadarBlip.h" />
-    <ClInclude Include="RenderObjectOnChar.h" />
+    <ClInclude Include="RenderObjectOnEntity.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="SpecialModels.h" />
     <ClInclude Include="TextDrawer\TextDrawer.h" />

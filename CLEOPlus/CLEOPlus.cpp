@@ -2,10 +2,12 @@
 #include "..\injector\assembly.hpp"
 #include "Patches.h"
 #include "RadarBlip.h"
+#include "RenderObject.h"
 #include "CModelInfo.h"
-#include "RenderObjectOnChar.h"
+#include "RenderObjectOnEntity.h"
 #include "PedExtendedData.h"
 #include "VehExtendedData.h"
+#include "ObjExtendedData.h"
 #include "CPickups.h"
 #include "Drawing.h"
 #include "CMenuManager.h"
@@ -18,7 +20,7 @@
 #include "rw/rpworld.h"
 #include <set>
  
-constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01010500;
+constexpr uint32_t CLEOPLUS_VERSION_INT = 0x01020000;
 
 using namespace plugin;
 using namespace std;
@@ -61,6 +63,7 @@ CSprite2d *radarBlipSprites;
 bool keysPressedLastFrame[0xFF] = { false };
 bool buttonsPressedLastFrame[2][20] = { false };
 float fZero = 0.0f;
+uint32_t maxDffFiles;
 uintptr_t defaultMouseAccelHorizontalAddress;
 uintptr_t defaultMouseAccelVerticalAddress;
 uintptr_t defaultCameraMove00125;
@@ -85,6 +88,8 @@ typedef CVector*(__cdecl *VehFuncs_Ext_GetVehicleDummyPosAdapted)(CVehicle * veh
 VehFuncs_Ext_GetVehicleDummyPosAdapted vehFuncs_Ext_GetVehicleDummyPosAdapted;
 tScriptEffectSystem *ScriptEffectSystemArray;
 
+char* modelNames;
+
 CdeclEvent <AddressList<0x5D19CE, H_CALL>, PRIORITY_AFTER, ArgPickNone, void()> loadingEvent;
 CdeclEvent <AddressList<0x5D1907, H_CALL>, PRIORITY_BEFORE, ArgPickNone, void()> loadingEventAfterPoolsLoaded;
 CdeclEvent <AddressList<0x53C6DB, H_CALL>, PRIORITY_BEFORE, ArgPickNone, void()> restartEvent;
@@ -100,6 +105,7 @@ ThiscallEvent <AddressList<0x53E98B, H_CALL>, PRIORITY_BEFORE, ArgPickNone, void
 CdeclEvent <AddressList<0x53E298, H_CALL>, PRIORITY_AFTER, ArgPickNone, void()> beforeHud;
 ThiscallEvent <AddressList<0x53E52B, H_JUMP>, PRIORITY_AFTER, ArgPickNone, void(void*)> afterHud;
 ThiscallEvent <AddressList<0x5E8A29, H_JUMP>, PRIORITY_BEFORE, ArgPickN<CPed*, 0>, void(CPed*)> pedPreRender;
+ThiscallEvent <AddressList<0x5343B2, H_CALL>, PRIORITY_BEFORE, ArgPickN<CEntity*, 0>, void(CEntity*)> entityRenderEffects;
 void CacheOnePedTask(CPed *ped, PedExtended &xdata, int &activeTaskIndex, CTask *task, bool isSecondary);
 void ClearScriptLists();
 
@@ -165,6 +171,7 @@ OpcodeResult WINAPI SET_PLAYER_CONTROL_PAD(CScriptThread* thread);
 OpcodeResult WINAPI SET_PLAYER_CONTROL_PAD_MOVEMENT(CScriptThread* thread);
 OpcodeResult WINAPI IS_ANY_FIRE_BUTTON_PRESSED(CScriptThread* thread);
 OpcodeResult WINAPI IS_SELECT_MENU_JUST_PRESSED(CScriptThread* thread);
+OpcodeResult WINAPI GET_TIME_NOT_TOUCHING_PAD(CScriptThread* thread);
 
 //Events
 OpcodeResult WINAPI RETURN_SCRIPT_EVENT(CScriptThread* thread);
@@ -183,6 +190,8 @@ OpcodeResult WINAPI SET_SCRIPT_EVENT_BUILDING_PROCESS(CScriptThread* thread);
 OpcodeResult WINAPI SET_SCRIPT_EVENT_CHAR_DAMAGE(CScriptThread* thread);
 OpcodeResult WINAPI SET_SCRIPT_EVENT_CAR_WEAPON_DAMAGE(CScriptThread* thread);
 OpcodeResult WINAPI SET_SCRIPT_EVENT_BULLET_IMPACT(CScriptThread* thread);
+OpcodeResult WINAPI SET_SCRIPT_EVENT_BEFORE_GAME_PROCESS(CScriptThread* thread);
+OpcodeResult WINAPI SET_SCRIPT_EVENT_AFTER_GAME_PROCESS(CScriptThread* thread);
 
 //Types
 OpcodeResult WINAPI GET_VEHICLE_SUBCLASS(CScriptThread* thread);
@@ -331,6 +340,16 @@ OpcodeResult WINAPI IS_CAR_CONVERTIBLE(CScriptThread* thread);
 OpcodeResult WINAPI GET_CAR_VALUE(CScriptThread* thread);
 OpcodeResult WINAPI GET_CAR_PEDALS(CScriptThread* thread);
 OpcodeResult WINAPI GET_LOADED_LIBRARY(CScriptThread* thread);
+OpcodeResult WINAPI RETURN_TIMES(CScriptThread* thread);
+OpcodeResult WINAPI GET_THIRD_PERSON_CAMERA_TARGET(CScriptThread* thread);
+OpcodeResult WINAPI GET_DISTANCE_MULTIPLIER(CScriptThread* thread);
+OpcodeResult WINAPI GET_ACTIVE_CAMERA_ROTATION(CScriptThread* thread);
+OpcodeResult WINAPI GET_CLOSEST_WATER_DISTANCE(CScriptThread* thread);
+OpcodeResult WINAPI GET_CAMERA_STRUCT(CScriptThread* thread);
+OpcodeResult WINAPI GET_CAMERA_ROTATION_INPUT_VALUES(CScriptThread* thread);
+OpcodeResult WINAPI SET_CAMERA_ROTATION_INPUT_VALUES(CScriptThread* thread);
+OpcodeResult WINAPI SET_ON_MISSION(CScriptThread* thread);
+OpcodeResult WINAPI GET_MODEL_NAME_POINTER(CScriptThread* thread);
 
 //Math
 OpcodeResult WINAPI QUAT_SLERP(CScriptThread* thread);
@@ -356,6 +375,13 @@ OpcodeResult WINAPI GET_MATRIX_X_ANGLE(CScriptThread* thread);
 OpcodeResult WINAPI GET_MATRIX_Y_ANGLE(CScriptThread* thread);
 OpcodeResult WINAPI GET_MATRIX_Z_ANGLE(CScriptThread* thread);
 OpcodeResult WINAPI LERP(CScriptThread* thread);
+OpcodeResult WINAPI SET_MATRIX_LOOK_DIRECTION(CScriptThread* thread);
+
+//Bones
+OpcodeResult WINAPI GET_CHAR_BONE_MATRIX(CScriptThread* thread);
+OpcodeResult WINAPI GET_CHAR_BONE(CScriptThread* thread);
+OpcodeResult WINAPI GET_BONE_OFFSET_VECTOR(CScriptThread* thread);
+OpcodeResult WINAPI GET_BONE_QUAT(CScriptThread* thread);
 
 //Audio
 OpcodeResult WINAPI GET_AUDIO_SFX_VOLUME(CScriptThread* thread);
@@ -379,6 +405,8 @@ OpcodeResult WINAPI REMOVE_CLEO_BLIP(CScriptThread* thread);
 //Render object
 OpcodeResult WINAPI CREATE_RENDER_OBJECT_TO_CHAR_BONE(CScriptThread* thread);
 OpcodeResult WINAPI CREATE_RENDER_OBJECT_TO_CHAR_BONE_FROM_SPECIAL(CScriptThread* thread);
+OpcodeResult WINAPI CREATE_RENDER_OBJECT_TO_OBJECT(CScriptThread* thread);
+OpcodeResult WINAPI CREATE_RENDER_OBJECT_TO_OBJECT_FROM_SPECIAL(CScriptThread* thread);
 OpcodeResult WINAPI DELETE_RENDER_OBJECT(CScriptThread* thread);
 OpcodeResult WINAPI SET_RENDER_OBJECT_AUTO_HIDE(CScriptThread* thread);
 OpcodeResult WINAPI SET_RENDER_OBJECT_VISIBLE(CScriptThread* thread);
@@ -443,9 +471,15 @@ OpcodeResult WINAPI LIST_ADD_STRING(CScriptThread* thread);
 OpcodeResult WINAPI LIST_REMOVE_STRING_VALUE(CScriptThread* thread);
 OpcodeResult WINAPI LIST_REMOVE_INDEX_RANGE(CScriptThread* thread);
 OpcodeResult WINAPI REVERSE_LIST(CScriptThread* thread);
+OpcodeResult WINAPI REPLACE_LIST_VALUE_BY_INDEX(CScriptThread* thread);
+OpcodeResult WINAPI REPLACE_LIST_STRING_VALUE_BY_INDEX(CScriptThread* thread);
+OpcodeResult WINAPI INSERT_LIST_VALUE_BY_INDEX(CScriptThread* thread);
+OpcodeResult WINAPI INSERT_LIST_STRING_VALUE_BY_INDEX(CScriptThread* thread);
 
 // Special models
 OpcodeResult WINAPI LOAD_SPECIAL_MODEL(CScriptThread* thread);
+OpcodeResult WINAPI REMOVE_SPECIAL_MODEL(CScriptThread* thread);
+OpcodeResult WINAPI GET_SPECIAL_MODEL_DATA(CScriptThread* thread);
 
 
 
@@ -515,7 +549,7 @@ public:
 
 			//Coop
 			if (!coopOpcodesInstalled) {
-				CLEO_RegisterOpcode(0xEA0, SET_CHAR_SECOND_PLAYER); // 0xEA0=3,set_actor_second_player %1d% enable_camera %2d% separate_cars %3d%
+				CLEO_RegisterOpcode(0xEA0, SET_CHAR_SECOND_PLAYER); // 0xEA0=3,set_char_second_player %1d% enable_camera %2d% separate_cars %3d%
 				CLEO_RegisterOpcode(0xEA1, DISABLE_SECOND_PLAYER); // 0xEA1=1,disable_second_player_restore_camera %1d%
 				CLEO_RegisterOpcode(0xEA2, FIX_TWO_PLAYERS_SEPARATED_CARS); // 0xEA2=1,fix_two_players_separated_cars %1d%
 			}
@@ -528,7 +562,7 @@ public:
 
 			//NoSave
 			CLEO_RegisterOpcode(0xE01, CREATE_OBJECT_NO_SAVE); // 0xE01=7,create_object_no_save %1o% at %2d% %3d% %4d% offset %5d% ground %6d% to %7d%
-			CLEO_RegisterOpcode(0xE02, SET_CAR_GENERATOR_NO_SAVE); // 0xE02=1,set_car_generator %1d% no_save
+			CLEO_RegisterOpcode(0xE02, SET_CAR_GENERATOR_NO_SAVE); // 0xE02=1,set_car_generator_no_save %1d%
 
 			//Environment
 			if (!newOpcodesInstalled) CLEO_RegisterOpcode(0xD59, GET_CURRENT_WEATHER); // 0xD59=1,get_current_weather_to %1d%
@@ -564,30 +598,33 @@ public:
 			CLEO_RegisterOpcode(0xE23, GET_MOUSE_SENSIBILITY); // 0xE23=1,get_mouse_sensibility_to %1d%
 			CLEO_RegisterOpcode(0xE3D, IS_KEY_JUST_PRESSED); // 0xE3D=1,is_key_just_pressed %1d%
 			CLEO_RegisterOpcode(0xE3E, IS_BUTTON_JUST_PRESSED); // 0xE3E=2,is_button_just_pressed %1d% button %2d%
-			CLEO_RegisterOpcode(0xE60, SET_CAMERA_CONTROL); // 0xE60=2,set_camera_control %1d% %2d% 
+			CLEO_RegisterOpcode(0xE60, SET_CAMERA_CONTROL); // 0xE60=1,set_camera_control %1d%
 			CLEO_RegisterOpcode(0xE67, IS_AIM_BUTTON_PRESSED); // 0xE67=1,is_aim_button_pressed %1d%
 			CLEO_RegisterOpcode(0xE68, SET_PLAYER_CONTROL_PAD); // 0xE68=2,set_player_control_pad %1d% %2d% 
 			CLEO_RegisterOpcode(0xE69, SET_PLAYER_CONTROL_PAD_MOVEMENT); // 0xE69=2,set_player_control_pad_movement %1d% %2d% 
 			CLEO_RegisterOpcode(0xE8D, IS_ANY_FIRE_BUTTON_PRESSED); // 0xE8D=1,is_any_fire_button_pressed %1d%
 			CLEO_RegisterOpcode(0xE6E, IS_SELECT_MENU_JUST_PRESSED); // 0xE6E=0,is_select_menu_just_pressed
+			CLEO_RegisterOpcode(0xF13, GET_TIME_NOT_TOUCHING_PAD); // 0xF13=2,get_time_not_touching_pad %1d% store_to %2d%
 
 			//Events
 			CLEO_RegisterOpcode(0xED0, RETURN_SCRIPT_EVENT); // 0xED0=0,return_script_event
-			CLEO_RegisterOpcode(0xED1, SET_SCRIPT_EVENT_SAVE_CONFIRMATION); // 0xED1=3,set_script_event_save_confirmation %1d% label %2p% args %3d%
-			CLEO_RegisterOpcode(0xED2, SET_SCRIPT_EVENT_CHAR_DELETE); // 0xED2=3,set_script_event_char_delete %1d% label %2p% args %3d%
-			CLEO_RegisterOpcode(0xED3, SET_SCRIPT_EVENT_CHAR_CREATE); // 0xED3=3,set_script_event_char_create %1d% label %2p% args %3d%
-			CLEO_RegisterOpcode(0xED4, SET_SCRIPT_EVENT_CAR_DELETE); // 0xED4=3,set_script_event_car_delete %1d% label %2p% args %3d%
-			CLEO_RegisterOpcode(0xED5, SET_SCRIPT_EVENT_CAR_CREATE); // 0xED5=3,set_script_event_car_create %1d% label %2p% args %3d%
-			CLEO_RegisterOpcode(0xED6, SET_SCRIPT_EVENT_OBJECT_DELETE); // 0xED6=3,set_script_event_object_delete %1d% label %2p% args %3d%
-			CLEO_RegisterOpcode(0xED7, SET_SCRIPT_EVENT_OBJECT_CREATE); // 0xED7=3,set_script_event_object_create %1d% label %2p% args %3d%
-			CLEO_RegisterOpcode(0xED8, SET_SCRIPT_EVENT_ON_MENU); // 0xED8=3,set_script_event_on_menu %1d% label %2p% args %3d%
-			CLEO_RegisterOpcode(0xEDA, SET_SCRIPT_EVENT_CHAR_PROCESS); // 0xEDA=3,set_script_event_char_process %1d% label %2p% args %3d%
-			CLEO_RegisterOpcode(0xEDB, SET_SCRIPT_EVENT_CAR_PROCESS); // 0xEDB=3,set_script_event_car_process %1d% label %2p% args %3d%
-			CLEO_RegisterOpcode(0xEDC, SET_SCRIPT_EVENT_OBJECT_PROCESS); // 0xEDC=3,set_script_event_object_process %1d% label %2p% args %3d%
-			CLEO_RegisterOpcode(0xEDD, SET_SCRIPT_EVENT_BUILDING_PROCESS); // 0xEDD=3,set_script_event_building_process %1d% label %2p% args %3d%
-			CLEO_RegisterOpcode(0xEDE, SET_SCRIPT_EVENT_CHAR_DAMAGE); // 0xEDE=3,set_script_event_char_damage %1d% label %2p% args %3d%
-			CLEO_RegisterOpcode(0xEDF, SET_SCRIPT_EVENT_CAR_WEAPON_DAMAGE); // 0xEDF=3,set_script_event_car_weapon_damage %1d% label %2p% args %3d%
-			CLEO_RegisterOpcode(0xEE0, SET_SCRIPT_EVENT_BULLET_IMPACT); // 0xEE0=6,set_script_event_bullet_impact %1d% label %2p% args %3d% %4d% %5d% %6d%
+			CLEO_RegisterOpcode(0xED1, SET_SCRIPT_EVENT_SAVE_CONFIRMATION); // 0xED1=3,set_script_event_save_confirmation %1d% label %2p% var_slot %3d%
+			CLEO_RegisterOpcode(0xED2, SET_SCRIPT_EVENT_CHAR_DELETE); // 0xED2=3,set_script_event_char_delete %1d% label %2p% var_char %3d%
+			CLEO_RegisterOpcode(0xED3, SET_SCRIPT_EVENT_CHAR_CREATE); // 0xED3=3,set_script_event_char_create %1d% label %2p% var_char %3d%
+			CLEO_RegisterOpcode(0xED4, SET_SCRIPT_EVENT_CAR_DELETE); // 0xED4=3,set_script_event_car_delete %1d% label %2p% var_car %3d%
+			CLEO_RegisterOpcode(0xED5, SET_SCRIPT_EVENT_CAR_CREATE); // 0xED5=3,set_script_event_car_create %1d% label %2p% var_car %3d%
+			CLEO_RegisterOpcode(0xED6, SET_SCRIPT_EVENT_OBJECT_DELETE); // 0xED6=3,set_script_event_object_delete %1d% label %2p% var_object %3d%
+			CLEO_RegisterOpcode(0xED7, SET_SCRIPT_EVENT_OBJECT_CREATE); // 0xED7=3,set_script_event_object_create %1d% label %2p% var_object %3d%
+			CLEO_RegisterOpcode(0xED8, SET_SCRIPT_EVENT_ON_MENU); // 0xED8=3,set_script_event_on_menu %1d% label %2p% var_just_paused %3d%
+			CLEO_RegisterOpcode(0xEDA, SET_SCRIPT_EVENT_CHAR_PROCESS); // 0xEDA=3,set_script_event_char_process %1d% label %2p% var_char %3d%
+			CLEO_RegisterOpcode(0xEDB, SET_SCRIPT_EVENT_CAR_PROCESS); // 0xEDB=3,set_script_event_car_process %1d% label %2p% var_car %3d%
+			CLEO_RegisterOpcode(0xEDC, SET_SCRIPT_EVENT_OBJECT_PROCESS); // 0xEDC=3,set_script_event_object_process %1d% label %2p% var_object %3d%
+			CLEO_RegisterOpcode(0xEDD, SET_SCRIPT_EVENT_BUILDING_PROCESS); // 0xEDD=3,set_script_event_building_process %1d% label %2p% var_building %3d%
+			CLEO_RegisterOpcode(0xEDE, SET_SCRIPT_EVENT_CHAR_DAMAGE); // 0xEDE=3,set_script_event_char_damage %1d% label %2p% var_char %3d%
+			CLEO_RegisterOpcode(0xEDF, SET_SCRIPT_EVENT_CAR_WEAPON_DAMAGE); // 0xEDF=3,set_script_event_car_weapon_damage %1d% label %2p% var_car %3d%
+			CLEO_RegisterOpcode(0xEE0, SET_SCRIPT_EVENT_BULLET_IMPACT); // 0xEE0=6,set_script_event_bullet_impact %1d% label %2p% var_owner %3d% var_victim %4d% var_weapon %5d% var_colpoint %6d%
+			CLEO_RegisterOpcode(0xF0B, SET_SCRIPT_EVENT_BEFORE_GAME_PROCESS); // 0xF0B=2,set_script_event_before_game_process %1d% label %2p%
+			CLEO_RegisterOpcode(0xF0C, SET_SCRIPT_EVENT_AFTER_GAME_PROCESS); // 0xF0C=2,set_script_event_after_game_process %1d% label %2p%
 
 			//Types
 			CLEO_RegisterOpcode(0xE12, GET_VEHICLE_SUBCLASS); // 0xE12=2,get_vehicle %1d% subclass_to %2d%
@@ -664,9 +701,9 @@ public:
 			CLEO_RegisterOpcode(0xE99, LOAD_ALL_PRIORITY_MODELS_NOW); // 0xE99=0,load_all_priority_models_now
 			CLEO_RegisterOpcode(0xE9A, LOAD_SPECIAL_CHARACTER_FOR_ID); // 0xE9A=2,load_special_character_for_id %1d% name %2d%
 			CLEO_RegisterOpcode(0xE9B, UNLOAD_SPECIAL_CHARACTER_FROM_ID); // 0xE9B=1,unload_special_character_from_id %1d%
-			CLEO_RegisterOpcode(0xE9C, GET_MODEL_BY_NAME); //  0E9C=1,get_model_by_name %1d% store_id %2d%
-			CLEO_RegisterOpcode(0xE9D, IS_MODEL_AVAILABLE_BY_NAME); // 0xE9D=1,get_model_available_by_name %1d%
-			CLEO_RegisterOpcode(0xE9E, GET_MODEL_DOESNT_EXIST_IN_RANGE); // 0xE9E=3,get_model_available_by_name %1d% to %2d% store_to %3d%
+			CLEO_RegisterOpcode(0xE9C, GET_MODEL_BY_NAME); // 0xE9C=2,get_model_by_name %1d% store_id %2d%
+			CLEO_RegisterOpcode(0xE9D, IS_MODEL_AVAILABLE_BY_NAME); // 0xE9D=1,is_model_available_by_name %1d%
+			CLEO_RegisterOpcode(0xE9E, GET_MODEL_DOESNT_EXIST_IN_RANGE); // 0xE9E=3,get_model_doesnt_exist_in_range %1d% to %2d% store_to %3d%
 			CLEO_RegisterOpcode(0xE9F, REMOVE_ALL_UNUSED_MODELS); // 0xE9F=0,remove_all_unused_models
 			CLEO_RegisterOpcode(0xEA3, REMOVE_MODEL_IF_UNUSED); // 0xEA3=1,remove_model_if_unused %1d%
 			CLEO_RegisterOpcode(0xEA4, IS_CHAR_ON_FIRE); // 0xEA4=1,is_char_on_fire %1d%
@@ -700,7 +737,7 @@ public:
 			CLEO_RegisterOpcode(0xEC3, SET_STRING_LOWER); // 0xEC3=1,set_string_lower %1s%
 			CLEO_RegisterOpcode(0xEC4, STRING_FIND); // 0xEC4=4,string_find %1d% %2s% %3s% store_to %4d%
 			CLEO_RegisterOpcode(0xEC5, CUT_STRING_AT); // 0xEC5=2,cut_string_at %1d% %2d%
-			CLEO_RegisterOpcode(0xEC6, IS_STRING_CHARACTER_AT); // 0xEC6=3,is_string_character_at %1d% character %2d% index %2d%
+			CLEO_RegisterOpcode(0xEC6, IS_STRING_CHARACTER_AT); // 0xEC6=3,is_string_character_at %1s% character %2s% index %3d%
 			CLEO_RegisterOpcode(0xEC8, GET_CHAR_RANDOM_SEED); // 0xEC8=2,get_char_random_seed %1d% store_to %2d%
 			CLEO_RegisterOpcode(0xEC9, GET_CAR_RANDOM_SEED); // 0xEC9=2,get_car_random_seed %1d% store_to %2d%
 			CLEO_RegisterOpcode(0xECA, GET_OBJECT_RANDOM_SEED); // 0xECA=2,get_object_random_seed %1d% store_to %2d%
@@ -719,7 +756,7 @@ public:
 			CLEO_RegisterOpcode(0xEEA, LOCATE_CHAR_DISTANCE_TO_COORDINATES); // 0xEEA=5,locate_char_distance_to_coordinates %1d% pos %2d% %3d% %4d% radius %5d%
 			CLEO_RegisterOpcode(0xEEB, LOCATE_CAR_DISTANCE_TO_COORDINATES); // 0xEEB=5,locate_car_distance_to_coordinates %1d% pos %2d% %3d% %4d% radius %5d%
 			CLEO_RegisterOpcode(0xEEC, LOCATE_OBJECT_DISTANCE_TO_COORDINATES); // 0xEEC=5,locate_object_distance_to_coordinates %1d% pos %2d% %3d% %4d% radius %5d%
-			CLEO_RegisterOpcode(0xEED, LOCATE_ENTITY_DISTANCE_TO_ENTITY); // 0xEED=5,locate_object_distance_to_coordinates %1d% pos %2d% %3d% %4d% radius %5d%
+			CLEO_RegisterOpcode(0xEED, LOCATE_ENTITY_DISTANCE_TO_ENTITY); // 0xEED=5,locate_entity_distance_to_entity %1d% %2d% radius %5d%
 			CLEO_RegisterOpcode(0xEEE, GET_ENTITY_COORDINATES); // 0xEEE=4,get_entity_coordinates %1d% store_to %2d% %3d% %4d%
 			CLEO_RegisterOpcode(0xEEF, GET_ENTITY_HEADING); // 0xEEF=2,get_entity_heading %1d% store_to %2d%
 			CLEO_RegisterOpcode(0xEF5, IS_CAR_OWNED_BY_PLAYER); // 0xEF5=1,is_car_owned_by_player %1d%
@@ -731,6 +768,16 @@ public:
 			CLEO_RegisterOpcode(0xEFC, GET_CAR_VALUE); // 0xEFC=2,get_car_value %1d% store_to %2d%
 			CLEO_RegisterOpcode(0xEFD, GET_CAR_PEDALS); // 0xEFD=3,get_car_pedals %1d% gas_to %2d% break_to %3d% 
 			CLEO_RegisterOpcode(0xEFE, GET_LOADED_LIBRARY); // 0xEFE=2,get_loaded_library %1d% store_to %2d%
+			CLEO_RegisterOpcode(0xF0A, RETURN_TIMES); // 0xF0A=1,return_times %1d%
+			CLEO_RegisterOpcode(0xF0E, GET_THIRD_PERSON_CAMERA_TARGET); // 0xF0E=10,get_third_person_camera_target %1d% from %2d% %3d% %4d% start_to %5d% %6d% %7d% end_to %8d% %9d% %10d%
+			CLEO_RegisterOpcode(0xF0F, GET_DISTANCE_MULTIPLIER); // 0xF0F=2,get_distance_multiplier %1d% %2d%
+			CLEO_RegisterOpcode(0xF10, GET_ACTIVE_CAMERA_ROTATION); // 0xF10=3,get_active_camera_rotation %1d% %2d% %3d%
+			CLEO_RegisterOpcode(0xF11, GET_CLOSEST_WATER_DISTANCE); // 0xF11=2,get_closest_water_distance %1d% %2d%
+			CLEO_RegisterOpcode(0xF12, GET_CAMERA_STRUCT); // 0xF12=2,get_camera_struct %1d% %2d%
+			CLEO_RegisterOpcode(0xF14, GET_CAMERA_ROTATION_INPUT_VALUES); // 0xF14=2,get_camera_rotation_input_values %1d% %2d%
+			CLEO_RegisterOpcode(0xF15, SET_CAMERA_ROTATION_INPUT_VALUES); // 0xF15=2,set_camera_rotation_input_values %1d% %2d%
+			CLEO_RegisterOpcode(0xF16, SET_ON_MISSION); // 0xF16=1,set_on_mission %1d%
+			CLEO_RegisterOpcode(0xF17, GET_MODEL_NAME_POINTER); // 0xF17=2,get_model_name_pointer %1d% to %2s%
 			if (!newOpcodesInstalled)
 			{
 				CLEO_RegisterOpcode(0xD0F, SET_CAR_MODEL_ALPHA); // 0xD0F=2,set_car_model_alpha %1d% alpha %2d%
@@ -774,6 +821,15 @@ public:
 			CLEO_RegisterOpcode(0xEF7, CLAMP_INT); // 0xEF7=4,clamp_int %1d% min %2d% max %3d% store_to %4d%
 			CLEO_RegisterOpcode(0xEB3, CONVERT_DIRECTION_TO_QUAT); // 0xEB3=4,convert_direction_to_quat %1d% dir %2d% %3d% %4d%
 			CLEO_RegisterOpcode(0xEF3, LERP); // 0xEF3=4,lerp %1d% %2d% %3d% store_to %4d%
+			CLEO_RegisterOpcode(0xF0D, SET_MATRIX_LOOK_DIRECTION); // 0xF0D=7,set_matrix_look_direction %1d% origin %2d% %3d% %4d% dir %5d% %6d% %7d%
+
+			//Bones
+			if (!newOpcodesInstalled) {
+				CLEO_RegisterOpcode(0xD0B, GET_CHAR_BONE_MATRIX); // 0xD0B=3,get_actor %1d% bone %2d% matrix_to %3d% // IF and SET    
+				CLEO_RegisterOpcode(0xD30, GET_CHAR_BONE); // 0xD30=3,%3d% = actor %1d% bone %2d% // IF and SET  
+				CLEO_RegisterOpcode(0xD31, GET_BONE_OFFSET_VECTOR); // 0xD31=2,%2d% = bone %1d% offset_vector     
+				CLEO_RegisterOpcode(0xD32, GET_BONE_QUAT); // 0xD32=2,%2d% = bone %1d% quat
+			}
 			
 			// Audio
 			CLEO_RegisterOpcode(0xE21, GET_AUDIO_SFX_VOLUME); // 0xE21=1,get_audio_sfx_volume %1d%
@@ -784,7 +840,7 @@ public:
 			CLEO_RegisterOpcode(0xE28, WRITE_STRUCT_OFFSET); // 0xE28=4,write_struct %1d% offset %2d% size %3d% value %4d%
 			if (!newOpcodesInstalled) {
 				CLEO_RegisterOpcode(0xD4E, READ_STRUCT_OFFSET); // 0xD4E=4,%4d% = read_struct %1d% offset %2d% size %3d% // keep newOpcodes ordering for SB
-				CLEO_RegisterOpcode(0xD4F, WRITE_STRUCT_OFFSET); // // newOpcodes version of 0E28, the original one doesn't work, this is a fall off
+				CLEO_RegisterOpcode(0xD4F, WRITE_STRUCT_OFFSET); // // newOpcodes version of 0E28, the original one doesn't work, this is a fall off to 0E28
 				CLEO_RegisterOpcode(0xD27, COPY_MEMORY); // 0xD27=3,copy_memory %1d% to %2d% size %3d%
 				CLEO_RegisterOpcode(0xD37, WRITE_STRUCT_PARAM); // 0xD37=3,write_struct_param %1d% param %2d% value %3d%
 				CLEO_RegisterOpcode(0xD38, READ_STRUCT_PARAM); // 0xD38=3,%3d% = read_struct_param %1d% param %2d% // keep newOpcodes ordering for SB
@@ -799,7 +855,9 @@ public:
 
 			// Render object
 			CLEO_RegisterOpcode(0xE2E, CREATE_RENDER_OBJECT_TO_CHAR_BONE); // 0xE2E=10,create_render_object_to_char_bone %1d% model %2d% bone %3d% offset %4d% %5d% %6d% rotation %7d% %8d% %9d% store_to %10d%
-			//CLEO_RegisterOpcode(0xF02, CREATE_RENDER_OBJECT_TO_CHAR_BONE_FROM_SPECIAL); // 0F02=10,create_render_object_to_char_bone_from_special %1d% special_model %2d% bone %3d% offset %4d% %5d% %6d% rotation %7d% %8d% %9d% scale %10d% %11d% %12d% store_to %13d%
+			CLEO_RegisterOpcode(0xF02, CREATE_RENDER_OBJECT_TO_CHAR_BONE_FROM_SPECIAL); // 0xF02=10,create_render_object_to_char_bone_from_special %1d% special_model %2d% bone %3d% offset %4d% %5d% %6d% rotation %7d% %8d% %9d% scale %10d% %11d% %12d% store_to %13d%
+			CLEO_RegisterOpcode(0xF03, CREATE_RENDER_OBJECT_TO_OBJECT); // 0xF03=9,create_render_object_to_object %1d% model %2d% offset %3d% %4d% %5d% rotation %6d% %7d% %8d% store_to %9d%
+			CLEO_RegisterOpcode(0xF04, CREATE_RENDER_OBJECT_TO_OBJECT_FROM_SPECIAL); // 0xF04=9,create_render_object_to_object_from_special %1d% special_model %2d% offset %3d% %4d% %5d% rotation %6d% %7d% %8d% store_to %9d%
 			CLEO_RegisterOpcode(0xE2F, DELETE_RENDER_OBJECT); // 0xE2F=1,delete_render_object %1d%
 			CLEO_RegisterOpcode(0xE30, SET_RENDER_OBJECT_AUTO_HIDE); // 0xE30=4,set_render_object_auto_hide %1d% dead %2d% weapon %3d% car %4d%
 			CLEO_RegisterOpcode(0xE31, SET_RENDER_OBJECT_VISIBLE); // 0xE31=2,set_render_object_visible %1d% %2d%
@@ -850,7 +908,7 @@ public:
 				CLEO_RegisterOpcode(0xD3C, GET_COLPOINT_SURFACE); // 0xD3C=2,get_colpoint_surface %1d% store_to %2d%
 				CLEO_RegisterOpcode(0xD3E, GET_COLPOINT_DEPTH); // 0xD3E=2,get_colpoint_depth %1d% store_to %2d%
 			}
-			CLEO_RegisterOpcode(0xE6B, GET_COLPOINT_LIGHTING); // 0xE6B=2,get_colpoint_lighting %1d% from_night %2d% store_to %3d%
+			CLEO_RegisterOpcode(0xE6B, GET_COLPOINT_LIGHTING); // 0xE6B=3,get_colpoint_lighting %1d% from_night %2d% store_to %3d%
 			CLEO_RegisterOpcode(0xEE1, GET_COLPOINT_COORDINATES); // 0xEE1=4,get_colpoint_coordinates %1d% store_to %2d% %3d% %4d%
 
 			// List
@@ -867,12 +925,23 @@ public:
 			CLEO_RegisterOpcode(0xE7C, LIST_REMOVE_STRING_VALUE); // 0xE7C=2,list_remove_string_value %1d% value %2d%
 			CLEO_RegisterOpcode(0xE7D, LIST_REMOVE_INDEX_RANGE); // 0xE7D=3,list_remove_index %1d% start %2d% end %3d%
 			CLEO_RegisterOpcode(0xE7E, REVERSE_LIST); // 0xE7E=1,reverse_list %1d%
+			CLEO_RegisterOpcode(0xF06, REPLACE_LIST_VALUE_BY_INDEX); // 0xF06=3,replace_list_value_by_index %1d% index %2d% value %3d%
+			CLEO_RegisterOpcode(0xF07, REPLACE_LIST_STRING_VALUE_BY_INDEX); // 0xF07=3,replace_list_string_value_by_index %1d% index %2d% value %3d%
+			CLEO_RegisterOpcode(0xF08, INSERT_LIST_VALUE_BY_INDEX); // 0xF08=3,insert_list_value_by_index %1d% index %2d% value %3d%
+			CLEO_RegisterOpcode(0xF09, INSERT_LIST_STRING_VALUE_BY_INDEX); // 0xF09=3,insert_list_string_value_by_index %1d% index %2d% value %3d%
 
 			// Special Models
-			//CLEO_RegisterOpcode(0xF00, LOAD_SPECIAL_MODEL); // 
-
+			CLEO_RegisterOpcode(0xF00, LOAD_SPECIAL_MODEL); // 0xF00=3,load_special_model_dff %1s% txd %2s% store_to %3d%
+			CLEO_RegisterOpcode(0xF01, REMOVE_SPECIAL_MODEL); // 0xF01=1,remove_special_model %1d%
+			CLEO_RegisterOpcode(0xF05, GET_SPECIAL_MODEL_DATA); // 0xF05=4,get_special_model_data %1d% clump_to %2d% atomic_to %3d% txd_index_to %4d%
 			 
+
+			//------------------------------------------------------------------------------------
+			
 			// Cache addresses (for better mod compatibility)
+			maxDffFiles = ReadMemory<int>(0x407104 + 2, true);
+			if (maxDffFiles < 10000) maxDffFiles = 20000; //fix if something is wrong
+
 			defaultMouseAccelHorizontalAddress = ReadMemory<uintptr_t>(0x50FB16 + 2, true);
 			defaultMouseAccelVerticalAddress = ReadMemory<uintptr_t>(0x50FB26 + 2, true);
 			defaultCameraMove00125 = ReadMemory<uintptr_t>(0x50FB10 + 2, true);
@@ -915,6 +984,14 @@ public:
 			};
 			beforeGameProcess += []
 			{
+				// clear stuff that failed to be drawn
+				for (unsigned int i = 0; i < DrawEvent::TOTAL_DRAW_EVENT; ++i) {
+					ClearMySprites(sprites[i]);
+					textDrawer[i].ClearAll();
+				}
+				if (scriptEvents[ScriptEvent::List::BeforeGameProcess].size() > 0) {
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::BeforeGameProcess]) scriptEvent->RunScriptEvent();
+				}
 				// Reset ped data per frame
 				auto& pedsPool = CPools::ms_pPedPool;
 				for (int index = 0; index < pedsPool->m_nSize; ++index)
@@ -963,11 +1040,6 @@ public:
 							if (activeTaskIndex < 31) xdata.activeTasks[activeTaskIndex] = -1; // set terminator
 						}
 					}
-				}
-				// clear stuff that failed to be drawn
-				for (unsigned int i = 0; i < DrawEvent::TOTAL_DRAW_EVENT; ++i) {
-					ClearMySprites(sprites[i]);
-					textDrawer[i].ClearAll();
 				}
 			};
 
@@ -1041,6 +1113,10 @@ public:
 					}
 					disabledCamControlLastFrame = false;
 				}
+
+				if (scriptEvents[ScriptEvent::List::AfterGameProcess].size() > 0) {
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::AfterGameProcess]) scriptEvent->RunScriptEvent();
+				}
 			};
 
 			// EntityPreRender
@@ -1053,6 +1129,74 @@ public:
 					int ref = CPools::GetPedRef(ped);
 					for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharProcess]) scriptEvent->RunScriptEvent(ref);
 				}
+			};
+
+			entityRenderEffects += [](CEntity* entity) {
+
+				if (entity->m_nType == eEntityType::ENTITY_TYPE_OBJECT) {
+					CObject* object = reinterpret_cast<CObject*>(entity);
+					ObjExtended& xdata = objExtData.Get(object);
+					if (&xdata != nullptr && xdata.renderObjects.size() > 0)
+					{
+						CMatrixLink* matrix = object->GetMatrix();
+						if (matrix) {
+							for (RenderObject* renderObject : xdata.renderObjects)
+							{
+								if (renderObject->isVisible)
+								{
+									if (renderObject->hideIfDead && object->m_fHealth <= 0.0f) continue;
+
+									RwFrame* frame = renderObject->frame;
+									RpAtomic* atomic = renderObject->atomic;
+									RpClump* clump;
+
+									if (renderObject->specialModel && renderObject->specialModel->clump) {
+										clump = renderObject->specialModel->clump;
+									}
+									else {
+										clump = renderObject->clump;
+									}
+
+									if (clump)
+									{
+										frame = (RwFrame*)clump->object.parent;
+									}
+
+									memcpy(&frame->modelling, matrix, sizeof(frame->modelling));
+									RwV3d pointsIn = { renderObject->offset.x, renderObject->offset.y, renderObject->offset.z };
+									RwV3dTransformPoints(&pointsIn, &pointsIn, 1, (RwMatrix*)matrix);
+									frame->modelling.pos = pointsIn;
+									if (renderObject->rot.x != 0.0f || renderObject->rot.y != 0.0f || renderObject->rot.z != 0.0f)
+									{
+										RwFrameRotate(frame, (RwV3d*)0x008D2E00, renderObject->rot.x, rwCOMBINEPRECONCAT);
+										RwFrameRotate(frame, (RwV3d*)0x008D2E0C, renderObject->rot.y, rwCOMBINEPRECONCAT);
+										RwFrameRotate(frame, (RwV3d*)0x008D2E18, renderObject->rot.z, rwCOMBINEPRECONCAT);
+									}
+									if (renderObject->scale.x != 1.0f || renderObject->scale.y != 1.0f || renderObject->scale.z != 1.0f)
+									{
+										RwV3d sizeVector = { renderObject->scale.x, renderObject->scale.y, renderObject->scale.z };
+										RwFrameScale(frame, &sizeVector, RwOpCombineType::rwCOMBINEPRECONCAT);
+									}
+									if (renderObject->dist.x != 0.0f) frame->modelling.at.x = renderObject->dist.x;
+									if (renderObject->dist.y != 0.0f) frame->modelling.at.z = renderObject->dist.y;
+									if (renderObject->dist.z != 0.0f) frame->modelling.pos.x = renderObject->dist.z; //bug?
+									if (renderObject->dist.w != 0.0f) frame->modelling.pos.y = renderObject->dist.w; //bug?
+									RwFrameUpdateObjects(frame);
+
+									if (clump)
+									{
+										RpClumpRender(clump);
+									}
+									else
+									{
+										if (atomic) atomic->renderCallBack(atomic);
+									}
+								}
+							}
+						}
+					}
+				}
+
 			};
 
 			Events::pedRenderEvent.after += [](CPed* ped)
@@ -1074,7 +1218,14 @@ public:
 
 								RwFrame* frame = renderObject->frame;
 								RpAtomic* atomic = renderObject->atomic;
-								RpClump* clump = renderObject->clump;
+								RpClump* clump;
+
+								if (renderObject->specialModel && renderObject->specialModel->clump) {
+									clump = renderObject->specialModel->clump;
+								}
+								else {
+									clump = renderObject->clump;
+								}
 
 								if (clump)
 								{
@@ -1180,14 +1331,14 @@ public:
 
 			Events::pedDtorEvent.before += [](CPed* ped)
 			{
+				if (scriptEvents[ScriptEvent::List::CharDelete].size() > 0) {
+					int ref = CPools::GetPedRef(ped);
+					for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharDelete]) scriptEvent->RunScriptEvent(ref);
+				}
 				PedExtended& data = extData.Get(ped);
 				if (&data != nullptr && data.renderObjects.size() > 0)
 				{
 					DeleteAllRenderObjectsFromChar(data);
-				}
-				if (scriptEvents[ScriptEvent::List::CharDelete].size() > 0) {
-					int ref = CPools::GetPedRef(ped);
-					for (auto scriptEvent : scriptEvents[ScriptEvent::List::CharDelete]) scriptEvent->RunScriptEvent(ref);
 				}
 			};
 
@@ -1202,6 +1353,11 @@ public:
 				int ref = CPools::GetObjectRef(object);
 				if (scriptEvents[ScriptEvent::List::ObjectDelete].size() > 0) {
 					for (auto scriptEvent : scriptEvents[ScriptEvent::List::ObjectDelete]) scriptEvent->RunScriptEvent(ref);
+				}
+				ObjExtended& data = objExtData.Get(object);
+				if (&data != nullptr && data.renderObjects.size() > 0)
+				{
+					DeleteAllRenderObjectsFromObject(data);
 				}
 				for (unsigned int i = 0; i < sizeScriptConnectLodsObjects; ++i)
 				{

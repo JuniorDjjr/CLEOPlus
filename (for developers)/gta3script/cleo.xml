@@ -993,7 +993,41 @@
       <Constant Name="CAMERAMODE_DW_PLANECAM3"/>
       <Constant Name="CAMERAMODE_AIMWEAPON_ATTACHED"/>
     </Enum>
-    
+	
+    <Enum Name="BONE" Global="true">
+      <Constant Name="BONE_ROOT" Value="0"/>
+      <Constant Name="BONE_PELVIS" Value="1"/>
+      <Constant Name="BONE_SPINE" Value="2"/>
+      <Constant Name="BONE_SPINE1" Value="3"/>
+      <Constant Name="BONE_NECK" Value="4"/>
+      <Constant Name="BONE_HEAD" Value="5"/>
+      <Constant Name="BONE_L_BROW" Value="6"/>
+      <Constant Name="BONE_R_BROW" Value="7"/>
+      <Constant Name="BONE_JAW" Value="8"/>
+      <Constant Name="BONE_R_CLAVICLE" Value="21"/>
+      <Constant Name="BONE_R_UPPER_ARM" Value="22"/>
+      <Constant Name="BONE_R_FORE_ARM" Value="23"/>
+      <Constant Name="BONE_R_HAND" Value="24"/>
+      <Constant Name="BONE_R_FINGER" Value="25"/>
+      <Constant Name="BONE_R_FINGER_01" Value="26"/>
+      <Constant Name="BONE_L_CLAVICLE" Value="31"/>
+      <Constant Name="BONE_L_UPPER_ARM" Value="32"/>
+      <Constant Name="BONE_L_FORE_ARM" Value="33"/>
+      <Constant Name="BONE_L_HAND" Value="34"/>
+      <Constant Name="BONE_L_FINGER" Value="35"/>
+      <Constant Name="BONE_L_FINGER_01" Value="36"/>
+      <Constant Name="BONE_L_THIGH" Value="41"/>
+      <Constant Name="BONE_L_CALF" Value="42"/>
+      <Constant Name="BONE_L_FOOT" Value="43"/>
+      <Constant Name="BONE_L_TOE" Value="44"/>
+      <Constant Name="BONE_R_THIGH" Value="51"/>
+      <Constant Name="BONE_R_CALF" Value="52"/>
+      <Constant Name="BONE_R_FOOT" Value="53"/>
+      <Constant Name="BONE_R_TOE" Value="54"/>
+      <Constant Name="BONE_BELLY" Value="201"/>
+      <Constant Name="BONE_R_BREAST" Value="301"/>
+      <Constant Name="BONE_L_BREAST" Value="302"/>
+    </Enum>
     
   </Constants>
   <Commands>
@@ -2014,7 +2048,7 @@
         <Arg Type="INT" Desc="From"/>
         <Arg Type="INT" Desc="To"/>
         <Arg Type="FLOAT" Desc="t"/>
-        <Arg Type="INT" Desc="Result"/>
+        <Arg Type="INT" Desc="Result" Out="true"/>
       </Args>
     </Command>
     
@@ -2023,7 +2057,7 @@
         <Arg Type="FLOAT" Desc="k"/>
         <Arg Type="INT" Enum="EASE_MODE" Desc="Mode"/>
         <Arg Type="INT" Enum="EASE_WAY" Desc="Way"/>
-        <Arg Type="FLOAT" Desc="Result"/>
+        <Arg Type="FLOAT" Desc="Result" Out="True"/>
       </Args>
     </Command>
 
@@ -2140,6 +2174,21 @@
       <Args>
         <Arg Type="INT" Entity="CHAR"/>
         <Arg Type="INT" Enum="DEFAULTMODEL"/>
+        <Arg Type="INT" Enum="BONE"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="RX"/>
+        <Arg Type="FLOAT" Desc="RY"/>
+        <Arg Type="FLOAT" Desc="RZ"/>
+        <Arg Type="INT" Out="true" Entity="RENDEROBJECT"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xF02" Name="CREATE_RENDER_OBJECT_TO_CHAR_BONE_FROM_SPECIAL">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Entity="SPECIAL_MODEL"/>
         <Arg Type="INT" Enum="BONE"/>
         <Arg Type="FLOAT" Desc="X"/>
         <Arg Type="FLOAT" Desc="Y"/>
@@ -2677,7 +2726,7 @@
     
     <Command ID="0xE70" Name="GET_LAST_CREATED_CUSTOM_SCRIPT">
       <Args>
-        <Arg Type="INT" Desc="ThreadPointer" Out="true"/>
+        <Arg Type="INT" Desc="ScriptPointer" Out="true"/>
       </Args>
     </Command>
     
@@ -3585,7 +3634,7 @@
       <Args>
         <Arg Type="INT" Desc="Add"/>
         <Arg Type="LABEL"/>
-        <Arg Type="INT" Entity="ENTITY" Desc="VarENTITYowner"/>
+        <Arg Type="INT" Entity="CHAR" Desc="VarCHARowner"/>
         <Arg Type="INT" Entity="ENTITY" Desc="VarENTITYvictim"/>
         <Arg Type="INT" Enum="WEAPONTYPE" Desc="VarWEAPONTYPE"/>
         <Arg Type="INT" Entity="COLPOINT" Desc="VarCOLPOINT"/>
@@ -3804,7 +3853,7 @@
     <Command ID="0xEF8" Name="GET_MODEL_INFO">
       <Args>
         <Arg Type="INT" Enum="DEFAULTMODEL"/>
-        <Arg Type="INT" Entity="MODELINFO"/>
+        <Arg Type="INT" Entity="MODELINFO" Out="true"/>
       </Args>
     </Command>
 	
@@ -3846,7 +3895,7 @@
     <Command ID="0xEFE" Name="GET_LOADED_LIBRARY">
       <Args>
         <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
-        <Arg Type="INT" Desc="Pointer"/>
+        <Arg Type="INT" Desc="Pointer" Out="True"/>
       </Args>
     </Command>
 	
@@ -3890,8 +3939,8 @@
 
     <Command ID="0xD4D" Name="COPY_STRING">
       <Args>
-        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
-        <Arg Type="INT" Desc="Pointer"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="Source"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true" Desc="Dest"/>
       </Args>
     </Command>
 
@@ -3923,7 +3972,7 @@
     <Command ID="0xD19" Name="GET_NORMALISED_QUAT">
       <Args>
         <Arg Type="INT" Desc="Quat"/>
-        <Arg Type="INT" Desc="Quat"/>
+        <Arg Type="INT" Desc="Quat" Out="True"/>
       </Args>
     </Command>
     
@@ -3931,7 +3980,7 @@
       <Args>
         <Arg Type="INT" Desc="Quat"/>
         <Arg Type="INT" Desc="Quat"/>
-        <Arg Type="INT" Desc="QuatResult"/>
+        <Arg Type="INT" Desc="QuatResult" Out="True"/>
       </Args>
     </Command>
 
@@ -3995,6 +4044,231 @@
         <Arg Type="FLOAT" Out="true"/>
       </Args>
     </Command>
+    
+    <Command ID="0xF00" Name="LOAD_SPECIAL_MODEL">
+      <Args>
+        <Arg Type="STRING" Desc="DFF" AllowPointer="true" PreserveCase="true"/>
+        <Arg Type="STRING" Desc="TXD" AllowPointer="true" PreserveCase="true"/>
+        <Arg Type="INT" Entity="SPECIAL_MODEL" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xF01" Name="REMOVE_SPECIAL_MODEL">
+      <Args>
+        <Arg Type="INT" Entity="SPECIAL_MODEL"/>
+      </Args>
+    </Command>
 
+    <Command ID="0xF03" Name="CREATE_RENDER_OBJECT_TO_OBJECT">
+      <Args>
+        <Arg Type="INT" Entity="OBJECT"/>
+        <Arg Type="INT" Enum="DEFAULTMODEL"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="RX"/>
+        <Arg Type="FLOAT" Desc="RY"/>
+        <Arg Type="FLOAT" Desc="RZ"/>
+        <Arg Type="INT" Out="true" Entity="RENDEROBJECT"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xF04" Name="CREATE_RENDER_OBJECT_TO_OBJECT_FROM_SPECIAL">
+      <Args>
+        <Arg Type="INT" Entity="OBJECT"/>
+        <Arg Type="INT" Entity="SPECIAL_MODEL"/>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+        <Arg Type="FLOAT" Desc="Z"/>
+        <Arg Type="FLOAT" Desc="RX"/>
+        <Arg Type="FLOAT" Desc="RY"/>
+        <Arg Type="FLOAT" Desc="RZ"/>
+        <Arg Type="INT" Out="true" Entity="RENDEROBJECT"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xF05" Name="GET_SPECIAL_MODEL_DATA">
+      <Args>
+        <Arg Type="INT" Entity="SPECIAL_MODEL"/>
+        <Arg Type="INT" Desc="Clump" Out="true"/>
+        <Arg Type="INT" Desc="Atomic" Out="true"/>
+        <Arg Type="INT" Desc="TxdIndex" Out="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xF06" Name="REPLACE_LIST_VALUE_BY_INDEX">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+        <Arg Type="INT" Desc="Index"/>
+        <Arg Type="PARAM"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xF07" Name="REPLACE_LIST_STRING_VALUE_BY_INDEX">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+        <Arg Type="INT" Desc="Index"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xF08" Name="INSERT_LIST_VALUE_BY_INDEX">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+        <Arg Type="INT" Desc="Index"/>
+        <Arg Type="PARAM"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xF09" Name="INSERT_LIST_STRING_VALUE_BY_INDEX">
+      <Args>
+        <Arg Type="INT" Entity="LIST"/>
+        <Arg Type="INT" Desc="Index"/>
+        <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
+      </Args>
+    </Command>
+    
+    <Command ID="0xF0A" Name="RETURN_TIMES">
+      <Args>
+        <Arg Type="INT"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xD0B" Name="GET_CHAR_BONE_MATRIX">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Enum="BONE"/>
+        <Arg Type="INT" Desc="Matrix" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD30" Name="GET_CHAR_BONE">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Enum="BONE"/>
+        <Arg Type="INT" Entity="BONE" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD31" Name="GET_BONE_OFFSET_VECTOR">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Entity="BONE"/>
+        <Arg Type="INT" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xD32" Name="GET_BONE_QUAT">
+      <Args>
+        <Arg Type="INT" Entity="CHAR"/>
+        <Arg Type="INT" Entity="BONE"/>
+        <Arg Type="INT" Desc="Quat" Out="true"/>
+      </Args>
+    </Command>
+
+    <Command ID="0xF0B" Name="SET_SCRIPT_EVENT_BEFORE_GAME_PROCESS">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xF0C" Name="SET_SCRIPT_EVENT_AFTER_GAME_PROCESS">
+      <Args>
+        <Arg Type="INT" Desc="Add"/>
+        <Arg Type="LABEL"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xF0D" Name="SET_MATRIX_LOOK_DIRECTION">
+      <Args>
+        <Arg Type="INT" Desc="Matrix"/>
+        <Arg Type="FLOAT" Desc="OriginX"/>
+        <Arg Type="FLOAT" Desc="OriginY"/>
+        <Arg Type="FLOAT" Desc="OriginZ"/>
+        <Arg Type="FLOAT" Desc="DirX"/>
+        <Arg Type="FLOAT" Desc="DirY"/>
+        <Arg Type="FLOAT" Desc="DirZ"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xF0E" Name="GET_THIRD_PERSON_CAMERA_TARGET">
+      <Args>
+        <Arg Type="FLOAT" Desc="Range"/>
+        <Arg Type="FLOAT" Desc="SourceX"/>
+        <Arg Type="FLOAT" Desc="SourceY"/>
+        <Arg Type="FLOAT" Desc="SourceZ"/>
+        <Arg Type="FLOAT" Desc="StartX" Out="true"/>
+        <Arg Type="FLOAT" Desc="StartY" Out="true"/>
+        <Arg Type="FLOAT" Desc="StartZ" Out="true"/>
+        <Arg Type="FLOAT" Desc="EndX" Out="true"/>
+        <Arg Type="FLOAT" Desc="EndY" Out="true"/>
+        <Arg Type="FLOAT" Desc="EndZ" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xF0F" Name="GET_DISTANCE_MULTIPLIER">
+      <Args>
+        <Arg Type="FLOAT" Desc="Drawing" Out="true"/>
+        <Arg Type="FLOAT" Desc="Generating" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xF10" Name="GET_ACTIVE_CAMERA_ROTATION">
+      <Args>
+        <Arg Type="FLOAT" Desc="X" Out="true"/>
+        <Arg Type="FLOAT" Desc="Y" Out="true"/>
+        <Arg Type="FLOAT" Desc="Z" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xF11" Name="GET_CLOSEST_WATER_DISTANCE">
+      <Args>
+        <Arg Type="FLOAT" Desc="Distance" Out="true"/>
+        <Arg Type="FLOAT" Desc="ClosestZ" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xF12" Name="GET_CAMERA_STRUCT">
+      <Args>
+        <Arg Type="INT" Desc="CCamera" Out="true"/>
+        <Arg Type="INT" Desc="ActiveCCam" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xF13" Name="GET_TIME_NOT_TOUCHING_PAD">
+      <Args>
+        <Arg Type="INT" Enum="PAD"/>
+        <Arg Type="INT" Desc="TimeInMs" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xF14" Name="GET_CAMERA_ROTATION_INPUT_VALUES">
+      <Args>
+        <Arg Type="FLOAT" Desc="X" Out="true"/>
+        <Arg Type="FLOAT" Desc="Y" Out="true"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xF15" Name="SET_CAMERA_ROTATION_INPUT_VALUES">
+      <Args>
+        <Arg Type="FLOAT" Desc="X"/>
+        <Arg Type="FLOAT" Desc="Y"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xF16" Name="SET_ON_MISSION">
+      <Args>
+        <Arg Type="INT" Desc="Bool"/>
+      </Args>
+    </Command>
+	
+    <Command ID="0xF17" Name="GET_MODEL_NAME_POINTER">
+      <Args>
+        <Arg Type="INT" Desc="Index"/>
+        <Arg Type="INT" Desc="Pointer" Out="true"/>
+      </Args>
+    </Command>
+	
   </Commands>
 </GTA3Script>

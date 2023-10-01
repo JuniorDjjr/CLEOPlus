@@ -10,7 +10,6 @@ int GetNextAvailableCounterLine()
 	return -1;
 }
 
-// 0E4E=2,display_onscreen_timer_local %1d% direction %2d%
 OpcodeResult WINAPI DISPLAY_ONSCREEN_TIMER_LOCAL(CScriptThread* thread)
 {
 	uintptr_t varPointer = reinterpret_cast<uintptr_t>(CLEO_GetPointerToScriptVariable(thread));
@@ -20,7 +19,6 @@ OpcodeResult WINAPI DISPLAY_ONSCREEN_TIMER_LOCAL(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E4F=3,display_onscreen_timer_with_string_local %1d% direction %2d% GXT %3d%
 OpcodeResult WINAPI DISPLAY_ONSCREEN_TIMER_WITH_STRING_LOCAL(CScriptThread* thread)
 {
 	uintptr_t varPointer = reinterpret_cast<uintptr_t>(CLEO_GetPointerToScriptVariable(thread));
@@ -31,7 +29,6 @@ OpcodeResult WINAPI DISPLAY_ONSCREEN_TIMER_WITH_STRING_LOCAL(CScriptThread* thre
 	return OR_CONTINUE;
 }
 
-// 0E50=2,display_onscreen_counter_local %1d% display %2d%
 OpcodeResult WINAPI DISPLAY_ONSCREEN_COUNTER_LOCAL(CScriptThread* thread)
 {
 	uintptr_t varPointer = reinterpret_cast<uintptr_t>(CLEO_GetPointerToScriptVariable(thread));
@@ -44,7 +41,6 @@ OpcodeResult WINAPI DISPLAY_ONSCREEN_COUNTER_LOCAL(CScriptThread* thread)
 	return OR_CONTINUE;
 }
  
-// 0E51=3,display_onscreen_counter_with_string_local %1d% display %2d% GXT %3d%
 OpcodeResult WINAPI DISPLAY_ONSCREEN_COUNTER_WITH_STRING_LOCAL(CScriptThread* thread)
 {
 	uintptr_t varPointer = reinterpret_cast<uintptr_t>(CLEO_GetPointerToScriptVariable(thread));
@@ -58,7 +54,6 @@ OpcodeResult WINAPI DISPLAY_ONSCREEN_COUNTER_WITH_STRING_LOCAL(CScriptThread* th
 	return OR_CONTINUE;
 }
 
-// 0E52=2,display_two_onscreen_counters_local %1d% max_value %2d%
 OpcodeResult WINAPI DISPLAY_TWO_ONSCREEN_COUNTERS_LOCAL(CScriptThread* thread)
 {
 	uintptr_t varPointer = reinterpret_cast<uintptr_t>(CLEO_GetPointerToScriptVariable(thread));
@@ -73,7 +68,6 @@ OpcodeResult WINAPI DISPLAY_TWO_ONSCREEN_COUNTERS_LOCAL(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E53=3,display_two_onscreen_counters_with_string_local %1d% max_value %2d% GXT %3d%
 OpcodeResult WINAPI DISPLAY_TWO_ONSCREEN_COUNTERS_WITH_STRING_LOCAL(CScriptThread* thread)
 {
 	uintptr_t varPointer = reinterpret_cast<uintptr_t>(CLEO_GetPointerToScriptVariable(thread));
@@ -89,7 +83,6 @@ OpcodeResult WINAPI DISPLAY_TWO_ONSCREEN_COUNTERS_WITH_STRING_LOCAL(CScriptThrea
 	return OR_CONTINUE;
 }
 
-// 0E54=1,clear_onscreen_timer_local %1d%
 OpcodeResult WINAPI CLEAR_ONSCREEN_TIMER_LOCAL(CScriptThread* thread)
 {
 	uintptr_t varPointer = reinterpret_cast<uintptr_t>(CLEO_GetPointerToScriptVariable(thread));
@@ -98,7 +91,6 @@ OpcodeResult WINAPI CLEAR_ONSCREEN_TIMER_LOCAL(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E55=1,clear_onscreen_counter_local %1d%
 OpcodeResult WINAPI CLEAR_ONSCREEN_COUNTER_LOCAL(CScriptThread* thread)
 {
 	uintptr_t varPointer = reinterpret_cast<uintptr_t>(CLEO_GetPointerToScriptVariable(thread));
@@ -107,7 +99,6 @@ OpcodeResult WINAPI CLEAR_ONSCREEN_COUNTER_LOCAL(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E56=2,set_onscreen_counter_flash_when_first_displayed_local %1d% flash %2d%
 OpcodeResult WINAPI SET_ONSCREEN_COUNTER_FLASH_WHEN_FIRST_DISPLAYED_LOCAL(CScriptThread* thread)
 {
 	uintptr_t varPointer = reinterpret_cast<uintptr_t>(CLEO_GetPointerToScriptVariable(thread));
@@ -117,7 +108,6 @@ OpcodeResult WINAPI SET_ONSCREEN_COUNTER_FLASH_WHEN_FIRST_DISPLAYED_LOCAL(CScrip
 	return OR_CONTINUE;
 }
 
-// 0E57=2,set_timer_beep_countdown_time_local %1d% secs %2d%
 OpcodeResult WINAPI SET_TIMER_BEEP_COUNTDOWN_TIME_LOCAL(CScriptThread* thread)
 {
 	uintptr_t varPointer = reinterpret_cast<uintptr_t>(CLEO_GetPointerToScriptVariable(thread));
@@ -127,7 +117,6 @@ OpcodeResult WINAPI SET_TIMER_BEEP_COUNTDOWN_TIME_LOCAL(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0E58=2,set_onscreen_counter_colour_local %1d% color %2d%
 OpcodeResult WINAPI SET_ONSCREEN_COUNTER_COLOUR_LOCAL(CScriptThread* thread)
 {
 	uintptr_t varPointer = reinterpret_cast<uintptr_t>(CLEO_GetPointerToScriptVariable(thread));

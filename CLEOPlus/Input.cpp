@@ -6,6 +6,7 @@
 #include "CControllerConfigManager.h"
 #include "CMenuManager.h"
 #include "CCamera.h"
+#include "CTimer.h"
 
 extern bool keysPressedLastFrame[0xFF];
 extern bool buttonsPressedLastFrame[2][20];
@@ -108,7 +109,6 @@ OpcodeResult WINAPI IS_ANY_FIRE_BUTTON_PRESSED(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-// 0xE6E=0,is_select_menu_just_pressed
 OpcodeResult WINAPI IS_SELECT_MENU_JUST_PRESSED(CScriptThread* thread)
 {
 	if (!CCamera::m_bUseMouse3rdPerson)
@@ -120,5 +120,12 @@ OpcodeResult WINAPI IS_SELECT_MENU_JUST_PRESSED(CScriptThread* thread)
 		int keyCode = ControlsManager.m_actions[13].keys[0].keyCode;
 		reinterpret_cast<CRunningScript*>(thread)->UpdateCompareFlag(ControlsManager.GetIsKeyboardKeyJustDown((RsKeyCodes)keyCode));
 	}
+	return OR_CONTINUE;
+}
+
+OpcodeResult WINAPI GET_TIME_NOT_TOUCHING_PAD(CScriptThread* thread)
+{
+	int playerId = CLEO_GetIntOpcodeParam(thread);
+	CLEO_SetIntOpcodeParam(thread, CTimer::m_snTimeInMilliseconds - CPad::GetPad(playerId)->LastTimeTouched);
 	return OR_CONTINUE;
 }

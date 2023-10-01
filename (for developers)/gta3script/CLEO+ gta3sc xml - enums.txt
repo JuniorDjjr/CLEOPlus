@@ -1,0 +1,848 @@
+
+PT: Você também pode usar o "cleo.xml" que veio no download.
+EN: You can also use the "cleo.xml" that came in the download.
+
+
+PT: Abra o "gtasa/cleo.xml" localizado na pasta do compilador GTA3script.
+EN: Open the "gtasa/cleo.xml" located in the GTA3script compiler folder.
+
+
+PT: Dentro de <Constants> (normalmente no fim) adicione:
+EN: Within <Constants> (usually at the end) add:
+
+
+
+
+    <!-- CLEO+ -->
+    <Enum Name="TASK">
+		<Constant Name="TASK_SIMPLE_PLAYER_ON_FOOT" Value="0"/>
+		<Constant Name="TASK_SIMPLE_PLAYER_IN_CAR" Value="1"/>
+		<Constant Name="TASK_COMPLEX_MEDIC_TREAT_INJURED_PED" Value="100"/>
+		<Constant Name="TASK_COMPLEX_TREAT_ACCIDENT" Value="101"/>
+		<Constant Name="TASK_SIMPLE_GIVE_CPR" Value="102"/>
+		<Constant Name="TASK_COMPLEX_COP_ARREST_PED" Value="103"/>
+		<Constant Name="TASK_COMPLEX_COP_HASSLE_PED" Value="104"/>
+		<Constant Name="TASK_COMPLEX_HASSLED_BY_COP" Value="105"/>
+		<Constant Name="TASK_COMPLEX_PRESENT_ID_TO_COP" Value="106"/>
+		<Constant Name="TASK_COMPLEX_DRIVE_FIRE_TRUCK" Value="107"/>
+		<Constant Name="TASK_COMPLEX_USE_SWAT_ROPE" Value="108"/>
+		<Constant Name="TASK_COMPLEX_USE_WATER_CANNON" Value="109"/>
+		<Constant Name="TASK_COMPLEX_EXTINGUISH_FIRE_ON_FOOT" Value="110"/>
+		<Constant Name="TASK_NONE" Value="200"/>
+		<Constant Name="TASK_SIMPLE_UNINTERRUPTABLE" Value="201"/>
+		<Constant Name="TASK_SIMPLE_PAUSE" Value="202"/>
+		<Constant Name="TASK_SIMPLE_STAND_STILL" Value="203"/>
+		<Constant Name="TASK_SIMPLE_SET_STAY_IN_SAME_PLACE" Value="204"/>
+		<Constant Name="TASK_SIMPLE_GET_UP" Value="205"/>
+		<Constant Name="TASK_COMPLEX_GET_UP_AND_STAND_STILL" Value="206"/>
+		<Constant Name="TASK_SIMPLE_FALL" Value="207"/>
+		<Constant Name="TASK_COMPLEX_FALL_AND_GET_UP" Value="208"/>
+		<Constant Name="TASK_COMPLEX_FALL_AND_STAY_DOWN" Value="209"/>
+		<Constant Name="TASK_SIMPLE_JUMP" Value="210"/>
+		<Constant Name="TASK_COMPLEX_JUMP" Value="211"/>
+		<Constant Name="TASK_SIMPLE_DIE" Value="212"/>
+		<Constant Name="TASK_SIMPLE_DROWN" Value="213"/>
+		<Constant Name="TASK_SIMPLE_DIE_IN_CAR" Value="214"/>
+		<Constant Name="TASK_COMPLEX_DIE_IN_CAR" Value="215"/>
+		<Constant Name="TASK_SIMPLE_DROWN_IN_CAR" Value="216"/>
+		<Constant Name="TASK_COMPLEX_DIE" Value="217"/>
+		<Constant Name="TASK_SIMPLE_DEAD" Value="218"/>
+		<Constant Name="TASK_SIMPLE_TIRED" Value="219"/>
+		<Constant Name="TASK_SIMPLE_SIT_DOWN" Value="220"/>
+		<Constant Name="TASK_SIMPLE_SIT_IDLE" Value="221"/>
+		<Constant Name="TASK_SIMPLE_STAND_UP" Value="222"/>
+		<Constant Name="TASK_COMPLEX_SIT_DOWN_THEN_IDLE_THEN_STAND_UP" Value="223"/>
+		<Constant Name="TASK_COMPLEX_OBSERVE_TRAFFIC_LIGHTS" Value="224"/>
+		<Constant Name="TASK_COMPLEX_OBSERVE_TRAFFIC_LIGHTS_AND_ACHIEVE_HEADING" Value="225"/>
+		<Constant Name="TASK_NOT_USED" Value="226"/>
+		<Constant Name="TASK_COMPLEX_CROSS_ROAD_LOOK_AND_ACHIEVE_HEADING" Value="227"/>
+		<Constant Name="TASK_SIMPLE_TURN_180" Value="228"/>
+		<Constant Name="TASK_SIMPLE_HAIL_TAXI" Value="229"/>
+		<Constant Name="TASK_COMPLEX_HIT_RESPONSE" Value="230"/>
+		<Constant Name="TASK_COMPLEX_HIT_BY_GUN_RESPONSE" Value="231"/>
+		<Constant Name="TASK_UNUSED_SLOT" Value="232"/>
+		<Constant Name="TASK_COMPLEX_USE_EFFECT" Value="233"/>
+		<Constant Name="TASK_COMPLEX_WAIT_AT_ATTRACTOR" Value="234"/>
+		<Constant Name="TASK_COMPLEX_USE_ATTRACTOR" Value="235"/>
+		<Constant Name="TASK_COMPLEX_WAIT_FOR_DRY_WEATHER" Value="236"/>
+		<Constant Name="TASK_COMPLEX_WAIT_FOR_BUS" Value="237"/>
+		<Constant Name="TASK_SIMPLE_WAIT_FOR_BUS" Value="238"/>
+		<Constant Name="TASK_SIMPLE_WAIT_FOR_PIZZA" Value="239"/>
+		<Constant Name="TASK_COMPLEX_IN_AIR_AND_LAND" Value="240"/>
+		<Constant Name="TASK_SIMPLE_IN_AIR" Value="241"/>
+		<Constant Name="TASK_SIMPLE_LAND" Value="242"/>
+		<Constant Name="TASK_COMPLEX_BE_IN_GROUP" Value="243"/>
+		<Constant Name="TASK_COMPLEX_SEQUENCE" Value="244"/>
+		<Constant Name="TASK_SIMPLE_CALL_FOR_BACKUP" Value="245"/>
+		<Constant Name="TASK_COMPLEX_USE_PAIRED_ATTRACTOR" Value="246"/>
+		<Constant Name="TASK_COMPLEX_USE_ATTRACTOR_PARTNER" Value="247"/>
+		<Constant Name="TASK_COMPLEX_ATTRACTOR_PARTNER_WAIT" Value="248"/>
+		<Constant Name="TASK_COMPLEX_USE_SCRIPTED_ATTRACTOR" Value="249"/>
+		<Constant Name="TASK_COMPLEX_ON_FIRE" Value="250"/>
+		<Constant Name="TASK_SIMPLE_BE_DAMAGED" Value="251"/>
+		<Constant Name="TASK_SIMPLE_TRIGGER_EVENT" Value="252"/>
+		<Constant Name="TASK_SIMPLE_RAGDOLL" Value="253"/>
+		<Constant Name="TASK_SIMPLE_CLIMB" Value="254"/>
+		<Constant Name="TASK_SIMPLE_PLAYER_ON_FIRE" Value="255"/>
+		<Constant Name="TASK_COMPLEX_PARTNER" Value="256"/>
+		<Constant Name="TASK_COMPLEX_STARE_AT_PED" Value="257"/>
+		<Constant Name="TASK_COMPLEX_USE_CLOSEST_FREE_SCRIPTED_ATTRACTOR" Value="258"/>
+		<Constant Name="TASK_COMPLEX_USE_EFFECT_RUNNING" Value="259"/>
+		<Constant Name="TASK_COMPLEX_USE_EFFECT_SPRINTING" Value="260"/>
+		<Constant Name="TASK_COMPLEX_USE_CLOSEST_FREE_SCRIPTED_ATTRACTOR_RUN" Value="261"/>
+		<Constant Name="TASK_COMPLEX_USE_CLOSEST_FREE_SCRIPTED_ATTRACTOR_SPRINT" Value="262"/>
+		<Constant Name="TASK_SIMPLE_CHOKING" Value="263"/>
+		<Constant Name="TASK_SIMPLE_IK_CHAIN" Value="264"/>
+		<Constant Name="TASK_SIMPLE_IK_MANAGER" Value="265"/>
+		<Constant Name="TASK_SIMPLE_IK_LOOK_AT" Value="266"/>
+		<Constant Name="TASK_COMPLEX_CLIMB" Value="267"/>
+		<Constant Name="TASK_COMPLEX_IN_WATER" Value="268"/>
+		<Constant Name="TASK_SIMPLE_TRIGGER_LOOK_AT" Value="269"/>
+		<Constant Name="TASK_SIMPLE_CLEAR_LOOK_AT" Value="270"/>
+		<Constant Name="TASK_SIMPLE_SET_CHAR_DECISION_MAKER" Value="271"/>
+		<Constant Name="TASK_SIMPLE_IK_POINT_R_ARM" Value="272"/>
+		<Constant Name="TASK_SIMPLE_IK_POINT_L_ARM" Value="273"/>
+		<Constant Name="TASK_COMPLEX_BE_STILL" Value="274"/>
+		<Constant Name="TASK_COMPLEX_USE_SEQUENCE" Value="275"/>
+		<Constant Name="TASK_SIMPLE_SET_KINDA_STAY_IN_SAME_PLACE" Value="276"/>
+		<Constant Name="TASK_COMPLEX_FALL_TO_DEATH" Value="277"/>
+		<Constant Name="TASK_WAIT_FOR_MATCHING_LEADER_AREA_CODES" Value="278"/>
+		<Constant Name="TASK_SIMPLE_LOOK_AT_ENTITY_OR_COORD" Value="300"/>
+		<Constant Name="TASK_SIMPLE_SAY" Value="301"/>
+		<Constant Name="TASK_SIMPLE_SHAKE_FIST" Value="302"/>
+		<Constant Name="TASK_SIMPLE_FACIAL" Value="303"/>
+		<Constant Name="TASK_COMPLEX_CHAINED_FACIAL" Value="304"/>
+		<Constant Name="TASK_COMPLEX_FACIAL" Value="305"/>
+		<Constant Name="TASK_SIMPLE_AFFECT_SECONDARY_BEHAVIOUR" Value="306"/>
+		<Constant Name="TASK_SIMPLE_HOLD_ENTITY" Value="307"/>
+		<Constant Name="TASK_SIMPLE_PICKUP_ENTITY" Value="308"/>
+		<Constant Name="TASK_SIMPLE_PUTDOWN_ENTITY" Value="309"/>
+		<Constant Name="TASK_COMPLEX_GO_PICKUP_ENTITY" Value="310"/>
+		<Constant Name="TASK_SIMPLE_DUCK_WHILE_SHOTS_WHIZZING" Value="311"/>
+		<Constant Name="TASK_SIMPLE_ANIM" Value="400"/>
+		<Constant Name="TASK_SIMPLE_NAMED_ANIM" Value="401"/>
+		<Constant Name="TASK_SIMPLE_TIMED_ANIM" Value="402"/>
+		<Constant Name="TASK_SIMPLE_HIT_BACK" Value="403"/>
+		<Constant Name="TASK_SIMPLE_HIT_FRONT" Value="404"/>
+		<Constant Name="TASK_SIMPLE_HIT_LEFT" Value="405"/>
+		<Constant Name="TASK_SIMPLE_HIT_RIGHT" Value="406"/>
+		<Constant Name="TASK_SIMPLE_HIT_BY_GUN_BACK" Value="407"/>
+		<Constant Name="TASK_SIMPLE_HIT_BY_GUN_FRONT" Value="408"/>
+		<Constant Name="TASK_SIMPLE_HIT_BY_GUN_LEFT" Value="409"/>
+		<Constant Name="TASK_SIMPLE_HIT_BY_GUN_RIGHT" Value="410"/>
+		<Constant Name="TASK_SIMPLE_HIT_WALL" Value="411"/>
+		<Constant Name="TASK_SIMPLE_COWER" Value="412"/>
+		<Constant Name="TASK_SIMPLE_HANDS_UP" Value="413"/>
+		<Constant Name="TASK_SIMPLE_HIT_BEHIND" Value="414"/>
+		<Constant Name="TASK_SIMPLE_DUCK" Value="415"/>
+		<Constant Name="TASK_SIMPLE_CHAT" Value="416"/>
+		<Constant Name="TASK_COMPLEX_SUNBATHE" Value="417"/>
+		<Constant Name="TASK_SIMPLE_SUNBATHE" Value="418"/>
+		<Constant Name="TASK_SIMPLE_DETONATE" Value="419"/>
+		<Constant Name="TASK_SIMPLE_USE_ATM" Value="420"/>
+		<Constant Name="TASK_SIMPLE_SCRATCH_HEAD" Value="421"/>
+		<Constant Name="TASK_SIMPLE_LOOK_ABOUT" Value="422"/>
+		<Constant Name="TASK_SIMPLE_ABSEIL" Value="423"/>
+		<Constant Name="TASK_SIMPLE_ANIM_LOOPED_MIDDLE" Value="424"/>
+		<Constant Name="TASK_SIMPLE_HANDSIGNAL_ANIM" Value="425"/>
+		<Constant Name="TASK_COMPLEX_HANDSIGNAL_ANIM" Value="426"/>
+		<Constant Name="TASK_SIMPLE_DUCK_FOREVER" Value="427"/>
+		<Constant Name="TASK_SIMPLE_START_SUNBATHING" Value="428"/>
+		<Constant Name="TASK_SIMPLE_IDLE_SUNBATHING" Value="429"/>
+		<Constant Name="TASK_SIMPLE_STOP_SUNBATHING" Value="430"/>
+		<Constant Name="TASK_SIMPLE_HIT_HEAD" Value="500"/>
+		<Constant Name="TASK_SIMPLE_EVASIVE_STEP" Value="501"/>
+		<Constant Name="TASK_COMPLEX_EVASIVE_STEP" Value="502"/>
+		<Constant Name="TASK_SIMPLE_EVASIVE_DIVE" Value="503"/>
+		<Constant Name="TASK_COMPLEX_EVASIVE_DIVE_AND_GET_UP" Value="504"/>
+		<Constant Name="TASK_COMPLEX_HIT_PED_WITH_CAR" Value="505"/>
+		<Constant Name="TASK_SIMPLE_KILL_PED_WITH_CAR" Value="506"/>
+		<Constant Name="TASK_SIMPLE_HURT_PED_WITH_CAR" Value="507"/>
+		<Constant Name="TASK_COMPLEX_WALK_ROUND_CAR" Value="508"/>
+		<Constant Name="TASK_COMPLEX_WALK_ROUND_BUILDING_ATTEMPT" Value="509"/>
+		<Constant Name="TASK_COMPLEX_WALK_ROUND_OBJECT" Value="510"/>
+		<Constant Name="TASK_COMPLEX_MOVE_BACK_AND_JUMP" Value="511"/>
+		<Constant Name="TASK_COMPLEX_EVASIVE_COWER" Value="512"/>
+		<Constant Name="TASK_COMPLEX_DIVE_FROM_ATTACHED_ENTITY_AND_GET_UP" Value="513"/>
+		<Constant Name="TASK_COMPLEX_WALK_ROUND_FIRE" Value="514"/>
+		<Constant Name="TASK_COMPLEX_STUCK_IN_AIR" Value="515"/>
+		<Constant Name="TASK_COMPLEX_INVESTIGATE_DEAD_PED" Value="600"/>
+		<Constant Name="TASK_COMPLEX_REACT_TO_GUN_AIMED_AT" Value="601"/>
+		<Constant Name="TASK_COMPLEX_WAIT_FOR_BACKUP" Value="602"/>
+		<Constant Name="TASK_COMPLEX_GET_OUT_OF_WAY_OF_CAR" Value="603"/>
+		<Constant Name="TASK_COMPLEX_EXTINGUISH_FIRES" Value="604"/>
+		<Constant Name="TASK_COMPLEX_ENTER_CAR_AS_PASSENGER" Value="700"/>
+		<Constant Name="TASK_COMPLEX_ENTER_CAR_AS_DRIVER" Value="701"/>
+		<Constant Name="TASK_COMPLEX_STEAL_CAR" Value="702"/>
+		<Constant Name="TASK_COMPLEX_DRAG_PED_FROM_CAR" Value="703"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_CAR" Value="704"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_CAR_AND_DIE" Value="705"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_CAR_AND_FLEE" Value="706"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_CAR_AND_WANDER" Value="707"/>
+		<Constant Name="TASK_COMPLEX_SCREAM_IN_CAR_THEN_LEAVE" Value="708"/>
+		<Constant Name="TASK_SIMPLE_CAR_DRIVE" Value="709"/>
+		<Constant Name="TASK_COMPLEX_CAR_DRIVE_TO_POINT" Value="710"/>
+		<Constant Name="TASK_COMPLEX_CAR_DRIVE_WANDER" Value="711"/>
+		<Constant Name="TASK_COMPLEX_ENTER_CAR_AS_PASSENGER_TIMED" Value="712"/>
+		<Constant Name="TASK_COMPLEX_ENTER_CAR_AS_DRIVER_TIMED" Value="713"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_ANY_CAR" Value="714"/>
+		<Constant Name="TASK_COMPLEX_ENTER_BOAT_AS_DRIVER" Value="715"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_BOAT" Value="716"/>
+		<Constant Name="TASK_COMPLEX_ENTER_ANY_CAR_AS_DRIVER" Value="717"/>
+		<Constant Name="TASK_COMPLEX_ENTER_CAR_AS_PASSENGER_WAIT" Value="718"/>
+		<Constant Name="TASK_SIMPLE_CAR_DRIVE_TIMED" Value="719"/>
+		<Constant Name="TASK_COMPLEX_SHUFFLE_SEATS" Value="720"/>
+		<Constant Name="TASK_COMPLEX_CAR_DRIVE_POINT_ROUTE" Value="721"/>
+		<Constant Name="TASK_COMPLEX_CAR_OPEN_DRIVER_DOOR" Value="722"/>
+		<Constant Name="TASK_SIMPLE_CAR_SET_TEMP_ACTION" Value="723"/>
+		<Constant Name="TASK_COMPLEX_CAR_DRIVE_MISSION" Value="724"/>
+		<Constant Name="TASK_COMPLEX_CAR_DRIVE" Value="725"/>
+		<Constant Name="TASK_COMPLEX_CAR_DRIVE_MISSION_FLEE_SCENE" Value="726"/>
+		<Constant Name="TASK_COMPLEX_ENTER_LEADER_CAR_AS_PASSENGER" Value="727"/>
+		<Constant Name="TASK_COMPLEX_CAR_OPEN_PASSENGER_DOOR" Value="728"/>
+		<Constant Name="TASK_COMPLEX_CAR_DRIVE_MISSION_KILL_PED" Value="729"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_CAR_AS_PASSENGER_WAIT" Value="730"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_CAR_DOOR_AND_STAND_STILL" Value="800"/>
+		<Constant Name="TASK_SIMPLE_CAR_ALIGN" Value="801"/>
+		<Constant Name="TASK_SIMPLE_CAR_OPEN_DOOR_FROM_OUTSIDE" Value="802"/>
+		<Constant Name="TASK_SIMPLE_CAR_OPEN_LOCKED_DOOR_FROM_OUTSIDE" Value="803"/>
+		<Constant Name="TASK_SIMPLE_BIKE_PICK_UP" Value="804"/>
+		<Constant Name="TASK_SIMPLE_CAR_CLOSE_DOOR_FROM_INSIDE" Value="805"/>
+		<Constant Name="TASK_SIMPLE_CAR_CLOSE_DOOR_FROM_OUTSIDE" Value="806"/>
+		<Constant Name="TASK_SIMPLE_CAR_GET_IN" Value="807"/>
+		<Constant Name="TASK_SIMPLE_CAR_SHUFFLE" Value="808"/>
+		<Constant Name="TASK_SIMPLE_CAR_WAIT_TO_SLOW_DOWN" Value="809"/>
+		<Constant Name="TASK_SIMPLE_CAR_WAIT_FOR_DOOR_NOT_TO_BE_IN_USE" Value="810"/>
+		<Constant Name="TASK_SIMPLE_CAR_SET_PED_IN_AS_PASSENGER" Value="811"/>
+		<Constant Name="TASK_SIMPLE_CAR_SET_PED_IN_AS_DRIVER" Value="812"/>
+		<Constant Name="TASK_SIMPLE_CAR_GET_OUT" Value="813"/>
+		<Constant Name="TASK_SIMPLE_CAR_JUMP_OUT" Value="814"/>
+		<Constant Name="TASK_SIMPLE_CAR_FORCE_PED_OUT" Value="815"/>
+		<Constant Name="TASK_SIMPLE_CAR_SET_PED_OUT" Value="816"/>
+		<Constant Name="TASK_SIMPLE_CAR_QUICK_DRAG_PED_OUT" Value="817"/>
+		<Constant Name="TASK_SIMPLE_CAR_QUICK_BE_DRAGGED_OUT" Value="818"/>
+		<Constant Name="TASK_SIMPLE_CAR_SET_PED_QUICK_DRAGGED_OUT" Value="819"/>
+		<Constant Name="TASK_SIMPLE_CAR_SLOW_DRAG_PED_OUT" Value="820"/>
+		<Constant Name="TASK_SIMPLE_CAR_SLOW_BE_DRAGGED_OUT" Value="821"/>
+		<Constant Name="TASK_SIMPLE_CAR_SET_PED_SLOW_DRAGGED_OUT" Value="822"/>
+		<Constant Name="TASK_COMPLEX_CAR_SLOW_BE_DRAGGED_OUT" Value="823"/>
+		<Constant Name="TASK_COMPLEX_CAR_SLOW_BE_DRAGGED_OUT_AND_STAND_UP" Value="824"/>
+		<Constant Name="TASK_COMPLEX_CAR_QUICK_BE_DRAGGED_OUT" Value="825"/>
+		<Constant Name="TASK_SIMPLE_BIKE_JACKED" Value="826"/>
+		<Constant Name="TASK_SIMPLE_SET_PED_AS_AUTO_DRIVER" Value="827"/>
+		<Constant Name="TASK_SIMPLE_GO_TO_POINT_NEAR_CAR_DOOR_UNTIL_DOOR_NOT_IN_USE" Value="828"/>
+		<Constant Name="TASK_SIMPLE_WAIT_UNTIL_PED_OUT_CAR" Value="829"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_BOAT_STEERING_WHEEL" Value="830"/>
+		<Constant Name="TASK_COMPLEX_GET_ON_BOAT_SEAT" Value="831"/>
+		<Constant Name="TASK_SIMPLE_CREATE_CAR_AND_GET_IN" Value="832"/>
+		<Constant Name="TASK_SIMPLE_WAIT_UNTIL_PED_IN_CAR" Value="833"/>
+		<Constant Name="TASK_SIMPLE_CAR_FALL_OUT" Value="834"/>
+		<Constant Name="TASK_SIMPLE_GO_TO_POINT" Value="900"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_POINT_SHOOTING" Value="901"/>
+		<Constant Name="TASK_SIMPLE_ACHIEVE_HEADING" Value="902"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_POINT_AND_STAND_STILL" Value="903"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_POINT_AND_STAND_STILL_AND_ACHIEVE_HEADING" Value="904"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_POINT_ROUTE" Value="905"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_NODE_ROUTE" Value="906"/>
+		<Constant Name="TASK_COMPLEX_SEEK_ENTITY" Value="907"/>
+		<Constant Name="TASK_COMPLEX_FLEE_POINT" Value="908"/>
+		<Constant Name="TASK_COMPLEX_FLEE_ENTITY" Value="909"/>
+		<Constant Name="TASK_COMPLEX_SMART_FLEE_POINT" Value="910"/>
+		<Constant Name="TASK_COMPLEX_SMART_FLEE_ENTITY" Value="911"/>
+		<Constant Name="TASK_COMPLEX_WANDER" Value="912"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_LEADER_IN_FORMATION" Value="913"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_SEXY_PED" Value="914"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_ATTRACTOR" Value="915"/>
+		<Constant Name="TASK_COMPLEX_LEAVE_ATTRACTOR" Value="916"/>
+		<Constant Name="TASK_COMPLEX_AVOID_OTHER_PED_WHILE_WANDERING" Value="917"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_POINT_ANY_MEANS" Value="918"/>
+		<Constant Name="TASK_COMPLEX_WALK_ROUND_SHOP" Value="919"/>
+		<Constant Name="TASK_COMPLEX_TURN_TO_FACE_ENTITY" Value="920"/>
+		<Constant Name="TASK_COMPLEX_AVOID_BUILDING" Value="921"/>
+		<Constant Name="TASK_COMPLEX_SEEK_ENTITY_ANY_MEANS" Value="922"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_LEADER_ANY_MEANS" Value="923"/>
+		<Constant Name="TASK_COMPLEX_GO_TO_POINT_AIMING" Value="924"/>
+		<Constant Name="TASK_COMPLEX_TRACK_ENTITY" Value="925"/>
+		<Constant Name="TASK_SIMPLE_GO_TO_POINT_FINE" Value="926"/>
+		<Constant Name="TASK_COMPLEX_FLEE_ANY_MEANS" Value="927"/>
+		<Constant Name="TASK_COMPLEX_FLEE_SHOOTING" Value="928"/>
+		<Constant Name="TASK_COMPLEX_SEEK_ENTITY_SHOOTING" Value="929"/>
+		<Constant Name="TASK_UNUSED1" Value="930"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_PATROL_ROUTE" Value="931"/>
+		<Constant Name="TASK_COMPLEX_GOTO_DOOR_AND_OPEN" Value="932"/>
+		<Constant Name="TASK_COMPLEX_SEEK_ENTITY_AIMING" Value="933"/>
+		<Constant Name="TASK_SIMPLE_SLIDE_TO_COORD" Value="934"/>
+		<Constant Name="TASK_COMPLEX_INVESTIGATE_DISTURBANCE" Value="935"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_PED_FOOTSTEPS" Value="936"/>
+		<Constant Name="TASK_COMPLEX_FOLLOW_NODE_ROUTE_SHOOTING" Value="937"/>
+		<Constant Name="TASK_COMPLEX_USE_ENTRYEXIT" Value="938"/>
+		<Constant Name="TASK_COMPLEX_AVOID_ENTITY" Value="939"/>
+		<Constant Name="TASK_SMART_FLEE_ENTITY_WALKING" Value="940"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_ON_FOOT" Value="1000"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_ON_FOOT_MELEE" Value="1001"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_ON_FOOT_ARMED" Value="1002"/>
+		<Constant Name="TASK_COMPLEX_DESTROY_CAR" Value="1003"/>
+		<Constant Name="TASK_COMPLEX_DESTROY_CAR_MELEE" Value="1004"/>
+		<Constant Name="TASK_COMPLEX_DESTROY_CAR_ARMED" Value="1005"/>
+		<Constant Name="TASK_COMPLEX_REACT_TO_ATTACK" Value="1006"/>
+		<Constant Name="TASK_SIMPLE_BE_KICKED_ON_GROUND" Value="1007"/>
+		<Constant Name="TASK_SIMPLE_BE_HIT" Value="1008"/>
+		<Constant Name="TASK_SIMPLE_BE_HIT_WHILE_MOVING" Value="1009"/>
+		<Constant Name="TASK_COMPLEX_SIDE_STEP_AND_SHOOT" Value="1010"/>
+		<Constant Name="TASK_SIMPLE_DRIVEBY_SHOOT" Value="1011"/>
+		<Constant Name="TASK_SIMPLE_DRIVEBY_WATCH_FOR_TARGET" Value="1012"/>
+		<Constant Name="TASK_COMPLEX_DO_DRIVEBY" Value="1013"/>
+		<Constant Name="TASK_KILL_ALL_THREATS" Value="1014"/>
+		<Constant Name="TASK_KILL_PED_GROUP_ON_FOOT" Value="1015"/>
+		<Constant Name="TASK_SIMPLE_FIGHT" Value="1016"/>
+		<Constant Name="TASK_SIMPLE_USE_GUN" Value="1017"/>
+		<Constant Name="TASK_SIMPLE_THROW" Value="1018"/>
+		<Constant Name="TASK_SIMPLE_FIGHT_CTRL" Value="1019"/>
+		<Constant Name="TASK_SIMPLE_GUN_CTRL" Value="1020"/>
+		<Constant Name="TASK_SIMPLE_THROW_CTRL" Value="1021"/>
+		<Constant Name="TASK_SIMPLE_GANG_DRIVEBY" Value="1022"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_ON_FOOT_TIMED" Value="1023"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_ON_FOOT_STAND_STILL" Value="1024"/>
+		<Constant Name="TASK_UNUSED2" Value="1025"/>
+		<Constant Name="TASK_KILL_PED_ON_FOOT_WHILE_DUCKING" Value="1026"/>
+		<Constant Name="TASK_SIMPLE_STEALTH_KILL" Value="1027"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_ON_FOOT_STEALTH" Value="1028"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_ON_FOOT_KINDA_STAND_STILL" Value="1029"/>
+		<Constant Name="TASK_COMPLEX_KILL_PED_AND_REENTER_CAR" Value="1030"/>
+		<Constant Name="TASK_COMPLEX_ROAD_RAGE" Value="1031"/>
+		<Constant Name="TASK_KILL_PED_FROM_BOAT" Value="1032"/>
+		<Constant Name="TASK_SIMPLE_SET_CHAR_IGNORE_WEAPON_RANGE_FLAG" Value="1033"/>
+		<Constant Name="TASK_SEEK_COVER_UNTIL_TARGET_DEAD" Value="1034"/>
+		<Constant Name="TASK_SIMPLE_ARREST_PED" Value="1100"/>
+		<Constant Name="TASK_COMPLEX_ARREST_PED" Value="1101"/>
+		<Constant Name="TASK_SIMPLE_BE_ARRESTED" Value="1102"/>
+		<Constant Name="TASK_COMPLEX_POLICE_PURSUIT" Value="1103"/>
+		<Constant Name="TASK_COMPLEX_BE_COP" Value="1104"/>
+		<Constant Name="TASK_COMPLEX_KILL_CRIMINAL" Value="1105"/>
+		<Constant Name="TASK_COMPLEX_COP_IN_CAR" Value="1106"/>
+		<Constant Name="TASK_SIMPLE_INFORM_GROUP" Value="1200"/>
+		<Constant Name="TASK_COMPLEX_GANG_LEADER" Value="1201"/>
+		<Constant Name="TASK_COMPLEX_PARTNER_DEAL" Value="1202"/>
+		<Constant Name="TASK_COMPLEX_PARTNER_GREET" Value="1203"/>
+		<Constant Name="TASK_COMPLEX_PARTNER_CHAT" Value="1204"/>
+		<Constant Name="TASK_COMPLEX_GANG_HASSLE_VEHICLE" Value="1205"/>
+		<Constant Name="TASK_COMPLEX_WALK_WITH_PED" Value="1206"/>
+		<Constant Name="TASK_COMPLEX_GANG_FOLLOWER" Value="1207"/>
+		<Constant Name="TASK_COMPLEX_WALK_ALONGSIDE_PED" Value="1208"/>
+		<Constant Name="TASK_COMPLEX_PARTNER_SHOVE" Value="1209"/>
+		<Constant Name="TASK_COMPLEX_SIGNAL_AT_PED" Value="1210"/>
+		<Constant Name="TASK_COMPLEX_PASS_OBJECT" Value="1211"/>
+		<Constant Name="TASK_COMPLEX_GANG_HASSLE_PED" Value="1212"/>
+		<Constant Name="TASK_COMPLEX_WAIT_FOR_PED" Value="1213"/>
+		<Constant Name="TASK_SIMPLE_DO_HAND_SIGNAL" Value="1214"/>
+		<Constant Name="TASK_COMPLEX_BE_IN_COUPLE" Value="1215"/>
+		<Constant Name="TASK_COMPLEX_GOTO_VEHICLE_AND_LEAN" Value="1216"/>
+		<Constant Name="TASK_COMPLEX_LEAN_ON_VEHICLE" Value="1217"/>
+		<Constant Name="TASK_COMPLEX_CHAT" Value="1218"/>
+		<Constant Name="TASK_COMPLEX_GANG_JOIN_RESPOND" Value="1219"/>
+		<Constant Name="TASK_ZONE_RESPONSE" Value="1300"/>
+		<Constant Name="TASK_SIMPLE_TOGGLE_PED_THREAT_SCANNER" Value="1301"/>
+		<Constant Name="TASK_FINISHED" Value="1302"/>
+		<Constant Name="TASK_SIMPLE_JETPACK" Value="1303"/>
+		<Constant Name="TASK_SIMPLE_SWIM" Value="1304"/>
+		<Constant Name="TASK_COMPLEX_SWIM_AND_CLIMB_OUT" Value="1305"/>
+		<Constant Name="TASK_SIMPLE_DUCK_TOGGLE" Value="1306"/>
+		<Constant Name="TASK_WAIT_FOR_MATCHING_AREA_CODES" Value="1307"/>
+		<Constant Name="TASK_SIMPLE_ON_ESCALATOR" Value="1308"/>
+		<Constant Name="TASK_COMPLEX_PROSTITUTE_SOLICIT" Value="1309"/>
+		<Constant Name="TASK_INTERIOR_USE_INFO" Value="1400"/>
+		<Constant Name="TASK_INTERIOR_GOTO_INFO" Value="1401"/>
+		<Constant Name="TASK_INTERIOR_BE_IN_HOUSE" Value="1402"/>
+		<Constant Name="TASK_INTERIOR_BE_IN_OFFICE" Value="1403"/>
+		<Constant Name="TASK_INTERIOR_BE_IN_SHOP" Value="1404"/>
+		<Constant Name="TASK_INTERIOR_SHOPKEEPER" Value="1405"/>
+		<Constant Name="TASK_INTERIOR_LIE_IN_BED" Value="1406"/>
+		<Constant Name="TASK_INTERIOR_SIT_ON_CHAIR" Value="1407"/>
+		<Constant Name="TASK_INTERIOR_SIT_AT_DESK" Value="1408"/>
+		<Constant Name="TASK_INTERIOR_LEAVE" Value="1409"/>
+		<Constant Name="TASK_INTERIOR_SIT_IN_RESTAURANT" Value="1410"/>
+		<Constant Name="TASK_INTERIOR_RESERVED2" Value="1411"/>
+		<Constant Name="TASK_INTERIOR_RESERVED3" Value="1412"/>
+		<Constant Name="TASK_INTERIOR_RESERVED4" Value="1413"/>
+		<Constant Name="TASK_INTERIOR_RESERVED5" Value="1414"/>
+		<Constant Name="TASK_INTERIOR_RESERVED6" Value="1415"/>
+		<Constant Name="TASK_INTERIOR_RESERVED7" Value="1416"/>
+		<Constant Name="TASK_INTERIOR_RESERVED8" Value="1417"/>
+		<Constant Name="TASK_GROUP_FOLLOW_LEADER_ANY_MEANS" Value="1500"/>
+		<Constant Name="TASK_GROUP_FOLLOW_LEADER_WITH_LIMITS" Value="1501"/>
+		<Constant Name="TASK_GROUP_KILL_THREATS_BASIC" Value="1502"/>
+		<Constant Name="TASK_GROUP_KILL_PLAYER_BASIC" Value="1503"/>
+		<Constant Name="TASK_GROUP_STARE_AT_PED" Value="1504"/>
+		<Constant Name="TASK_GROUP_FLEE_THREAT" Value="1505"/>
+		<Constant Name="TASK_GROUP_PARTNER_DEAL" Value="1506"/>
+		<Constant Name="TASK_GROUP_PARTNER_GREET" Value="1507"/>
+		<Constant Name="TASK_GROUP_HASSLE_SEXY_PED" Value="1508"/>
+		<Constant Name="TASK_GROUP_HASSLE_THREAT" Value="1509"/>
+		<Constant Name="TASK_GROUP_USE_MEMBER_DECISION" Value="1510"/>
+		<Constant Name="TASK_GROUP_EXIT_CAR" Value="1511"/>
+		<Constant Name="TASK_GROUP_ENTER_CAR" Value="1512"/>
+		<Constant Name="TASK_GROUP_ENTER_CAR_AND_PERFORM_SEQUENCE" Value="1513"/>
+		<Constant Name="TASK_GROUP_RESPOND_TO_LEADER_COMMAND" Value="1514"/>
+		<Constant Name="TASK_GROUP_HAND_SIGNAL" Value="1515"/>
+		<Constant Name="TASK_GROUP_DRIVEBY" Value="1516"/>
+		<Constant Name="TASK_GROUP_HASSLE_THREAT_PASSIVE" Value="1517"/>
+		<Constant Name="TASK_COMPLEX_USE_MOBILE_PHONE" Value="1600"/>
+		<Constant Name="TASK_SIMPLE_PHONE_TALK" Value="1601"/>
+		<Constant Name="TASK_SIMPLE_PHONE_IN" Value="1602"/>
+		<Constant Name="TASK_SIMPLE_PHONE_OUT" Value="1603"/>
+		<Constant Name="TASK_COMPLEX_USE_GOGGLES" Value="1604"/>
+		<Constant Name="TASK_SIMPLE_GOGGLES_ON" Value="1605"/>
+		<Constant Name="TASK_SIMPLE_GOGGLES_OFF" Value="1606"/>
+		<Constant Name="TASK_SIMPLE_INFORM_RESPECTED_FRIENDS" Value="1700"/>
+		<Constant Name="TASK_COMPLEX_USE_SCRIPTED_BRAIN" Value="1800"/>
+		<Constant Name="TASK_SIMPLE_FINISH_BRAIN" Value="1801"/>
+		<Constant Name="TASK_SIMPLE_PLAYER_IN_CAR" Value="1802"/>
+    </Enum>
+    <Enum Name="DRAW_EVENT">
+      <Constant Name="DRAW_EVENT_BEFORE_DRAWING"/>
+      <Constant Name="DRAW_EVENT_AFTER_DRAWING"/>
+      <Constant Name="DRAW_EVENT_BEFORE_HUD"/>
+      <Constant Name="DRAW_EVENT_AFTER_HUD"/>
+      <Constant Name="DRAW_EVENT_BEFORE_RADAR"/>
+      <Constant Name="DRAW_EVENT_AFTER_RADAR"/>
+      <Constant Name="DRAW_EVENT_BEFORE_RADAR_OVERLAY"/>
+      <Constant Name="DRAW_EVENT_AFTER_RADAR_OVERLAY"/>
+      <Constant Name="DRAW_EVENT_BEFORE_BLIPS"/>
+      <Constant Name="DRAW_EVENT_AFTER_BLIPS"/>
+	  <Constant Name="DRAW_EVENT_AFTER_FADE"/>
+    </Enum>
+    <Enum Name="CHANGE_MONEY">
+      <Constant Name="CHANGE_MONEY_SET"/>
+      <Constant Name="CHANGE_MONEY_ADD"/>
+      <Constant Name="CHANGE_MONEY_REMOVE"/>
+    </Enum>
+    <Enum Name="MODEL_TYPE" Global="true">
+      <Constant Name="MODEL_TYPE_INVALID" Value="-1"/>
+      <Constant Name="MODEL_TYPE_ATOMIC" Value="1"/>
+      <Constant Name="MODEL_TYPE_TIMED" Value="3"/>
+      <Constant Name="MODEL_TYPE_WEAPON" Value="4"/>
+      <Constant Name="MODEL_TYPE_CLUMP" Value="5"/>
+      <Constant Name="MODEL_TYPE_VEHICLE" Value="6"/>
+      <Constant Name="MODEL_TYPE_PED" Value="7"/>
+      <Constant Name="MODEL_TYPE_LODATOMIC" Value="8"/>
+    </Enum>
+    <Enum Name="MODEL_TYPE" Global="true">
+      <Constant Name="MODEL_TYPE_INVALID" Value="-1"/>
+      <Constant Name="MODEL_TYPE_ATOMIC" Value="1"/>
+      <Constant Name="MODEL_TYPE_TIMED" Value="3"/>
+      <Constant Name="MODEL_TYPE_WEAPON" Value="4"/>
+      <Constant Name="MODEL_TYPE_CLUMP" Value="5"/>
+      <Constant Name="MODEL_TYPE_VEHICLE" Value="6"/>
+      <Constant Name="MODEL_TYPE_PED" Value="7"/>
+      <Constant Name="MODEL_TYPE_LODATOMIC" Value="8"/>
+    </Enum>
+    <Enum Name="CAR_ANIMGROUP" Global="true">
+		<Constant Name="CAR_ANIMGROUP_STANDARD_CAR"/>
+		<Constant Name="CAR_ANIMGROUP_LOW_CAR"/>
+		<Constant Name="CAR_ANIMGROUP_TRUCK"/>
+		<Constant Name="CAR_ANIMGROUP_STANDARD_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_SPORT_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_VESPA_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_HARLEY_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_DIRT_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_WAYFARER_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_BMX_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_MTB_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_CHOPPA_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_QUAD_BIKE"/>
+		<Constant Name="CAR_ANIMGROUP_VAN"/>
+		<Constant Name="CAR_ANIMGROUP_RUSTLER"/>
+		<Constant Name="CAR_ANIMGROUP_COACH"/>
+		<Constant Name="CAR_ANIMGROUP_BUS"/>
+		<Constant Name="CAR_ANIMGROUP_DOZER"/>
+		<Constant Name="CAR_ANIMGROUP_KART"/>
+		<Constant Name="CAR_ANIMGROUP_CONVERTIBLE"/>
+		<Constant Name="CAR_ANIMGROUP_MTRUCK"/>
+		<Constant Name="CAR_ANIMGROUP_TRAIN_CARRIAGE"/>
+		<Constant Name="CAR_ANIMGROUP_STANDARD_HIGH"/>
+		<Constant Name="CAR_ANIMGROUP_HOVER"/>
+		<Constant Name="CAR_ANIMGROUP_TANK"/>
+		<Constant Name="CAR_ANIMGROUP_BF_INJECTION"/>
+		<Constant Name="CAR_ANIMGROUP_SHAMAL"/>
+		<Constant Name="CAR_ANIMGROUP_HARRIER"/>
+		<Constant Name="CAR_ANIMGROUP_STANDARD_UPRIGHT"/>
+		<Constant Name="CAR_ANIMGROUP_NEVADA"/>
+    </Enum>
+    <Enum Name="VEHICLE_DUMMY" Global="true">
+      <Constant Name="VEHICLE_DUMMY_HEADLIGHT"/>
+      <Constant Name="VEHICLE_DUMMY_TAILLIGHT"/>
+      <Constant Name="VEHICLE_DUMMY_HEADLIGHTS2"/>
+      <Constant Name="VEHICLE_DUMMY_TAILLIGHTS2"/>
+      <Constant Name="VEHICLE_DUMMY_PED_FRONTSEAT"/>
+      <Constant Name="VEHICLE_DUMMY_PED_BACKSEAT"/>
+      <Constant Name="VEHICLE_DUMMY_EXHAUST"/>
+      <Constant Name="VEHICLE_DUMMY_ENGINE"/>
+      <Constant Name="VEHICLE_DUMMY_PETROLCAP"/>
+      <Constant Name="VEHICLE_DUMMY_AILERON_POS"/>
+      <Constant Name="VEHICLE_DUMMY_PED_ARM"/>
+      <Constant Name="VEHICLE_DUMMY_RUDDER_POS"/>
+      <Constant Name="VEHICLE_DUMMY_WINGTIP_POS"/>
+      <Constant Name="VEHICLE_DUMMY_MISCPOS_A"/>
+      <Constant Name="VEHICLE_DUMMY_MISCPOS_B"/>
+    </Enum>
+    <Enum Name="VEHICLE_SUBCLASS" Global="true">
+      <Constant Name="VEHICLE_SUBCLASS_AUTOMOBILE"/>
+      <Constant Name="VEHICLE_SUBCLASS_MTRUCK"/>
+      <Constant Name="VEHICLE_SUBCLASS_QUAD"/>
+      <Constant Name="VEHICLE_SUBCLASS_HELI"/>
+      <Constant Name="VEHICLE_SUBCLASS_PLANE"/>
+      <Constant Name="VEHICLE_SUBCLASS_BOAT"/>
+      <Constant Name="VEHICLE_SUBCLASS_TRAIN"/>
+      <Constant Name="VEHICLE_SUBCLASS_FHELI"/>
+      <Constant Name="VEHICLE_SUBCLASS_FPLANE"/>
+      <Constant Name="VEHICLE_SUBCLASS_BIKE"/>
+      <Constant Name="VEHICLE_SUBCLASS_BMX"/>
+      <Constant Name="VEHICLE_SUBCLASS_TRAILER"/>
+    </Enum>
+    <Enum Name="CAR_ALARM">
+      <Constant Name="CAR_ALARM_OFF"/>
+      <Constant Name="CAR_ALARM_ON"/>
+      <Constant Name="CAR_ALARM_PLAYING"/>
+    </Enum>
+    <Enum Name="ENTITY_TYPE" Global="true">
+      <Constant Name="ENTITY_TYPE_OTHER"/>
+      <Constant Name="ENTITY_TYPE_BUILDING"/>
+      <Constant Name="ENTITY_TYPE_OBJECT"/>
+      <Constant Name="ENTITY_TYPE_PED"/>
+      <Constant Name="ENTITY_TYPE_VEHICLE"/>
+    </Enum>
+    <Enum Name="RWCOMBINE" Global="true">
+      <Constant Name="RWCOMBINE_REPLACE"/>
+      <Constant Name="RWCOMBINE_PRECONCAT"/>
+      <Constant Name="RWCOMBINE_POSTCONCAT"/>
+    </Enum>
+    <Enum Name="FONT">
+      <Constant Name="FONT_GOTHIC"/>
+      <Constant Name="FONT_SUBTITLES"/>
+      <Constant Name="FONT_MENU"/>
+      <Constant Name="FONT_PRICEDOWN"/>
+    </Enum>
+    <Enum Name="ALIGN">
+      <Constant Name="ALIGN_CENTER"/>
+      <Constant Name="ALIGN_LEFT"/>
+      <Constant Name="ALIGN_RIGHT"/>
+    </Enum>
+    <Enum Name="INCLUDE_ANIMS">
+      <Constant Name="INCLUDE_ANIMS_NONE"/>
+      <Constant Name="INCLUDE_ANIMS_PRIMARY"/>
+      <Constant Name="INCLUDE_ANIMS_SECONDARY"/>
+      <Constant Name="INCLUDE_ANIMS_BOTH"/>
+    </Enum>
+    <Enum Name="DATATYPE">
+      <Constant Name="DATATYPE_INT"/>
+      <Constant Name="DATATYPE_FLOAT"/>
+      <Constant Name="DATATYPE_STRING"/>
+    </Enum>
+    <Enum Name="EASE_MODE">
+      <Constant Name="EASE_MODE_QUADRATIC"/>
+      <Constant Name="EASE_MODE_CUBIC"/>
+      <Constant Name="EASE_MODE_QUARTIC"/>
+      <Constant Name="EASE_MODE_QUINTIC"/>
+      <Constant Name="EASE_MODE_SINUSOIDAL"/>
+      <Constant Name="EASE_MODE_EXPONENTIAL"/>
+      <Constant Name="EASE_MODE_CIRCULAR"/>
+      <Constant Name="EASE_MODE_ELASTIC"/>
+      <Constant Name="EASE_MODE_BACK"/>
+      <Constant Name="EASE_MODE_BOUNCE"/>
+    </Enum>
+    <Enum Name="EASE_WAY">
+      <Constant Name="EASE_WAY_IN"/>
+      <Constant Name="EASE_WAY_OUT"/>
+      <Constant Name="EASE_WAY_INOUT"/>
+    </Enum>
+    <Enum Name="STRING_FIND">
+      <Constant Name="STRING_FIND_FIRST"/>
+      <Constant Name="STRING_FIND_LAST"/>
+    </Enum>
+    <Enum Name="MOVE_STATE" Global="true">
+      <Constant Name="MOVE_STATE_IDLE" Value="1"/>
+      <Constant Name="MOVE_STATE_WALK_START" Value="4"/>
+      <Constant Name="MOVE_STATE_WALK_RUN" Value="6"/>
+      <Constant Name="MOVE_STATE_SPRINTING" Value="7"/>
+    </Enum>
+    <Enum Name="WEAPONFIRE" Global="true">
+      <Constant Name="WEAPONFIRE_MELEE"/>
+      <Constant Name="WEAPONFIRE_INSTANT_HIT"/>
+      <Constant Name="WEAPONFIRE_PROJECTILE"/>
+      <Constant Name="WEAPONFIRE_AREA_EFFECT"/>
+      <Constant Name="WEAPONFIRE_CAMERA"/>
+      <Constant Name="WEAPONFIRE_USE"/>
+    </Enum>
+    <Enum Name="WEAPONSTATE" Global="true">
+      <Constant Name="WEAPONSTATE_IDLE"/>
+      <Constant Name="WEAPONSTATE_SHOOTING"/>
+      <Constant Name="WEAPONSTATE_RELOADING"/>
+    </Enum>
+    <Enum Name="WEAPONINFO_FLAGS" Global="true">
+      <Constant Name="WEAPONINFO_FLAGS_CANAIM"/>
+      <Constant Name="WEAPONINFO_FLAGS_AIMWITHARM"/>
+      <Constant Name="WEAPONINFO_FLAGS_1STPERSON"/>
+      <Constant Name="WEAPONINFO_FLAGS_ONLYFREEAIM"/>
+      <Constant Name="WEAPONINFO_FLAGS_MOVEAIM"/>
+      <Constant Name="WEAPONINFO_FLAGS_MOVEFIRE"/>
+      <Constant Name="WEAPONINFO_FLAGS_06"/>
+      <Constant Name="WEAPONINFO_FLAGS_07"/>
+      <Constant Name="WEAPONINFO_FLAGS_THROW"/>
+      <Constant Name="WEAPONINFO_FLAGS_HEAVY"/>
+      <Constant Name="WEAPONINFO_FLAGS_CONTINUOSFIRE"/>
+      <Constant Name="WEAPONINFO_FLAGS_TWINPISTOL"/>
+      <Constant Name="WEAPONINFO_FLAGS_RELOAD"/>
+      <Constant Name="WEAPONINFO_FLAGS_CROUCHFIRE"/>
+      <Constant Name="WEAPONINFO_FLAGS_RELOAD2START"/>
+      <Constant Name="WEAPONINFO_FLAGS_LONGRELOAD"/>
+      <Constant Name="WEAPONINFO_FLAGS_SLOWDOWN"/>
+      <Constant Name="WEAPONINFO_FLAGS_RANDSPEED"/>
+      <Constant Name="WEAPONINFO_FLAGS_EXPANDS"/>
+    </Enum>
+    <Enum Name="PEDSTATE" Global="true">
+      <Constant Name="PEDSTATE_NONE"/>
+      <Constant Name="PEDSTATE_IDLE"/>
+      <Constant Name="PEDSTATE_LOOK_ENTITY"/>
+      <Constant Name="PEDSTATE_LOOK_HEADING"/>
+      <Constant Name="PEDSTATE_WANDER_RANGE"/>
+      <Constant Name="PEDSTATE_WANDER_PATH"/>
+      <Constant Name="PEDSTATE_SEEK_POSITION"/>
+      <Constant Name="PEDSTATE_SEEK_ENTITY"/>
+      <Constant Name="PEDSTATE_FLEE_POSITION"/>
+      <Constant Name="PEDSTATE_FLEE_ENTITY"/>
+      <Constant Name="PEDSTATE_PURSUE"/>
+      <Constant Name="PEDSTATE_FOLLOW_PATH"/>
+      <Constant Name="PEDSTATE_SNIPER_MODE"/>
+      <Constant Name="PEDSTATE_ROCKETLAUNCHER_MODE"/>
+      <Constant Name="PEDSTATE_DUMMY"/>
+      <Constant Name="PEDSTATE_PAUSE"/>
+      <Constant Name="PEDSTATE_ATTACK"/>
+      <Constant Name="PEDSTATE_FIGHT"/>
+      <Constant Name="PEDSTATE_FACE_PHONE"/>
+      <Constant Name="PEDSTATE_MAKE_PHONECALL"/>
+      <Constant Name="PEDSTATE_CHAT"/>
+      <Constant Name="PEDSTATE_MUG"/>
+      <Constant Name="PEDSTATE_AIMGUN"/>
+      <Constant Name="PEDSTATE_AI_CONTROL"/>
+      <Constant Name="PEDSTATE_SEEK_CAR"/>
+      <Constant Name="PEDSTATE_SEEK_BOAT_POSITION"/>
+      <Constant Name="PEDSTATE_FOLLOW_ROUTE"/>
+      <Constant Name="PEDSTATE_CPR"/>
+      <Constant Name="PEDSTATE_SOLICIT"/>
+      <Constant Name="PEDSTATE_BUY_ICE_CREAM"/>
+      <Constant Name="PEDSTATE_INVESTIGATE_EVENT"/>
+      <Constant Name="PEDSTATE_EVADE_STEP"/>
+      <Constant Name="PEDSTATE_ON_FIRE"/>
+      <Constant Name="PEDSTATE_SUNBATHE"/>
+      <Constant Name="PEDSTATE_FLASH"/>
+      <Constant Name="PEDSTATE_JOG"/>
+      <Constant Name="PEDSTATE_ANSWER_MOBILE"/>
+      <Constant Name="PEDSTATE_HANG_OUT"/>
+      <Constant Name="PEDSTATE_STATES_NO_AI"/>
+      <Constant Name="PEDSTATE_ABSEIL_FROM_HELI"/>
+      <Constant Name="PEDSTATE_SIT"/>
+      <Constant Name="PEDSTATE_JUMP"/>
+      <Constant Name="PEDSTATE_FALL"/>
+      <Constant Name="PEDSTATE_GETUP"/>
+      <Constant Name="PEDSTATE_STAGGER"/>
+      <Constant Name="PEDSTATE_EVADE_DIVE"/>
+      <Constant Name="PEDSTATE_STATES_CAN_SHOOT"/>
+      <Constant Name="PEDSTATE_ENTER_TRAIN"/>
+      <Constant Name="PEDSTATE_EXIT_TRAIN"/>
+      <Constant Name="PEDSTATE_ARREST_PLAYER"/>
+      <Constant Name="PEDSTATE_DRIVING"/>
+      <Constant Name="PEDSTATE_PASSENGER"/>
+      <Constant Name="PEDSTATE_TAXI_PASSENGER"/>
+      <Constant Name="PEDSTATE_OPEN_DOOR"/>
+      <Constant Name="PEDSTATE_DIE"/>
+      <Constant Name="PEDSTATE_DEAD"/>
+      <Constant Name="PEDSTATE_DIE_BY_STEALTH"/>
+      <Constant Name="PEDSTATE_CARJACK"/>
+      <Constant Name="PEDSTATE_DRAGGED_FROM_CAR"/>
+      <Constant Name="PEDSTATE_ENTER_CAR"/>
+      <Constant Name="PEDSTATE_STEAL_CAR"/>
+      <Constant Name="PEDSTATE_EXIT_CAR"/>
+      <Constant Name="PEDSTATE_HANDS_UP"/>
+      <Constant Name="PEDSTATE_ARRESTED"/>
+      <Constant Name="PEDSTATE_DEPLOY_STINGER"/>
+    </Enum>
+    <Enum Name="CAR_NODE" Global="true">
+      <Constant Name="CAR_NODE_CHASSIS"/>
+      <Constant Name="CAR_NODE_WHEEL_RF"/>
+      <Constant Name="CAR_NODE_WHEEL_RM"/>
+      <Constant Name="CAR_NODE_WHEEL_RB"/>
+      <Constant Name="CAR_NODE_WHEEL_LF"/>
+      <Constant Name="CAR_NODE_WHEEL_LM"/>
+      <Constant Name="CAR_NODE_WHEEL_LB"/>
+      <Constant Name="CAR_NODE_DOOR_RF"/>
+      <Constant Name="CAR_NODE_DOOR_RR"/>
+      <Constant Name="CAR_NODE_DOOR_LF"/>
+      <Constant Name="CAR_NODE_DOOR_LR"/>
+      <Constant Name="CAR_NODE_BUMP_FRONT"/>
+      <Constant Name="CAR_NODE_BUMP_REAR"/>
+      <Constant Name="CAR_NODE_WING_RF"/>
+      <Constant Name="CAR_NODE_WING_LF"/>
+      <Constant Name="CAR_NODE_BONNET"/>
+      <Constant Name="CAR_NODE_BOOT"/>
+      <Constant Name="CAR_NODE_WINDSCREEN"/>
+      <Constant Name="CAR_NODE_EXHAUST"/>
+      <Constant Name="CAR_NODE_MISC_A"/>
+      <Constant Name="CAR_NODE_MISC_B"/>
+      <Constant Name="CAR_NODE_MISC_C"/>
+      <Constant Name="CAR_NODE_MISC_D"/>
+      <Constant Name="CAR_NODE_MISC_E"/>
+    </Enum>
+    <Enum Name="CAR_NODE_DOOR" Global="true">
+      <Constant Name="CAR_NODE_DOOR_RF" Value="8"/>
+      <Constant Name="CAR_NODE_DOOR_RR" Value="9"/>
+      <Constant Name="CAR_NODE_DOOR_LF" Value="10"/>
+      <Constant Name="CAR_NODE_DOOR_LR" Value="11"/>
+    </Enum>
+    <Enum Name="PEDSTAT" Global="true">
+      <Constant Name="PEDSTAT_PLAYER"/>
+      <Constant Name="PEDSTAT_COP"/>
+      <Constant Name="PEDSTAT_MEDIC"/>
+      <Constant Name="PEDSTAT_FIREMAN"/>
+      <Constant Name="PEDSTAT_GANG1"/>
+      <Constant Name="PEDSTAT_GANG2"/>
+      <Constant Name="PEDSTAT_GANG3"/>
+      <Constant Name="PEDSTAT_GANG4"/>
+      <Constant Name="PEDSTAT_GANG5"/>
+      <Constant Name="PEDSTAT_GANG6"/>
+      <Constant Name="PEDSTAT_GANG7"/>
+      <Constant Name="PEDSTAT_GANG8"/>
+      <Constant Name="PEDSTAT_GANG9"/>
+      <Constant Name="PEDSTAT_GANG10"/>
+      <Constant Name="PEDSTAT_STREET_GUY"/>
+      <Constant Name="PEDSTAT_SUIT_GUY"/>
+      <Constant Name="PEDSTAT_SENSIBLE_GUY"/>
+      <Constant Name="PEDSTAT_GEEK_GUY"/>
+      <Constant Name="PEDSTAT_OLD_GUY"/>
+      <Constant Name="PEDSTAT_TOUGH_GUY"/>
+      <Constant Name="PEDSTAT_STREET_GIRL"/>
+      <Constant Name="PEDSTAT_SUIT_GIRL"/>
+      <Constant Name="PEDSTAT_SENSIBLE_GIRL"/>
+      <Constant Name="PEDSTAT_GEEK_GIRL"/>
+      <Constant Name="PEDSTAT_OLD_GIRL"/>
+      <Constant Name="PEDSTAT_TOUGH_GIRL"/>
+      <Constant Name="PEDSTAT_TRAMP_MALE"/>
+      <Constant Name="PEDSTAT_TRAMP_FEMALE"/>
+      <Constant Name="PEDSTAT_TOURIST"/>
+      <Constant Name="PEDSTAT_PROSTITUTE"/>
+      <Constant Name="PEDSTAT_CRIMINAL"/>
+      <Constant Name="PEDSTAT_BUSKER"/>
+      <Constant Name="PEDSTAT_TAXIDRIVER"/>
+      <Constant Name="PEDSTAT_PSYCHO"/>
+      <Constant Name="PEDSTAT_STEWARD"/>
+      <Constant Name="PEDSTAT_SPORTSFAN"/>
+      <Constant Name="PEDSTAT_SHOPPER"/>
+      <Constant Name="PEDSTAT_OLDSHOPPER"/>
+      <Constant Name="PEDSTAT_BEACH_GUY"/>
+      <Constant Name="PEDSTAT_BEACH_GIRL"/>
+      <Constant Name="PEDSTAT_SKATER"/>
+      <Constant Name="PEDSTAT_STD_MISSION"/>
+      <Constant Name="PEDSTAT_COWARD"/>
+    </Enum>
+    <Enum Name="CAMERAMODE" Global="true">
+      <Constant Name="CAMERAMODE_NONE"/>
+      <Constant Name="CAMERAMODE_TOPDOWN"/>
+      <Constant Name="CAMERAMODE_GTACLASSIC"/>
+      <Constant Name="CAMERAMODE_BEHINDCAR"/>
+      <Constant Name="CAMERAMODE_FOLLOWPED"/>
+      <Constant Name="CAMERAMODE_AIMING"/>
+      <Constant Name="CAMERAMODE_DEBUG"/>
+      <Constant Name="CAMERAMODE_SNIPER"/>
+      <Constant Name="CAMERAMODE_ROCKETLAUNCHER"/>
+      <Constant Name="CAMERAMODE_MODELVIEW"/>
+      <Constant Name="CAMERAMODE_BILL"/>
+      <Constant Name="CAMERAMODE_SYPHON"/>
+      <Constant Name="CAMERAMODE_CIRCLE"/>
+      <Constant Name="CAMERAMODE_CHEESYZOOM"/>
+      <Constant Name="CAMERAMODE_WHEELCAM"/>
+      <Constant Name="CAMERAMODE_FIXED"/>
+      <Constant Name="CAMERAMODE_1STPERSON"/>
+      <Constant Name="CAMERAMODE_FLYBY"/>
+      <Constant Name="CAMERAMODE_CAM_ON_A_STRING"/>
+      <Constant Name="CAMERAMODE_REACTION"/>
+      <Constant Name="CAMERAMODE_FOLLOW_PED_WITH_BIND"/>
+      <Constant Name="CAMERAMODE_CHRIS"/>
+      <Constant Name="CAMERAMODE_BEHINDBOAT"/>
+      <Constant Name="CAMERAMODE_PLAYER_FALLEN_WATER"/>
+      <Constant Name="CAMERAMODE_CAM_ON_TRAIN_ROOF"/>
+      <Constant Name="CAMERAMODE_CAM_RUNNING_SIDE_TRAIN"/>
+      <Constant Name="CAMERAMODE_BLOOD_ON_THE_TRACKS"/>
+      <Constant Name="CAMERAMODE_IM_THE_PASSENGER_WOOWOO"/>
+      <Constant Name="CAMERAMODE_SYPHON_CRIM_IN_FRONT"/>
+      <Constant Name="CAMERAMODE_PED_DEAD_BABY"/>
+      <Constant Name="CAMERAMODE_PILLOWS_PAPS"/>
+      <Constant Name="CAMERAMODE_LOOK_AT_CARS"/>
+      <Constant Name="CAMERAMODE_ARRESTCAM_ONE"/>
+      <Constant Name="CAMERAMODE_ARRESTCAM_TWO"/>
+      <Constant Name="CAMERAMODE_M16_1STPERSON"/>
+      <Constant Name="CAMERAMODE_SPECIAL_FIXED_FOR_SYPHON"/>
+      <Constant Name="CAMERAMODE_FIGHT_CAM"/>
+      <Constant Name="CAMERAMODE_TOP_DOWN_PED"/>
+      <Constant Name="CAMERAMODE_LIGHTHOUSE"/>
+      <Constant Name="CAMERAMODE_SNIPER_RUNABOUT"/>
+      <Constant Name="CAMERAMODE_ROCKETLAUNCHER_RUNABOUT"/>
+      <Constant Name="CAMERAMODE_1STPERSON_RUNABOUT"/>
+      <Constant Name="CAMERAMODE_M16_1STPERSON_RUNABOUT"/>
+      <Constant Name="CAMERAMODE_FIGHT_CAM_RUNABOUT"/>
+      <Constant Name="CAMERAMODE_EDITOR"/>
+      <Constant Name="CAMERAMODE_HELICANNON_1STPERSON"/>
+      <Constant Name="CAMERAMODE_CAMERA"/>
+      <Constant Name="CAMERAMODE_ATTACHCAM"/>
+      <Constant Name="CAMERAMODE_TWOPLAYER"/>
+      <Constant Name="CAMERAMODE_TWOPLAYER_IN_CAR_AND_SHOOTING"/>
+      <Constant Name="CAMERAMODE_TWOPLAYER_SEPARATE_CARS"/>
+      <Constant Name="CAMERAMODE_ROCKETLAUNCHER_HS"/>
+      <Constant Name="CAMERAMODE_ROCKETLAUNCHER_RUNABOUT_HS"/>
+      <Constant Name="CAMERAMODE_AIMWEAPON"/>
+      <Constant Name="CAMERAMODE_TWOPLAYER_SEPARATE_CARS_TOPDOWN"/>
+      <Constant Name="CAMERAMODE_AIMWEAPON_FROMCAR"/>
+      <Constant Name="CAMERAMODE_DW_HELI_CHASE"/>
+      <Constant Name="CAMERAMODE_DW_CAM_MAN"/>
+      <Constant Name="CAMERAMODE_DW_BIRDY"/>
+      <Constant Name="CAMERAMODE_DW_PLANE_SPOTTER"/>
+      <Constant Name="CAMERAMODE_DW_DOG_FIGHT"/>
+      <Constant Name="CAMERAMODE_DW_FISH"/>
+      <Constant Name="CAMERAMODE_DW_PLANECAM1"/>
+      <Constant Name="CAMERAMODE_DW_PLANECAM2"/>
+      <Constant Name="CAMERAMODE_DW_PLANECAM3"/>
+      <Constant Name="CAMERAMODE_AIMWEAPON_ATTACHED"/>
+    </Enum>
+    <Enum Name="BONE" Global="true">
+      <Constant Name="BONE_ROOT" Value="0"/>
+      <Constant Name="BONE_PELVIS" Value="1"/>
+      <Constant Name="BONE_SPINE" Value="2"/>
+      <Constant Name="BONE_SPINE1" Value="3"/>
+      <Constant Name="BONE_NECK" Value="4"/>
+      <Constant Name="BONE_HEAD" Value="5"/>
+      <Constant Name="BONE_L_BROW" Value="6"/>
+      <Constant Name="BONE_R_BROW" Value="7"/>
+      <Constant Name="BONE_JAW" Value="8"/>
+      <Constant Name="BONE_R_CLAVICLE" Value="21"/>
+      <Constant Name="BONE_R_UPPER_ARM" Value="22"/>
+      <Constant Name="BONE_R_FORE_ARM" Value="23"/>
+      <Constant Name="BONE_R_HAND" Value="24"/>
+      <Constant Name="BONE_R_FINGER" Value="25"/>
+      <Constant Name="BONE_R_FINGER_01" Value="26"/>
+      <Constant Name="BONE_L_CLAVICLE" Value="31"/>
+      <Constant Name="BONE_L_UPPER_ARM" Value="32"/>
+      <Constant Name="BONE_L_FORE_ARM" Value="33"/>
+      <Constant Name="BONE_L_HAND" Value="34"/>
+      <Constant Name="BONE_L_FINGER" Value="35"/>
+      <Constant Name="BONE_L_FINGER_01" Value="36"/>
+      <Constant Name="BONE_L_THIGH" Value="41"/>
+      <Constant Name="BONE_L_CALF" Value="42"/>
+      <Constant Name="BONE_L_FOOT" Value="43"/>
+      <Constant Name="BONE_L_TOE" Value="44"/>
+      <Constant Name="BONE_R_THIGH" Value="51"/>
+      <Constant Name="BONE_R_CALF" Value="52"/>
+      <Constant Name="BONE_R_FOOT" Value="53"/>
+      <Constant Name="BONE_R_TOE" Value="54"/>
+      <Constant Name="BONE_BELLY" Value="201"/>
+      <Constant Name="BONE_R_BREAST" Value="301"/>
+      <Constant Name="BONE_L_BREAST" Value="302"/>
+    </Enum>
+    

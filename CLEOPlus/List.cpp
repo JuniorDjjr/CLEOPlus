@@ -6,14 +6,37 @@ class ScriptList {
 public:
 	int type;
 	uintptr_t listPointer;
+	// test bug fix
+	list<int>* intList;
+	list<float>* floatList;
+	list<string>* stringList;
 
-	ScriptList() {
-		type = 0;
+	ScriptList(int _type)
+	{
+		type = _type;
 		listPointer = 0;
+		intList = nullptr;
+		floatList = nullptr;
+		stringList = nullptr;
+		if (_type == 0) // int
+		{
+			intList = new list<int>();
+			listPointer = (DWORD)intList;
+		}
+		else if (_type == 1) // float
+		{
+			floatList = new list<float>();
+			listPointer = (DWORD)floatList;
+		}
+		else if (_type == 2) // string
+		{
+			stringList = new list<string>();
+			listPointer = (DWORD)stringList;
+		}
 	}
 
 	~ScriptList() {
-		if (listPointer)
+		if (listPointer != 0)
 		{
 			if (type == 0) // int
 			{
@@ -33,6 +56,7 @@ public:
 				l->clear();
 				delete l;
 			}
+			listPointer = 0;
 		}
 	}
 };
@@ -49,25 +73,9 @@ void ClearScriptLists() {
 OpcodeResult WINAPI CREATE_LIST(CScriptThread* thread)
 {
 	int type = CLEO_GetIntOpcodeParam(thread);
-	ScriptList *scriptList = new ScriptList();
-	scriptList->type = type;
-	if (type == 0) // int
-	{
-		list<int> *l = new list<int>();
-		scriptList->listPointer = (DWORD)l;
-	}
-	else if (type == 1) // float
-	{
-		list<float> *l = new list<float>();
-		scriptList->listPointer = (DWORD)l;
-	}
-	else if (type == 2) // string
-	{
-		list<string> *l = new list<string>();
-		scriptList->listPointer = (DWORD)l;
-	}
-	else {
-		MessageBox(HWND_DESKTOP, string("CREATE_LIST failed: list type unknown " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
+	ScriptList *scriptList = new ScriptList(type);
+	if (scriptList->listPointer == 0) {
+		MessageBox(HWND_DESKTOP, string("CREATE_LIST failed: cant allocate new list " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
 	}
 	scriptListList.push_back(scriptList);
 	CLEO_SetIntOpcodeParam(thread, (DWORD)scriptList);
@@ -79,6 +87,9 @@ OpcodeResult WINAPI DELETE_LIST(CScriptThread* thread)
 	ScriptList *scriptList = (ScriptList*)CLEO_GetIntOpcodeParam(thread);
 	if (scriptList)
 	{
+		std::vector<ScriptList*>::iterator position = std::find(scriptListList.begin(), scriptListList.end(), scriptList);
+		if (position != scriptListList.end()) scriptListList.erase(position);
+
 		delete scriptList;
 	}
 	return OR_CONTINUE;
@@ -261,7 +272,20 @@ OpcodeResult WINAPI GET_LIST_SIZE(CScriptThread* thread)
 			size = l->size();
 		}
 		else {
-			MessageBox(HWND_DESKTOP, string("GET_LIST_SIZE failed: list type unknown " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
+			MessageBox(HWND_DESKTOP, string("GET_LIST_SIZE failed: list type unknown " + to_string(scriptList->type) + " " + to_string((int)scriptList->intList) + " " + to_string((int)scriptList->floatList) + " " + to_string((int)scriptList->stringList)).c_str(), "CLEO+.cleo", MB_ICONERROR);
+			int iSize = -1;
+			int fSize = 0;
+			int sSize = 0;
+			if (scriptList->intList) {
+				iSize = scriptList->intList->size();
+			}
+			if (scriptList->intList) {
+				fSize = scriptList->floatList->size();
+			}
+			if (scriptList->intList) {
+				sSize = scriptList->stringList->size();
+			}
+			MessageBox(HWND_DESKTOP, string(" " + to_string(iSize) + " " + to_string(fSize) + " " + to_string(sSize)).c_str(), "CLEO+.cleo", MB_ICONERROR);
 		}
 	}
 	CLEO_SetIntOpcodeParam(thread, size);
@@ -324,8 +348,131 @@ OpcodeResult WINAPI GET_LIST_STRING_VALUE_BY_INDEX(CScriptThread* thread)
 		}
 	}
 	else {
-		MessageBox(HWND_DESKTOP, string("GET_LIST_VALUE_BY_INDEX failed: list type wrong " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
+		MessageBox(HWND_DESKTOP, string("GET_LIST_STRING_VALUE_BY_INDEX failed: list type wrong " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
 		CLEO_WriteStringOpcodeParam(thread, "");//fallback
+	}
+	return OR_CONTINUE;
+}
+
+OpcodeResult WINAPI REPLACE_LIST_VALUE_BY_INDEX(CScriptThread* thread)
+{
+	ScriptList* scriptList = (ScriptList*)CLEO_GetIntOpcodeParam(thread);
+	unsigned int index = CLEO_GetIntOpcodeParam(thread);
+	if (scriptList->type == 0) // int
+	{
+		int value = CLEO_GetIntOpcodeParam(thread);
+		list<int>* l = (list<int>*)scriptList->listPointer;
+		list<int>::iterator it;
+		it = l->begin();
+		if (index >= l->size()) {
+		}
+		else {
+			advance(it, index);
+			it = l->erase(it);
+			l->insert(it, value);
+		}
+	}
+	else if (scriptList->type == 1) // float
+	{
+		float value = CLEO_GetFloatOpcodeParam(thread);
+		list<float>* l = (list<float>*)scriptList->listPointer;
+		list<float>::iterator it;
+		it = l->begin();
+		if (index >= l->size()) {
+		}
+		else {
+			advance(it, index);
+			it = l->erase(it);
+			l->insert(it, value);
+		}
+	}
+	else {
+		MessageBox(HWND_DESKTOP, string("REPLACE_LIST_VALUE_BY_INDEX failed: list type unknown " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
+		int value = CLEO_GetIntOpcodeParam(thread); //fallback
+	}
+	return OR_CONTINUE;
+}
+
+OpcodeResult WINAPI REPLACE_LIST_STRING_VALUE_BY_INDEX(CScriptThread* thread)
+{
+	ScriptList* scriptList = (ScriptList*)CLEO_GetIntOpcodeParam(thread);
+	unsigned int index = CLEO_GetIntOpcodeParam(thread);
+	string value = CLEO_ReadStringPointerOpcodeParam(thread, bufferA, 128);
+	if (scriptList->type == 2) // string
+	{
+		list<string>* l = (list<string>*)scriptList->listPointer;
+		list<string>::iterator it;
+		it = l->begin();
+		if (index >= l->size()) {
+		}
+		else {
+			advance(it, index);
+			it = l->erase(it);
+			l->insert(it, value);
+		}
+	}
+	else {
+		MessageBox(HWND_DESKTOP, string("REPLACE_LIST_STRING_VALUE_BY_INDEX failed: list type wrong " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
+	}
+	return OR_CONTINUE;
+}
+
+OpcodeResult WINAPI INSERT_LIST_VALUE_BY_INDEX(CScriptThread* thread)
+{
+	ScriptList* scriptList = (ScriptList*)CLEO_GetIntOpcodeParam(thread);
+	unsigned int index = CLEO_GetIntOpcodeParam(thread);
+	if (scriptList->type == 0) // int
+	{
+		int value = CLEO_GetIntOpcodeParam(thread);
+		list<int>* l = (list<int>*)scriptList->listPointer;
+		list<int>::iterator it;
+		it = l->begin();
+		if (index >= l->size()) {
+		}
+		else {
+			advance(it, index);
+			l->insert(it, value);
+		}
+	}
+	else if (scriptList->type == 1) // float
+	{
+		float value = CLEO_GetFloatOpcodeParam(thread);
+		list<float>* l = (list<float>*)scriptList->listPointer;
+		list<float>::iterator it;
+		it = l->begin();
+		if (index >= l->size()) {
+		}
+		else {
+			advance(it, index);
+			l->insert(it, value);
+		}
+	}
+	else {
+		MessageBox(HWND_DESKTOP, string("INSERT_LIST_VALUE_BY_INDEX failed: list type unknown " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
+		int value = CLEO_GetIntOpcodeParam(thread); //fallback
+	}
+	return OR_CONTINUE;
+}
+
+OpcodeResult WINAPI INSERT_LIST_STRING_VALUE_BY_INDEX(CScriptThread* thread)
+{
+	ScriptList* scriptList = (ScriptList*)CLEO_GetIntOpcodeParam(thread);
+	unsigned int index = CLEO_GetIntOpcodeParam(thread);
+	string value = CLEO_ReadStringPointerOpcodeParam(thread, bufferA, 128);
+	if (scriptList->type == 2) // string
+	{
+		list<string>* l = (list<string>*)scriptList->listPointer;
+		list<string>::iterator it;
+		it = l->begin();
+		if (index >= l->size()) {
+		}
+		else {
+			advance(it, index);
+			l->insert(it, value);
+		}
+	}
+	else {
+		MessageBox(HWND_DESKTOP, string("INSERT_LIST_STRING_VALUE_BY_INDEX failed: list type wrong " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);
 	}
 	return OR_CONTINUE;
 }
@@ -336,17 +483,17 @@ OpcodeResult WINAPI RESET_LIST(CScriptThread* thread)
 	if (scriptList->type == 0) // int
 	{
 		list<int> *l = (list<int>*)scriptList->listPointer;
-		l->clear();
+		if (l) l->clear();
 	}
 	else if (scriptList->type == 1) // float
 	{
 		list<float> *l = (list<float>*)scriptList->listPointer;
-		l->clear();
+		if (l) l->clear();
 	}
 	else if (scriptList->type == 2) // string
 	{
 		list<string> *l = (list<string>*)scriptList->listPointer;
-		l->clear();
+		if (l) l->clear();
 	}
 	else {
 		MessageBox(HWND_DESKTOP, string("RESET_LIST failed: list type unknown " + to_string(scriptList->type)).c_str(), "CLEO+.cleo", MB_ICONERROR);

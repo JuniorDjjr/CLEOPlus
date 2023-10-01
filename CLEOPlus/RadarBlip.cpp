@@ -134,8 +134,6 @@ namespace RadarBlip
 
 using namespace RadarBlip;
 
-//ADD_CLEO_BLIP 35 100.0 100.0 TRUE 255 255 255 255 (blip)
-// 0E2A=9,add_cleo_blip %1d% position %2d% %3d% is_short %4d% RGBA %5d% %6d% %7d% %8d% store_to %9d%
 OpcodeResult WINAPI ADD_CLEO_BLIP(CScriptThread* thread)
 {
 	int spriteId = CLEO_GetIntOpcodeParam(thread);
@@ -167,8 +165,6 @@ OpcodeResult WINAPI ADD_CLEO_BLIP(CScriptThread* thread)
 	return OR_CONTINUE;
 }
 
-//REMOVE_CLEO_BLIP blip
-// 0E2B=1,remove_cleo_blip %1d%
 OpcodeResult WINAPI REMOVE_CLEO_BLIP(CScriptThread* thread)
 {
 	CRadarBlipCLEO *blip = (CRadarBlipCLEO *)CLEO_GetIntOpcodeParam(thread);
