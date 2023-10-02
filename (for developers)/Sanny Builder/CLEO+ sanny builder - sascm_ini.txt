@@ -201,7 +201,7 @@ EN: Open the "data/sa/SASCM.INI" located in the Sanny Builder folder, and add it
 0EEA=5,locate_char_distance_to_coordinates %1d% pos %2d% %3d% %4d% radius %5d%
 0EEB=5,locate_car_distance_to_coordinates %1d% pos %2d% %3d% %4d% radius %5d%
 0EEC=5,locate_object_distance_to_coordinates %1d% pos %2d% %3d% %4d% radius %5d%
-0EED=5,locate_object_distance_to_coordinates %1d% pos %2d% %3d% %4d% radius %5d%
+0EED=3,locate_entity_distance_to_entity %1d% entityB %2d% radius %3d%
 0EEE=4,get_entity_coordinates %1d% store_to %2d% %3d% %4d%
 0EEF=2,get_entity_heading %1d% store_to %2d%
 0EF5=1,is_car_owned_by_player %1d%
