@@ -289,7 +289,7 @@ EN: Within <Commands> (usually at the end) add:
         <Arg Type="FLOAT" Desc="k"/>
         <Arg Type="INT" Enum="EASE_MODE" Desc="Mode"/>
         <Arg Type="INT" Enum="EASE_WAY" Desc="Way"/>
-        <Arg Type="FLOAT" Desc="Result" Out="True"/>
+        <Arg Type="FLOAT" Desc="Result" Out="true"/>
       </Args>
     </Command>
 
@@ -2127,7 +2127,7 @@ EN: Within <Commands> (usually at the end) add:
     <Command ID="0xEFE" Name="GET_LOADED_LIBRARY">
       <Args>
         <Arg Type="STRING" AllowPointer="true" PreserveCase="true"/>
-        <Arg Type="INT" Desc="Pointer" Out="True"/>
+        <Arg Type="INT" Desc="Pointer" Out="true"/>
       </Args>
     </Command>
 	
@@ -2204,7 +2204,7 @@ EN: Within <Commands> (usually at the end) add:
     <Command ID="0xD19" Name="GET_NORMALISED_QUAT">
       <Args>
         <Arg Type="INT" Desc="Quat"/>
-        <Arg Type="INT" Desc="Quat" Out="True"/>
+        <Arg Type="INT" Desc="Quat" Out="true"/>
       </Args>
     </Command>
     
@@ -2212,7 +2212,7 @@ EN: Within <Commands> (usually at the end) add:
       <Args>
         <Arg Type="INT" Desc="Quat"/>
         <Arg Type="INT" Desc="Quat"/>
-        <Arg Type="INT" Desc="QuatResult" Out="True"/>
+        <Arg Type="INT" Desc="QuatResult" Out="true"/>
       </Args>
     </Command>
 
