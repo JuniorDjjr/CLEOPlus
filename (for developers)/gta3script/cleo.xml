@@ -4152,7 +4152,6 @@
 
     <Command ID="0xD31" Name="GET_BONE_OFFSET_VECTOR">
       <Args>
-        <Arg Type="INT" Entity="CHAR"/>
         <Arg Type="INT" Entity="BONE"/>
         <Arg Type="INT" Out="true"/>
       </Args>
@@ -4160,7 +4159,6 @@
 
     <Command ID="0xD32" Name="GET_BONE_QUAT">
       <Args>
-        <Arg Type="INT" Entity="CHAR"/>
         <Arg Type="INT" Entity="BONE"/>
         <Arg Type="INT" Desc="Quat" Out="true"/>
       </Args>
